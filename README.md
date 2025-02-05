@@ -1,46 +1,73 @@
-# Getting Started with Create React App
+# RM Traceability SaaS - Front-end
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O **RM Traceability SaaS - Front-end** é a interface do usuário para a solução de rastreabilidade de produtos. A aplicação permite que os usuários façam login, visualizem dashboards, gerenciem empresas e produtos, além de acompanhar a rastreabilidade dos itens por meio de QR Codes.
 
-## Available Scripts
+## Sumário
 
-In the project directory, you can run:
+- [Recursos](#recursos)
+- [Pré-requisitos](#pré-requisitos)
+- [Configuração do Ambiente](#configuração-do-ambiente)
+- [Instalação](#instalação)
+- [Execução](#execução)
+- [Testes](#testes)
+- [Deploy](#deploy)
+- [Docker](#docker)
+- [Tecnologias](#tecnologias)
+- [Contato](#contato)
 
-### `yarn start`
+## Recursos
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Autenticação e Autorização:** Interface para login e controle de acesso.
+- **Dashboard:** Visualização de informações e relatórios.
+- **Gerenciamento de Empresas e Produtos:** Cadastro e manutenção dos dados relacionados.
+- **Geração e Leitura de QR Codes:** Funcionalidades para rastrear produtos via QR Code.
+- **Integração com a API:** Comunicação com o back-end (NestJS) por meio de requisições RESTful.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Pré-requisitos
 
-### `yarn test`
+- [Node.js](https://nodejs.org/) (versão 14 ou superior)
+- [Yarn](https://yarnpkg.com/) ou [npm](https://www.npmjs.com/)
+- Navegador moderno (Chrome, Firefox, Edge, etc.)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Configuração do Ambiente
 
-### `yarn build`
+Crie um arquivo `.env` na raiz do projeto (ou use um exemplo `.env.example`) com as seguintes variáveis (ajuste conforme necessário):
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```env
+REACT_APP_API_URL=http://localhost:3001
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Instalação
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Para instalar as dependências do projeto, execute um dos comandos abaixo na raiz do projeto:
 
-### `yarn eject`
+```bash
+yarn install
+# ou
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Execução
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+yarn start
+# ou
+npm start
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Testes
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+yarn test
+# ou
+npm test
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Tecnologias
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+React – Biblioteca para construção da interface do usuário.
+Axios – Cliente HTTP para comunicação com a API.
+React Router – Gerenciamento de rotas e navegação.
+Styled Components ou CSS Modules – Estilização da aplicação (ou outra abordagem de sua preferência).
+
+## Contato
+
+Discord:
+Autor: Rafael Magalhães
