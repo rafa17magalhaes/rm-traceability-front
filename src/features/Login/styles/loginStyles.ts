@@ -10,8 +10,6 @@ export const LayoutContainer = styled.div`
   justify-content: center;
   padding: 0;
   font-family: 'Lato', sans-serif;
-  /* Remova ou comente o background para que a animação seja visível */
-  /* background: linear-gradient(135deg, #002b5c, #00509e, #00b4d8); */
 `;
 
 export const Spinner = styled.div`
@@ -182,15 +180,15 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  padding: 0.5rem 1rem;         /* Reduzido para deixar o botão menor */
+  padding: 0.5rem 1rem;
   background-color: #002b5c;
   color: #fff;
   border: none;
   border-radius: 4px;
-  font-size: 0.9rem;            /* Fonte um pouco menor */
+  font-size: 0.9rem;
   cursor: pointer;
-  display: block;               /* Faz o botão ocupar o espaço necessário */
-  margin: 0 auto;               /* Centraliza horizontalmente */
+  display: block;
+  margin: 0 auto;
   transition: background-color 0.2s ease-in-out;
   font-weight: 500;
   font-family: inherit;
@@ -217,7 +215,7 @@ export const FooterContainer = styled.div`
 
 export const FooterText = styled.p`
   font-size: 0.8rem;
-  color: #f0f0f0; /* Cor mais clara para melhor visualização */
+  color: #f0f0f0;
   text-align: center;
   font-family: 'Raleway', sans-serif;
 `;
