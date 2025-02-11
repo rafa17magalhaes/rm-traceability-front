@@ -13,7 +13,6 @@ const BackgroundWrapper = styled.div`
   z-index: -1;
 `;
 
-// Define a animação move1
 const move1 = keyframes`
   0% { top: 0vh; left: 50vw; }
   25% { left: 0vw; }
@@ -22,7 +21,6 @@ const move1 = keyframes`
   100% { top: 0vh; left: 50vw; }
 `;
 
-// Define a animação move2
 const move2 = keyframes`
   0% { top: 50vh; left: 100vw; }
   25% { top: 100vh; }
@@ -31,7 +29,6 @@ const move2 = keyframes`
   100% { top: 50vh; left: 100vw; }
 `;
 
-// Define a animação move3
 const move3 = keyframes`
   0% { top: 100vh; left: 50vw; }
   25% { left: 100vw; }
