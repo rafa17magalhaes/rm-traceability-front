@@ -5,6 +5,7 @@ export interface BaseUserDTO {
     email: string;
     phone: string;
     active?: boolean;
+    password?: string;
     company?: CompanyDTO;
     companyId?: string;
   }
