@@ -1,43 +1,46 @@
 import React from 'react';
 import { ContentGrid, CardContainer, IconWrapper, MoreButton } from '../styles/dashboardStyles';
-import { FaRocket, FaFileContract, FaLightbulb, FaUsers } from 'react-icons/fa';
+import { FaBoxOpen, FaExchangeAlt, FaHistory, FaUserFriends } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const ServicesGrid: React.FC = () => {
+  const navigate = useNavigate();
+
   const services = [
-      {
-        icon: <FaLightbulb size={32} />, 
-        title: 'Inventario', 
-        description: 'Gerencie e visualize seu estoque e produtos em um só lugar.'
-      },
-      {
-        icon: <FaRocket size={32} />, 
-        title: 'Movimentar produtos', 
-        description: 'Registre entradas e saídas de forma simples e rápida, mantendo o estoque sempre atualizado.'
-      },
-      {
-        icon: <FaFileContract size={32} />, 
-        title: 'Últimas Movimentações', 
-        description: 'Acompanhe as movimentações recentes e fique por dentro das alterações no seu inventário.'
-      },
-      {
-        icon: <FaUsers size={32} />, 
-        title: 'Usuários', 
-        description: 'Gerencie contas, permissões e níveis de acesso de maneira eficiente e segura.'
-      },    
+    {
+      icon: <FaBoxOpen size={32} />,
+      title: 'Inventário',
+      description: 'Gerencie e visualize seu estoque...',
+      route: '/dashboard/empresas',
+    },
+    {
+      icon: <FaExchangeAlt size={32} />,
+      title: 'Movimentar Produtos',
+      description: 'Registre entradas e saídas...',
+      route: '/dashboard/empresas/new',
+    },
+    {
+      icon: <FaHistory size={32} />,
+      title: 'Últimas Movimentações',
+      description: 'Acompanhe alterações...',
+      route: '/dashboard/movimentacoes',
+    },
+    {
+      icon: <FaUserFriends size={32} />,
+      title: 'Usuários',
+      description: 'Gerencie contas e permissões...',
+      route: '/dashboard/usuarios',
+    },
   ];
 
   return (
     <ContentGrid>
       {services.map((service, idx) => (
         <CardContainer key={idx}>
-          <IconWrapper>
-            {service.icon}
-          </IconWrapper>
-
+          <IconWrapper>{service.icon}</IconWrapper>
           <h2>{service.title}</h2>
           <p>{service.description}</p>
-
-          <MoreButton>Acessar</MoreButton>
+          <MoreButton onClick={() => navigate(service.route)}>Acessar</MoreButton>
         </CardContainer>
       ))}
     </ContentGrid>

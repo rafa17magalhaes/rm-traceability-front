@@ -1,25 +1,30 @@
 import React from 'react';
-import { FaHome, FaChartBar, FaCog } from 'react-icons/fa';
+import { FaBuilding, FaUserFriends, FaCog } from 'react-icons/fa';
 import { FooterLogo, MenuItem, MenuWrapper, SidebarContainer } from '../styles/dashboardStyles';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   collapsed?: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
+  const navigate = useNavigate();
+
   return (
     <SidebarContainer collapsed={collapsed}>
       <MenuWrapper>
-        <MenuItem collapsed={collapsed}>
-          <FaHome />
-          <span>Dashboard</span>
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/empresas')}>
+          <FaBuilding size={20} />
+          <span>Empresas</span>
         </MenuItem>
-        <MenuItem collapsed={collapsed}>
-          <FaChartBar />
-          <span>Relatórios</span>
+
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/usuarios')}>
+          <FaUserFriends size={20} />
+          <span>Usuários</span>
         </MenuItem>
-        <MenuItem collapsed={collapsed}>
-          <FaCog />
+
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/configuracoes')}>
+          <FaCog size={20} />
           <span>Configurações</span>
         </MenuItem>
       </MenuWrapper>
