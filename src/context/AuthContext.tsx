@@ -11,18 +11,17 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem('token');
+    return localStorage.getItem('accessToken');
   });
 
   const login = (newToken: string) => {
     setToken(newToken);
-    localStorage.setItem('token', newToken);
+    localStorage.setItem('accessToken', newToken);
   };
 
-  // remove o token do estado e do localStorage
   const logout = () => {
     setToken(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
   };
 
   const isAuthenticated = token !== null;
