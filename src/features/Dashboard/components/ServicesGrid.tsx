@@ -23,7 +23,7 @@ const ServicesGrid: React.FC = () => {
       icon: <FaHistory size={32} />,
       title: 'Últimas Movimentações',
       description: 'Acompanhe alterações...',
-      route: '/dashboard/movimentacoes',
+      route: '/dashboard/usuarios/new',
     },
     {
       icon: <FaUserFriends size={32} />,

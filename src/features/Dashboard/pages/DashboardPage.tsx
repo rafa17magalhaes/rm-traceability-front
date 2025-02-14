@@ -35,7 +35,7 @@ const DashboardPage: React.FC = () => {
         {/* Header */}
         <Header onToggleSidebar={handleToggleSidebar} onLogout={handleLogout} />
 
-        {/* Aqui é onde exibiremos as rotas filhas (telas do dashboard) */}
+        {/* Rotas internas do dashboard */}
         <div style={{ padding: '1.5rem' }}>
           <Routes>
             {/* Rota padrão: exibe os cards (ServicesGrid) */}
@@ -49,6 +49,7 @@ const DashboardPage: React.FC = () => {
             <Route path="usuarios" element={<ListUsersPage />} />
             <Route path="usuarios/new" element={<AddUserPage />} />
 
+            {/* Fallback */}
             <Route path="*" element={<ServicesGrid />} />
           </Routes>
         </div>

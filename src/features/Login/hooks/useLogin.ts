@@ -6,5 +6,5 @@ export const useLogin = () => {
   if (!context) {
     throw new Error('useLogin deve ser usado dentro de um AuthProvider');
   }
-  return context;
+  return context.login;
 };
