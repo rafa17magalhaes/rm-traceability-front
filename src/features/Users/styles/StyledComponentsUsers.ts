@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const FormContainer = styled.div`
   background: #fff;
@@ -54,7 +54,14 @@ export const InputField = styled.input`
   }
 `;
 
-export const SubmitButton = styled.button`
+export const ButtonRow = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+`;
+
+export const PrimaryButton = styled.button`
   background: #00509e;
   color: #fff;
   border: none;
@@ -62,9 +69,11 @@ export const SubmitButton = styled.button`
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
-  display: block;
-  margin: 1.5rem auto 0 auto;
   transition: background 0.3s;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background: #003a75;
@@ -74,6 +83,31 @@ export const SubmitButton = styled.button`
     opacity: 0.7;
     cursor: not-allowed;
   }
+`;
+
+export const SecondaryButton = styled(PrimaryButton)`
+  background: #fff;
+  color: #00509e;
+  border: 1px solid #00509e;
+
+  &:hover {
+    background: #f8f9fa;
+  }
+`;
+
+const spin = keyframes`
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const LoadingSpinner = styled.div`
+  border: 2px solid #fff;
+  border-top: 2px solid #ccc;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: ${spin} 0.8s linear infinite;
 `;
 
 export const ErrorText = styled.p`

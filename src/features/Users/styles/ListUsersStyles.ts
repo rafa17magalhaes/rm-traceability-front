@@ -60,3 +60,18 @@ export const EditButton = styled.button`
     color: #003a75;
   }
 `;
+
+export const AddButton = styled.button`
+  background: #00509e;
+  border: none;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  
+  &:hover {
+    background: #003a75;
+  }
+`;

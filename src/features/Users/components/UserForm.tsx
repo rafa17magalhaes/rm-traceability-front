@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CreateUserDTO } from 'types/users';
 import { FaUser } from 'react-icons/fa';
 import { 
@@ -9,26 +9,46 @@ import {
   Label, 
   InputField, 
   ErrorText, 
-  SubmitButton 
+  ButtonRow,
+  PrimaryButton,
+  SecondaryButton,
+  LoadingSpinner
 } from '../styles/StyledComponentsUsers';
 import { ValidationErrors, validateUserForm } from '../validade/userFormValidation';
 
-type UserFormProps = {
+interface UserFormProps {
   loading: boolean;
   error: string | null;
   onSubmit: (user: CreateUserDTO) => void;
-};
+  initialData?: Partial<CreateUserDTO> & { id?: string };
+  onCancel?: () => void;
+}
 
-const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit }) => {
+const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit, initialData, onCancel }) => {
+  // Se for edição, senha pode ser opcional; senão, obrigatória
   const [user, setUser] = useState<CreateUserDTO>({
     name: '',
     email: '',
     phone: '',
     password: '',
     active: true,
+    ...initialData,
   });
+
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+
+  const isEdit = !!(initialData && initialData.id);
+
+  useEffect(() => {
+    if (initialData) {
+      setUser({
+        ...user,
+        ...initialData,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -36,20 +56,18 @@ const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Payload enviado:', user);
     const errors = validateUserForm({ user, confirmPassword });
     setValidationErrors(errors);
   
     if (Object.keys(errors).length > 0) return;
     onSubmit(user);
   };
-  
 
   return (
     <FormContainer>
       <FormTitle>
         <FaUser style={{ marginRight: '0.5rem' }} />
-        Cadastro de Usuário
+        {isEdit ? 'Atualizar Usuário' : 'Cadastro de Usuário'}
       </FormTitle>
       <form onSubmit={handleSubmit}>
         <Section>
@@ -95,7 +113,7 @@ const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit }) => {
                 name="password" 
                 value={user.password} 
                 onChange={handleChange} 
-                required
+                required={!isEdit}  // Se edição, pode ser opcional
               />
               {validationErrors.userPassword && <ErrorText>{validationErrors.userPassword}</ErrorText>}
             </Label>
@@ -106,16 +124,29 @@ const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit }) => {
                 name="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                required
+                required={!isEdit}
               />
               {validationErrors.confirmPassword && <ErrorText>{validationErrors.confirmPassword}</ErrorText>}
             </Label>
           </FormRow>
         </Section>
         {error && <ErrorText>{error}</ErrorText>}
-        <SubmitButton type="submit" disabled={loading}>
-          {loading ? 'Salvando...' : 'Salvar'}
-        </SubmitButton>
+
+        {/* Botoes lado a lado */}
+        <ButtonRow>
+          <PrimaryButton type="submit" disabled={loading}>
+            {loading ? <LoadingSpinner /> : (isEdit ? 'Atualizar' : 'Salvar')}
+          </PrimaryButton>
+          {onCancel && (
+            <SecondaryButton 
+              type="button" 
+              onClick={onCancel} 
+              disabled={loading}
+            >
+              Cancelar
+            </SecondaryButton>
+          )}
+        </ButtonRow>
       </form>
     </FormContainer>
   );

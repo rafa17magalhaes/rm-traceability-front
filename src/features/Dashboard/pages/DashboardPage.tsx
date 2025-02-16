@@ -6,13 +6,12 @@ import { DashboardContainer, MainContent } from '../styles/dashboardStyles';
 import ServicesGrid from '../components/ServicesGrid';
 import { useAuth } from 'context/AuthContext';
 
-// Páginas de Users
-import ListUsersPage from 'features/Users/pages/ListUsersPage';
-import AddUserPage from 'features/Users/pages/AddUserPage';
-
 // Páginas de Companies
 import ListCompaniesPage from 'features/Companies/pages/ListCompaniesPage';
 import AddCompanyPage from 'features/Companies/pages/AddCompanyPage';
+
+// Página unificada de gerenciamento de usuários
+import UserManagementPage from 'features/Users/pages/UserManagementPage';
 
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -27,27 +26,20 @@ const DashboardPage: React.FC = () => {
 
   return (
     <DashboardContainer>
-      {/* Barra lateral */}
       <Sidebar collapsed={sidebarCollapsed} />
-
-      {/* Conteúdo principal */}
       <MainContent>
-        {/* Header */}
         <Header onToggleSidebar={handleToggleSidebar} onLogout={handleLogout} />
-
-        {/* Rotas internas do dashboard */}
         <div style={{ padding: '1.5rem' }}>
           <Routes>
             {/* Rota padrão: exibe os cards (ServicesGrid) */}
             <Route index element={<ServicesGrid />} />
-            
+
             {/* EMPRESAS */}
             <Route path="empresas" element={<ListCompaniesPage />} />
             <Route path="empresas/new" element={<AddCompanyPage />} />
 
             {/* USUÁRIOS */}
-            <Route path="usuarios" element={<ListUsersPage />} />
-            <Route path="usuarios/new" element={<AddUserPage />} />
+            <Route path="usuarios/*" element={<UserManagementPage />} />
 
             {/* Fallback */}
             <Route path="*" element={<ServicesGrid />} />
