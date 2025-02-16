@@ -1,19 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'store';
-import { fetchAllUsers, removeUserThunk } from 'store/slices/usersSlice';
-import { ListContainer, ListTitle, UserList, UserCard } from '../styles/ListUsersStyles';
+import { fetchAllUsers } from 'store/slices/usersSlice';
+import { ListContainer, ListTitle, UserList, UserCard, EditButton } from '../styles/ListUsersStyles';
+import { useNavigate } from 'react-router-dom';
+import { FaEdit } from 'react-icons/fa';
 
 const ListUsersPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { list, loading, error } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
     dispatch(fetchAllUsers());
   }, [dispatch]);
 
-  const handleRemove = (id: string) => {
-    dispatch(removeUserThunk(id));
+  const handleEdit = (id: string) => {
+    navigate(`/dashboard/usuarios/${id}/edit`);
   };
 
   return (
@@ -31,7 +34,9 @@ const ListUsersPage: React.FC = () => {
                 <UserCard key={user.id}>
                   <h2>{user.name}</h2>
                   <p>{user.email}</p>
-                  <button onClick={() => handleRemove(user.id)}>Remover</button>
+                  <EditButton onClick={() => handleEdit(user.id)} title="Editar">
+                    <FaEdit size={18} />
+                  </EditButton>
                 </UserCard>
               ))}
             </UserList>

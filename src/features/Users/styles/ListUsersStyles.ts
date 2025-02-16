@@ -24,13 +24,14 @@ export const UserList = styled.ul`
 export const UserCard = styled.li`
   background: #fff;
   border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   }
 
   h2 {
@@ -43,18 +44,19 @@ export const UserCard = styled.li`
     font-size: 1rem;
     color: #34495e;
   }
+`;
 
-  button {
-    background: #e74c3c;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
+export const EditButton = styled.button`
+  background: none;
+  border: none;
+  color: #00509e;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  transition: color 0.3s;
 
-    &:hover {
-      background: #c0392b;
-    }
+  &:hover {
+    color: #003a75;
   }
 `;
