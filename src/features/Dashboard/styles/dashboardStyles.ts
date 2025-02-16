@@ -7,7 +7,7 @@ export const DashboardContainer = styled.div`
   background: #f4f7fa;
 `;
 
- export const Logo = styled.img`
+export const Logo = styled.img`
   width: 100px;
   height: auto;
 `;
@@ -36,13 +36,12 @@ export const MainContent = styled.div`
 
 export const HeaderContainer = styled.header`
   background-color: #f8f9fa;
-  /* fixando a altura do header em 60px */
   height: 60px;
-  padding: 0 2rem; /* Removi padding vertical pra não somar altura extra */
+  padding: 0 2rem;
   border-bottom: 1px solid #ced4da;
 
   display: flex;
-  align-items: center;   /* centraliza verticalmente */
+  align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
 `;
@@ -131,15 +130,16 @@ export const MoreButton = styled.button`
   }
 `;
 
+/* SIDEBAR */
 export const SidebarContainer = styled.div<{ collapsed: boolean }>`
-  background-color: #f0f2f5;
+  background-color:rgb(43, 52, 62);
   min-height: 100vh;
   width: ${({ collapsed }) => (collapsed ? '80px' : '250px')};
   transition: width 0.3s;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
 `;
 
 export const MenuWrapper = styled.div`
@@ -151,11 +151,16 @@ export const MenuItem = styled.div<{ collapsed: boolean }>`
   align-items: center;
   padding: 1rem;
   cursor: pointer;
-  color: #333;
+  color: #ecf0f1;
   transition: background-color 0.2s;
 
+  svg {
+    color: #ecf0f1;
+    transition: color 0.2s;
+  }
+
   &:hover {
-    background-color: #e2e6ea;
+    background-color: #34495e;
   }
 
   span {
@@ -167,6 +172,7 @@ export const MenuItem = styled.div<{ collapsed: boolean }>`
 export const FooterLogo = styled.div<{ collapsed: boolean }>`
   text-align: center;
   padding: 1rem;
+  border-top: 1px solid #34495e;
 
   img {
     max-width: ${({ collapsed }) => (collapsed ? '50px' : '150px')};

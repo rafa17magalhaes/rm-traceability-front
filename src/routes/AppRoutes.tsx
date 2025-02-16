@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginPage } from 'features/Login';
 import { DashboardPage } from 'features/Dashboard';
-import NotFound from 'features/NotFound';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -15,7 +14,7 @@ const AppRoutes: React.FC = () => {
         {/* Rotas do Dashboard (subrotas definidas dentro de DashboardPage) */}
         <Route path="/dashboard/*" element={<DashboardPage />} />
 
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<h1 style={{ textAlign: 'center' }}>Página não encontrada</h1>} />
       </Routes>
     </Router>
   );
