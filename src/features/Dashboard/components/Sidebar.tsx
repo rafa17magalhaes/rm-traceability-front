@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBuilding, FaUserFriends, FaCog } from 'react-icons/fa';
+import { FaBuilding, FaUserFriends, FaCog, FaBoxes } from 'react-icons/fa';
 import { FooterLogo, MenuItem, MenuWrapper, SidebarContainer } from '../styles/dashboardStyles';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,12 +23,16 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           <span>Usuários</span>
         </MenuItem>
 
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/recursos')}>
+          <FaBoxes size={20} />
+          <span>Produtos</span>
+        </MenuItem>
+
         <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/configuracoes')}>
           <FaCog size={20} />
           <span>Configurações</span>
         </MenuItem>
       </MenuWrapper>
-
       <FooterLogo collapsed={collapsed}>
         <img src="/RM-traceability-logo.png" alt="Logo" />
       </FooterLogo>

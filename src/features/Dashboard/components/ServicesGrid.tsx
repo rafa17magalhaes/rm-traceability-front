@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContentGrid, CardContainer, IconWrapper, MoreButton } from '../styles/dashboardStyles';
-import { FaBoxOpen, FaExchangeAlt, FaHistory, FaUserFriends } from 'react-icons/fa';
+import { FaBoxes, FaBoxOpen, FaExchangeAlt, FaHistory, FaUserFriends } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const ServicesGrid: React.FC = () => {
@@ -30,6 +30,12 @@ const ServicesGrid: React.FC = () => {
       title: 'Usuários',
       description: 'Gerencie contas e permissões...',
       route: '/dashboard/usuarios',
+    },
+    {
+      icon: <FaBoxes size={32} />,
+      title: 'Produtos',
+      description: 'Gerencie produtos da empresa...',
+      route: '/dashboard/recursos',
     },
   ];
 

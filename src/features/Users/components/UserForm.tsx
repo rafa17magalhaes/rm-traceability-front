@@ -113,7 +113,7 @@ const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit, initialDa
                 name="password" 
                 value={user.password} 
                 onChange={handleChange} 
-                required={!isEdit}  // Se edição, pode ser opcional
+                required={!isEdit}
               />
               {validationErrors.userPassword && <ErrorText>{validationErrors.userPassword}</ErrorText>}
             </Label>
@@ -132,7 +132,6 @@ const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit, initialDa
         </Section>
         {error && <ErrorText>{error}</ErrorText>}
 
-        {/* Botoes lado a lado */}
         <ButtonRow>
           <PrimaryButton type="submit" disabled={loading}>
             {loading ? <LoadingSpinner /> : (isEdit ? 'Atualizar' : 'Salvar')}

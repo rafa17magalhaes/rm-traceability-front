@@ -10,8 +10,11 @@ import { useAuth } from 'context/AuthContext';
 import ListCompaniesPage from 'features/Companies/pages/ListCompaniesPage';
 import AddCompanyPage from 'features/Companies/pages/AddCompanyPage';
 
-// Página unificada de gerenciamento de usuários
+// Página gerenciamento de usuários
 import UserManagementPage from 'features/Users/pages/UserManagementPage';
+
+// Página Produtos
+import ResourceManagementPage from 'features/Resources/pages/ResourceManagementPage';
 
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -40,6 +43,9 @@ const DashboardPage: React.FC = () => {
 
             {/* USUÁRIOS */}
             <Route path="usuarios/*" element={<UserManagementPage />} />
+
+            {/* PRODUTOS */}
+            <Route path="recursos" element={<ResourceManagementPage />} />
 
             {/* Fallback */}
             <Route path="*" element={<ServicesGrid />} />
