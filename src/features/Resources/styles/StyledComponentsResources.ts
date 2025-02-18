@@ -63,6 +63,35 @@ export const CheckboxField = styled.input`
   margin-right: 0.5rem;
 `;
 
+export const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+export const FileInputLabel = styled.label`
+  background: #00509e;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background-color: #003a75;
+  }
+`;
+
+export const PreviewImage = styled.img`
+  max-width: 200px;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+`;
+
 export const ButtonRow = styled.div`
   display: flex;
   gap: 1rem;

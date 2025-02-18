@@ -11,16 +11,9 @@ import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';
 import { ResourceDTO } from 'types/resources/ResourceDTO';
 
-import {
-  ListContainer,
-  ListTitle,
-  ResourceList,
-  ResourceCard,
-  AddResourceContainer,
-  AddButton,
-} from '../styles/ResourceListStyles';
-
 import { FaPlus, FaEdit } from 'react-icons/fa';
+import { ListContainer, ListTitle, AddResourceContainer, AddButton, ResourceList, ResourceCard } from '../styles/ResourceListStyles';
+
 
 const ResourceManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

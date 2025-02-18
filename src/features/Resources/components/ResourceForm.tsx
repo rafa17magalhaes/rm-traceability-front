@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {
-  FormContainer,
-  FormTitle,
-  FormRow,
-  Label,
-  InputField,
-  CheckboxField,
-  ButtonRow,
-  PrimaryButton,
-  SecondaryButton,
-  ErrorText,
-  FieldSet,
-  Legend,
-} from '../styles/StyledComponentsResources';
 import { validateResourceForm, ResourceFormValues } from '../validate/resourceFormValidation';
 import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';
+import { FormContainer, FormTitle, FieldSet, Legend, FormRow, Label, InputField, ErrorText, CheckboxField, PreviewImage, HiddenFileInput, FileInputLabel, ButtonRow, PrimaryButton, SecondaryButton } from '../styles/StyledComponentsResources';
 
 type ResourceFormProps = {
   loading: boolean;
   error: string | null;
-  initialData?: (CreateResourceDTO & { id?: string }) | null;
+  initialData?: (CreateResourceDTO & { id?: string; imageUrl?: string }) | null;
   onSubmit: (data: CreateResourceDTO | UpdateResourceDTO) => void;
   onCancel?: () => void;
 };
@@ -39,7 +26,7 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
     description: '',
     active: true,
   });
-
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
@@ -59,6 +46,12 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
       [name]: type === 'checkbox' ? checked : value,
     }));
   };
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +60,7 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
     setFormErrors(errors);
     if (Object.keys(errors).length > 0) return;
 
-    onSubmit(form);
+    onSubmit({ ...form, file: selectedFile || undefined });
   };
 
   return (
@@ -112,6 +105,42 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
               />
               Ativo
             </Label>
+          </FormRow>
+
+          {isEdit && initialData?.imageUrl && (
+          <FormRow>
+            <Label>Imagem Atual</Label>
+              <img
+              src={initialData.imageUrl}
+              alt="Imagem do produto"
+              style={{ width: '150px', borderRadius: '8px', marginBottom: '1rem' }}
+          />
+          </FormRow>
+          )}
+
+          <FormRow>
+            <Label>Imagem (opcional)</Label>
+
+            <HiddenFileInput
+              id="file"
+              type="file"
+              name="file"
+              onChange={handleFileChange}
+            />
+
+            <FileInputLabel htmlFor="file">
+              Selecionar arquivo
+            </FileInputLabel>
+
+            {selectedFile && (
+              <div style={{ marginTop: '1rem' }}>
+                <p style={{ marginBottom: '0.5rem' }}>Pré-visualização:</p>
+                <PreviewImage
+                  src={URL.createObjectURL(selectedFile)}
+                  alt="Pré-visualização"
+                />
+              </div>
+            )}
           </FormRow>
         </FieldSet>
 

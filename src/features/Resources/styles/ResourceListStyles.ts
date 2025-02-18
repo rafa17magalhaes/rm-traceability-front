@@ -27,9 +27,9 @@ export const AddButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
-  display: inline-flex;   /* permite alinhar ícone e texto lado a lado */
-  align-items: center;    /* centraliza verticalmente */
-  gap: 0.5rem;            /* espaço entre ícone e texto */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 
   &:hover {
     background-color: #003a75;
