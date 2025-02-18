@@ -121,3 +121,11 @@ export const ToggleContainer = styled.div`
   align-items: center;
   margin-top: 0.5rem;
 `;
+
+export const Thumbnail = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  object-fit: cover;
+`;

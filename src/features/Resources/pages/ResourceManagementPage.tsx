@@ -22,6 +22,7 @@ import {
   ToggleSwitch,
   ToggleThumb,
   ToggleContainer,
+  Thumbnail,
 } from '../styles/ResourceListStyles';
 
 const ResourceManagementPage: React.FC = () => {
@@ -99,6 +100,12 @@ const ResourceManagementPage: React.FC = () => {
             <ResourceList>
               {list.map((res) => (
                 <ResourceCard key={res.id}>
+                  {res.imageUrl && (
+                    <Thumbnail
+                      src={res.imageUrl}
+                      alt={`Imagem do produto ${res.name}`}
+                    />
+                  )}
                   <h2>{res.name}</h2>
                   <p>{res.description}</p>
                   
