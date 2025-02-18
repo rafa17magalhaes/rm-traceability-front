@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface ToggleSwitchProps {
+  active: boolean;
+}
+
 export const ListContainer = styled.div`
   padding: 2rem;
   background: #f4f7f9;
@@ -57,7 +61,7 @@ export const ResourceCard = styled.li`
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 
     .edit-icon {
-      opacity: 1; /* Mostra o ícone com destaque ao pairar */
+      opacity: 1;
     }
   }
 
@@ -73,7 +77,6 @@ export const ResourceCard = styled.li`
     margin-bottom: 0.4rem;
   }
 
-  /* Ícone de edição no canto superior direito */
   .edit-icon {
     position: absolute;
     top: 0.8rem;
@@ -88,4 +91,33 @@ export const ResourceCard = styled.li`
       color: #003a75;
     }
   }
+`;
+
+export const ToggleSwitch = styled.button<ToggleSwitchProps>`
+  position: relative;
+  width: 40px;
+  height: 18px;
+  border-radius: 9px;
+  background-color: ${(props) => (props.active ? '#00cc00' : '#cc0000')};
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  transition: background-color 0.3s;
+  outline: none;
+`;
+
+export const ToggleThumb = styled.div<ToggleSwitchProps>`
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #fff;
+  transition: transform 0.3s;
+  transform: ${(props) => (props.active ? 'translateX(22px)' : 'translateX(2px)')};
+`;
+
+export const ToggleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
 `;

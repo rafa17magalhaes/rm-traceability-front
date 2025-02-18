@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'store';
 import {
   fetchAllResourcesThunk,
@@ -10,10 +10,19 @@ import ResourceForm from '../components/ResourceForm';
 import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';
 import { ResourceDTO } from 'types/resources/ResourceDTO';
-
 import { FaPlus, FaEdit } from 'react-icons/fa';
-import { ListContainer, ListTitle, AddResourceContainer, AddButton, ResourceList, ResourceCard } from '../styles/ResourceListStyles';
 
+import {
+  ListContainer,
+  ListTitle,
+  AddResourceContainer,
+  AddButton,
+  ResourceList,
+  ResourceCard,
+  ToggleSwitch,
+  ToggleThumb,
+  ToggleContainer,
+} from '../styles/ResourceListStyles';
 
 const ResourceManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -52,6 +61,13 @@ const ResourceManagementPage: React.FC = () => {
     setSelectedResource(null);
   };
 
+  const handleToggleActive = async (resource: ResourceDTO) => {
+    const newActive = !resource.active;
+    const updatedData: UpdateResourceDTO = { active: newActive };
+    await dispatch(updateResourceThunk({ id: resource.id, dto: updatedData }));
+    dispatch(fetchAllResourcesThunk());
+  };
+
   return (
     <ListContainer>
       <ListTitle>Gerenciamento de Produtos</ListTitle>
@@ -85,8 +101,17 @@ const ResourceManagementPage: React.FC = () => {
                 <ResourceCard key={res.id}>
                   <h2>{res.name}</h2>
                   <p>{res.description}</p>
-                  <p>Ativo: {res.active ? 'Sim' : 'Não'}</p>
-
+                  
+                  <ToggleContainer>
+                    <ToggleSwitch
+                      active={res.active}
+                      onClick={() => handleToggleActive(res)}
+                      title={res.active ? 'Desativar produto' : 'Ativar produto'}
+                    >
+                      <ToggleThumb active={res.active} />
+                    </ToggleSwitch>
+                  </ToggleContainer>
+                  
                   <FaEdit
                     className="edit-icon"
                     onClick={() => handleEdit(res)}

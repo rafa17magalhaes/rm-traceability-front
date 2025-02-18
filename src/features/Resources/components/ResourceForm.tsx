@@ -2,7 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { validateResourceForm, ResourceFormValues } from '../validate/resourceFormValidation';
 import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';
-import { FormContainer, FormTitle, FieldSet, Legend, FormRow, Label, InputField, ErrorText, CheckboxField, PreviewImage, HiddenFileInput, FileInputLabel, ButtonRow, PrimaryButton, SecondaryButton } from '../styles/StyledComponentsResources';
+import {
+  FormContainer,
+  FormTitle,
+  FieldSet,
+  Legend,
+  FormRow,
+  Label,
+  InputField,
+  ErrorText,
+  PreviewImage,
+  HiddenFileInput,
+  FileInputLabel,
+  ButtonRow,
+  PrimaryButton,
+  SecondaryButton
+} from '../styles/StyledComponentsResources';
 
 type ResourceFormProps = {
   loading: boolean;
@@ -25,6 +40,7 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
     name: '',
     description: '',
     active: true,
+    ...initialData,
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
@@ -34,19 +50,18 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
       setForm({
         name: initialData.name || '',
         description: initialData.description || '',
-        active: initialData.active ?? true,
       });
     }
   }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: value,
     }));
   };
-  
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedFile(e.target.files[0]);
@@ -95,27 +110,15 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
             {formErrors.description && <ErrorText>{formErrors.description}</ErrorText>}
           </FormRow>
 
-          <FormRow>
-            <Label>
-              <CheckboxField
-                type="checkbox"
-                name="active"
-                checked={form.active}
-                onChange={handleChange}
-              />
-              Ativo
-            </Label>
-          </FormRow>
-
           {isEdit && initialData?.imageUrl && (
-          <FormRow>
-            <Label>Imagem Atual</Label>
+            <FormRow>
+              <Label>Imagem Atual</Label>
               <img
-              src={initialData.imageUrl}
-              alt="Imagem do produto"
-              style={{ width: '150px', borderRadius: '8px', marginBottom: '1rem' }}
-          />
-          </FormRow>
+                src={initialData.imageUrl}
+                alt="Imagem do produto"
+                style={{ width: '150px', borderRadius: '8px', marginBottom: '1rem' }}
+              />
+            </FormRow>
           )}
 
           <FormRow>
@@ -129,7 +132,7 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
             />
 
             <FileInputLabel htmlFor="file">
-              Selecionar arquivo
+              Selecionar imagem do produto
             </FileInputLabel>
 
             {selectedFile && (

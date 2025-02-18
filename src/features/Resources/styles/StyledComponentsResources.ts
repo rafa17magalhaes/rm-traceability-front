@@ -71,18 +71,27 @@ export const FileInputLabel = styled.label`
   background: #00509e;
   color: #fff;
   border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 0.5rem 1.8rem;  /* Menor altura/largura */
+  border-radius: 4px;      /* Bordas levemente arredondadas */
+  font-size: 0.95rem;      /* Texto menor */
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 0.3rem;
+  margin: 0.5rem auto;     /* Centraliza horizontalmente */
+  transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    background-color: #003a75;
+    background: #003a75;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
   }
 `;
 
