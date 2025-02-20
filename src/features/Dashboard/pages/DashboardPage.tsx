@@ -16,6 +16,11 @@ import UserManagementPage from 'features/Users/pages/UserManagementPage';
 // Página Produtos
 import ResourceManagementPage from 'features/Resources/pages/ResourceManagementPage';
 
+// Página de Códigos
+import CodesRoutes from 'features/Codes/pages/CodesRoutes';
+import CodesListPage from 'features/Codes/pages/CodesListPage';
+import BulkGenerateCodesPage from 'features/Codes/pages/BulkGenerateCodesPage';
+
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { logout } = useAuth();
@@ -46,6 +51,13 @@ const DashboardPage: React.FC = () => {
 
             {/* PRODUTOS */}
             <Route path="recursos" element={<ResourceManagementPage />} />
+
+            {/* CODIGO */}
+            <Route path="codigos/*" element={<CodesRoutes />}>
+              <Route index element={<CodesListPage />} />
+              <Route path="list" element={<CodesListPage />} />
+              <Route path="bulk-generate" element={<BulkGenerateCodesPage />} />
+            </Route>
 
             {/* Fallback */}
             <Route path="*" element={<ServicesGrid />} />
