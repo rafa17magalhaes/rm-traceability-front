@@ -3,6 +3,8 @@ import companiesReducer from './slices/companiesSlice';
 import usersReducer from './slices/usersSlice';
 import resourcesReducer from './slices/resourcesSlice';
 import codesReducer from './slices/codesSlice';
+import statusesReducer from './slices/statusesSlice';
+import eventsReducer from './slices/eventsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     users: usersReducer,
     resources: resourcesReducer,
     codes: codesReducer,
+    statuses: statusesReducer,
+    events: eventsReducer,
   },
 });
 
