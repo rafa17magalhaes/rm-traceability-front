@@ -20,7 +20,6 @@ const CodesListPage: React.FC = () => {
   const [selectedQRCode, setSelectedQRCode] = useState<string | null>(null);
 
   useEffect(() => {
-    // Ao montar, busca todos os códigos
     dispatch(fetchAllCodesThunk());
   }, [dispatch]);
 
@@ -52,12 +51,13 @@ const CodesListPage: React.FC = () => {
                 )}
               </CodesTd>
               <CodesTd>
-                {code.statusId ? (
-                  code.statusId
+                {code.status && code.status.name ? (
+                  code.status.name
                 ) : (
                   <NoDataText>Status não informado</NoDataText>
                 )}
               </CodesTd>
+
               <CodesTd>
                 {code.qrCodeUrl ? (
                   <img
