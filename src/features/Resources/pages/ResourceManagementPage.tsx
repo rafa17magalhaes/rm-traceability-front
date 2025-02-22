@@ -11,19 +11,14 @@ import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';
 import { ResourceDTO } from 'types/resources/ResourceDTO';
 import { FaPlus, FaEdit } from 'react-icons/fa';
+import styled from 'styled-components';
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 
-import {
-  ListContainer,
-  ListTitle,
-  AddResourceContainer,
-  AddButton,
-  ResourceList,
-  ResourceCard,
-  ToggleSwitch,
-  ToggleThumb,
-  ToggleContainer,
-  Thumbnail,
-} from '../styles/ResourceListStyles';
+const PageContainer = styled.div`
+  padding: 2rem;
+  background: #f4f7f9;
+  min-height: 100vh;
+`;
 
 const ResourceManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -69,17 +64,79 @@ const ResourceManagementPage: React.FC = () => {
     dispatch(fetchAllResourcesThunk());
   };
 
+  const columns: ColumnDefinition<ResourceDTO>[] = [
+    {
+      header: 'Imagem',
+      render: (resource) =>
+        resource.imageUrl ? (
+          <img
+            src={resource.imageUrl}
+            alt={`Imagem do produto ${resource.name}`}
+            style={{ width: 80, height: 80, borderRadius: '8px', objectFit: 'cover' }}
+          />
+        ) : (
+          <span>Nenhuma imagem</span>
+        ),
+    },
+    {
+      header: 'Nome',
+      render: (resource) => resource.name,
+    },
+    {
+      header: 'Descrição',
+      render: (resource) => resource.description,
+    },
+    {
+      header: 'Ativo',
+      render: (resource) => (
+        <button
+          style={{
+            background: resource.active ? '#00cc00' : '#cc0000',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '4px 8px',
+            cursor: 'pointer',
+          }}
+          onClick={() => handleToggleActive(resource)}
+        >
+          {resource.active ? 'Sim' : 'Não'}
+        </button>
+      ),
+    },
+    {
+      header: 'Ações',
+      render: (resource) => (
+        <FaEdit style={{ cursor: 'pointer' }} onClick={() => handleEdit(resource)} />
+      ),
+    },
+  ];
+
   return (
-    <ListContainer>
-      <ListTitle>Gerenciamento de Produtos</ListTitle>
+    <PageContainer>
+      <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Gerenciamento de Produtos</h1>
 
       {!showForm && (
-        <AddResourceContainer>
-          <AddButton onClick={handleAddNew}>
+        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          <button
+            onClick={handleAddNew}
+            style={{
+              background: '#00509e',
+              color: '#fff',
+              padding: '0.7rem 1.5rem',
+              borderRadius: '6px',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '1rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+          >
             <FaPlus />
             Adicionar novo produto
-          </AddButton>
-        </AddResourceContainer>
+          </button>
+        </div>
       )}
 
       {showForm ? (
@@ -91,45 +148,15 @@ const ResourceManagementPage: React.FC = () => {
           onCancel={handleCancel}
         />
       ) : (
-        <>
-          {loading && <p style={{ textAlign: 'center' }}>Carregando produtos...</p>}
-          {error && <p style={{ color: 'red', textAlign: 'center' }}>Erro: {error}</p>}
-          {!loading && list.length === 0 ? (
-            <p style={{ textAlign: 'center' }}>Nenhum produto encontrado.</p>
-          ) : (
-            <ResourceList>
-              {list.map((res) => (
-                <ResourceCard key={res.id}>
-                  {res.imageUrl && (
-                    <Thumbnail
-                      src={res.imageUrl}
-                      alt={`Imagem do produto ${res.name}`}
-                    />
-                  )}
-                  <h2>{res.name}</h2>
-                  <p>{res.description}</p>
-                  
-                  <ToggleContainer>
-                    <ToggleSwitch
-                      active={res.active}
-                      onClick={() => handleToggleActive(res)}
-                      title={res.active ? 'Desativar produto' : 'Ativar produto'}
-                    >
-                      <ToggleThumb active={res.active} />
-                    </ToggleSwitch>
-                  </ToggleContainer>
-                  
-                  <FaEdit
-                    className="edit-icon"
-                    onClick={() => handleEdit(res)}
-                  />
-                </ResourceCard>
-              ))}
-            </ResourceList>
-          )}
-        </>
+        <GenericList
+          title="Lista de Produtos"
+          data={list}
+          columns={columns}
+          loading={loading}
+          error={error || undefined}
+        />
       )}
-    </ListContainer>
+    </PageContainer>
   );
 };
 
