@@ -15,9 +15,9 @@ import {
   HiddenFileInput,
   FileInputLabel,
   ButtonRow,
-  PrimaryButton,
   SecondaryButton
 } from '../styles/StyledComponentsResources';
+import LoadingButton from 'components/Button/LoadingButton';
 
 type ResourceFormProps = {
   loading: boolean;
@@ -50,6 +50,7 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
       setForm({
         name: initialData.name || '',
         description: initialData.description || '',
+        active: initialData.active ?? true,
       });
     }
   }, [initialData]);
@@ -68,9 +69,7 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const doSubmit = () => {
     const errors = validateResourceForm(form);
     setFormErrors(errors);
     if (Object.keys(errors).length > 0) return;
@@ -82,7 +81,7 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
     <FormContainer>
       <FormTitle>{isEdit ? 'Editar Produto' : 'Novo Produto'}</FormTitle>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <FieldSet>
           <Legend>Informações Gerais</Legend>
 
@@ -123,14 +122,12 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
 
           <FormRow>
             <Label>Imagem (opcional)</Label>
-
             <HiddenFileInput
               id="file"
               type="file"
               name="file"
               onChange={handleFileChange}
             />
-
             <FileInputLabel htmlFor="file">
               Selecionar imagem do produto
             </FileInputLabel>
@@ -150,9 +147,15 @@ const ResourceForm: React.FC<ResourceFormProps> = ({
         {error && <ErrorText>{error}</ErrorText>}
 
         <ButtonRow>
-          <PrimaryButton type="submit" disabled={loading}>
-            {loading ? 'Salvando...' : isEdit ? 'Atualizar' : 'Salvar'}
-          </PrimaryButton>
+          <LoadingButton
+            loadingDelay={1500}
+            onClick={doSubmit}
+            disabled={loading}
+            style={{ marginRight: '1rem' }}
+          >
+            {isEdit ? 'Atualizar' : 'Cadastrar'}
+          </LoadingButton>
+
           {onCancel && (
             <SecondaryButton type="button" onClick={onCancel} disabled={loading}>
               Cancelar

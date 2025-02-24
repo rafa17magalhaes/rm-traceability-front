@@ -10,11 +10,10 @@ import {
   InputField, 
   ErrorText, 
   ButtonRow,
-  PrimaryButton,
-  SecondaryButton,
-  LoadingSpinner
+  SecondaryButton
 } from '../styles/StyledComponentsUsers';
 import { ValidationErrors, validateUserForm } from '../validade/userFormValidation';
+import LoadingButton from 'components/Button/LoadingButton';
 
 interface UserFormProps {
   loading: boolean;
@@ -25,7 +24,6 @@ interface UserFormProps {
 }
 
 const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit, initialData, onCancel }) => {
-  // Se for edição, senha pode ser opcional; senão, obrigatória
   const [user, setUser] = useState<CreateUserDTO>({
     name: '',
     email: '',
@@ -42,23 +40,20 @@ const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit, initialDa
 
   useEffect(() => {
     if (initialData) {
-      setUser({
-        ...user,
+      setUser((prev) => ({
+        ...prev,
         ...initialData,
-      });
+      }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const doSubmit = () => {
     const errors = validateUserForm({ user, confirmPassword });
     setValidationErrors(errors);
-  
     if (Object.keys(errors).length > 0) return;
     onSubmit(user);
   };
@@ -69,7 +64,7 @@ const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit, initialDa
         <FaUser style={{ marginRight: '0.5rem' }} />
         {isEdit ? 'Atualizar Usuário' : 'Cadastro de Usuário'}
       </FormTitle>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <Section>
           <FormRow>
             <Label>
@@ -130,12 +125,19 @@ const UserForm: React.FC<UserFormProps> = ({ loading, error, onSubmit, initialDa
             </Label>
           </FormRow>
         </Section>
+
         {error && <ErrorText>{error}</ErrorText>}
 
         <ButtonRow>
-          <PrimaryButton type="submit" disabled={loading}>
-            {loading ? <LoadingSpinner /> : (isEdit ? 'Atualizar' : 'Salvar')}
-          </PrimaryButton>
+          <LoadingButton
+            onClick={doSubmit}
+            loadingDelay={1500} // 1.5s de delay
+            disabled={loading}
+            style={{ marginRight: '1rem' }}
+          >
+            {isEdit ? 'Atualizar' : 'Salvar'}
+          </LoadingButton>
+
           {onCancel && (
             <SecondaryButton 
               type="button" 
