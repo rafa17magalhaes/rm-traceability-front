@@ -6,6 +6,7 @@ import { ListContainer, ListTitle, UserList, UserCard, EditButton, AddButton } f
 import { FaEdit, FaPlus } from 'react-icons/fa';
 import UserForm from '../components/UserForm';
 import { CreateUserDTO } from 'types/users';
+import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
 
 const UserManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,6 +14,7 @@ const UserManagementPage: React.FC = () => {
 
   const [showForm, setShowForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState<(Partial<CreateUserDTO> & { id: string }) | null>(null);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
     dispatch(fetchAllUsers());
@@ -30,16 +32,14 @@ const UserManagementPage: React.FC = () => {
 
   const handleFormSubmit = async (userData: CreateUserDTO) => {
     if (selectedUser && selectedUser.id) {
-      // Atualiza o usuário existente
       await dispatch(updateUserThunk({ id: selectedUser.id, dto: userData }));
     } else {
-      // Cria um novo usuário
       await dispatch(createUserThunk(userData));
     }
-    // Reseta o estado para voltar à listagem
     setSelectedUser(null);
     setShowForm(false);
     dispatch(fetchAllUsers());
+    setShowCelebration(true);
   };
 
   const handleCancel = () => {
@@ -50,6 +50,13 @@ const UserManagementPage: React.FC = () => {
   return (
     <ListContainer>
       <ListTitle>Gerenciamento de Usuários</ListTitle>
+
+      {showCelebration && (
+        <CelebrationMessage
+          message="Parabéns! Sua operação foi concluída com sucesso."
+          duration={5000}
+        />
+      )}
 
       {!showForm && (
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>

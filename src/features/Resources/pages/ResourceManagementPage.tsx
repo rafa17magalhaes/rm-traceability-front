@@ -13,6 +13,7 @@ import { ResourceDTO } from 'types/resources/ResourceDTO';
 import { FaPlus, FaEdit } from 'react-icons/fa';
 import styled from 'styled-components';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
+import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
 
 const PageContainer = styled.div`
   padding: 2rem;
@@ -26,6 +27,7 @@ const ResourceManagementPage: React.FC = () => {
 
   const [showForm, setShowForm] = useState(false);
   const [selectedResource, setSelectedResource] = useState<ResourceDTO | null>(null);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
     dispatch(fetchAllResourcesThunk());
@@ -50,6 +52,7 @@ const ResourceManagementPage: React.FC = () => {
     setShowForm(false);
     setSelectedResource(null);
     dispatch(fetchAllResourcesThunk());
+    setShowCelebration(true);
   };
 
   const handleCancel = () => {
@@ -115,6 +118,13 @@ const ResourceManagementPage: React.FC = () => {
   return (
     <PageContainer>
       <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Gerenciamento de Produtos</h1>
+
+      {showCelebration && (
+        <CelebrationMessage
+          message="Parabéns! Sua operação foi concluída com sucesso."
+          duration={5000}
+        />
+      )}
 
       {!showForm && (
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
