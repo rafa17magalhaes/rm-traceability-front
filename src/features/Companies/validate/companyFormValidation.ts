@@ -1,5 +1,5 @@
-import { BaseCompanyDTO} from 'types/companies';
-import { CreateUserDTO } from 'types/users';
+import { BaseCompanyDTO } from "types/companies";
+import { CreateUserDTO } from "types/users";
 
 export interface CompanyFormValues {
   company: BaseCompanyDTO;
@@ -11,11 +11,10 @@ export interface ValidationErrors {
   [field: string]: string;
 }
 
-export const validateCompanyForm = ({
-  company,
-  user,
-  confirmPassword,
-}: CompanyFormValues): ValidationErrors => {
+export const validateCompanyForm = (
+  { company, user, confirmPassword }: CompanyFormValues,
+  editing: boolean = false
+): ValidationErrors => {
   const errors: ValidationErrors = {};
 
   // Validações para a empresa
@@ -55,32 +54,31 @@ export const validateCompanyForm = ({
     errors.state = 'O estado é obrigatório.';
   }
 
-  // Validações para o usuário
-  if (!user.name.trim()) {
-    errors.userName = 'O nome do usuário é obrigatório.';
-  }
-  if (!user.email.trim()) {
-    errors.userEmail = 'O e-mail é obrigatório.';
-  } else {
-    // Expressão regular simples para validar e-mail
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(user.email)) {
-      errors.userEmail = 'O e-mail informado não é válido.';
+  if (!editing) {
+    if (!user.name?.trim()) {
+      errors.userName = 'O nome do usuário é obrigatório.';
+    }
+    if (!user.email?.trim()) {
+      errors.userEmail = 'O e-mail é obrigatório.';
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(user.email)) {
+        errors.userEmail = 'O e-mail informado não é válido.';
+      }
+    }
+    if (!user.phone?.trim()) {
+      errors.userPhone = 'O telefone é obrigatório.';
+    }
+    if (!user.password) {
+      errors.userPassword = 'A senha é obrigatória.';
+    } else if (user.password.length < 6) {
+      errors.userPassword = 'A senha deve ter ao menos 6 caracteres.';
+    }
+    if (!confirmPassword) {
+      errors.confirmPassword = 'A confirmação da senha é obrigatória.';
+    } else if (user.password !== confirmPassword) {
+      errors.confirmPassword = 'As senhas não conferem.';
     }
   }
-  if (!user.phone.trim()) {
-    errors.userPhone = 'O telefone é obrigatório.';
-  }
-  if (!user.password) {
-    errors.userPassword = 'A senha é obrigatória.';
-  } else if (user.password.length < 6) {
-    errors.userPassword = 'A senha deve ter ao menos 6 caracteres.';
-  }
-  if (!confirmPassword) {
-    errors.confirmPassword = 'A confirmação da senha é obrigatória.';
-  } else if (user.password !== confirmPassword) {
-    errors.confirmPassword = 'As senhas não conferem.';
-  }
-
   return errors;
 };

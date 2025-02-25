@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BaseCompanyDTO } from 'types/companies';
 import { CreateCompanyDTO } from 'types/companies';
 import { CreateUserDTO } from 'types/users';
 import { FaBuilding, FaMapMarkerAlt, FaUserTie } from 'react-icons/fa';
-import { FormContainer, FormTitle, Section, SectionHeader, FormRow, Label, InputField, ErrorText, SubmitButton } from '../styles/companiesStyles';
+import { 
+  FormContainer, 
+  FormTitle, 
+  Section, 
+  SectionHeader, 
+  FormRow, 
+  Label, 
+  InputField, 
+  ErrorText 
+} from '../styles/companiesStyles';
 import { ValidationErrors, validateCompanyForm } from '../validate/companyFormValidation';
+import LoadingButton from 'components/Button/LoadingButton';
+import { ButtonRow } from 'features/Users/styles/StyledComponentsUsers';
 
 type CompanyFormProps = {
   loading: boolean;
   error: string | null;
   onSubmit: (company: CreateCompanyDTO, user: CreateUserDTO) => void;
+  initialData?: CreateCompanyDTO | null;
+  onCancel?: () => void;
 };
 
-const CompanyForm: React.FC<CompanyFormProps> = ({ loading, error, onSubmit }) => {
+const CompanyForm: React.FC<CompanyFormProps> = ({ loading, error, onSubmit, initialData, onCancel }) => {
   const [company, setCompany] = useState<BaseCompanyDTO>({
+    id: '', 
     code: '',
     document: '',
     name: '',
@@ -42,35 +56,55 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ loading, error, onSubmit }) =
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
 
-  // Manipulação dos inputs dos dados da empresa
+  useEffect(() => {
+    if (initialData) {
+      setCompany((prev) => ({
+        ...prev,
+        ...initialData,
+        name: initialData.name || '',
+        code: initialData.code || '',
+        document: initialData.document || '',
+        trade: initialData.trade || '',
+      }));
+    }
+  }, [initialData]);
+  
+
   const handleCompanyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCompany({ ...company, [e.target.name]: e.target.value });
   };
 
-  // Manipulação dos inputs dos dados do usuário
   const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errors = validateCompanyForm({ company, user, confirmPassword });
-    setValidationErrors(errors);
-
-    if (Object.keys(errors).length > 0) {
-      return;
+  const doSubmit = () => {
+    let errors;
+    if (initialData) {
+      errors = validateCompanyForm({ company, user, confirmPassword }, true);
+    } else {
+      errors = validateCompanyForm({ company, user, confirmPassword });
     }
-
-    onSubmit(company as CreateCompanyDTO, user);
+    setValidationErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+  
+    let companyPayload: CreateCompanyDTO;
+    if (!initialData) {
+      const { id, ...rest } = company;
+      companyPayload = rest as CreateCompanyDTO;
+    } else {
+      companyPayload = company as CreateCompanyDTO;
+    }
+    onSubmit(companyPayload, user);
   };
 
   return (
     <FormContainer>
       <FormTitle>
         <FaBuilding style={{ marginRight: '0.5rem' }} />
-        Cadastro de Empresa e Usuário
+        Cadastro de Empresa {initialData ? '(Atualização)' : 'e Usuário'}
       </FormTitle>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         {/* Seção: Dados da Empresa */}
         <Section>
           <SectionHeader>
@@ -164,55 +198,64 @@ const CompanyForm: React.FC<CompanyFormProps> = ({ loading, error, onSubmit }) =
           </FormRow>
         </Section>
 
-        {/* Seção: Usuário Administrador */}
-        <Section>
-          <SectionHeader>
-            <FaUserTie style={{ marginRight: '0.5rem' }} />
-            Usuário Administrador
-          </SectionHeader>
-          <FormRow>
-            <Label>
-              Nome
-              <InputField name="name" value={user.name} onChange={handleUserChange} />
-              {validationErrors.userName && <ErrorText>{validationErrors.userName}</ErrorText>}
-            </Label>
-            <Label>
-              E-mail
-              <InputField name="email" value={user.email} onChange={handleUserChange} />
-              {validationErrors.userEmail && <ErrorText>{validationErrors.userEmail}</ErrorText>}
-            </Label>
-          </FormRow>
-          <FormRow>
-            <Label>
-              Telefone
-              <InputField name="phone" value={user.phone} onChange={handleUserChange} />
-              {validationErrors.userPhone && <ErrorText>{validationErrors.userPhone}</ErrorText>}
-            </Label>
-          </FormRow>
-          <FormRow>
-            <Label>
-              Senha
-              <InputField type="password" name="password" value={user.password} onChange={handleUserChange} />
-              {validationErrors.userPassword && <ErrorText>{validationErrors.userPassword}</ErrorText>}
-            </Label>
-            <Label>
-              Confirmar Senha
-              <InputField
-                type="password"
-                name="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-              {validationErrors.confirmPassword && <ErrorText>{validationErrors.confirmPassword}</ErrorText>}
-            </Label>
-          </FormRow>
-        </Section>
+        {/* Seção: Usuário Administrador – renderizada somente para novo cadastro */}
+        {!initialData && (
+          <Section>
+            <SectionHeader>
+              <FaUserTie style={{ marginRight: '0.5rem' }} />
+              Usuário Administrador
+            </SectionHeader>
+            <FormRow>
+              <Label>
+                Nome
+                <InputField name="name" value={user.name} onChange={handleUserChange} />
+                {validationErrors.userName && <ErrorText>{validationErrors.userName}</ErrorText>}
+              </Label>
+              <Label>
+                E-mail
+                <InputField name="email" value={user.email} onChange={handleUserChange} />
+                {validationErrors.userEmail && <ErrorText>{validationErrors.userEmail}</ErrorText>}
+              </Label>
+            </FormRow>
+            <FormRow>
+              <Label>
+                Telefone
+                <InputField name="phone" value={user.phone} onChange={handleUserChange} />
+                {validationErrors.userPhone && <ErrorText>{validationErrors.userPhone}</ErrorText>}
+              </Label>
+            </FormRow>
+            <FormRow>
+              <Label>
+                Senha
+                <InputField type="password" name="password" value={user.password} onChange={handleUserChange} />
+                {validationErrors.userPassword && <ErrorText>{validationErrors.userPassword}</ErrorText>}
+              </Label>
+              <Label>
+                Confirmar Senha
+                <InputField
+                  type="password"
+                  name="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                {validationErrors.confirmPassword && <ErrorText>{validationErrors.confirmPassword}</ErrorText>}
+              </Label>
+            </FormRow>
+          </Section>
+        )}
 
         {error && <ErrorText>{error}</ErrorText>}
 
-        <SubmitButton type="submit" disabled={loading}>
-          {loading ? 'Salvando...' : 'Cadastrar Empresa'}
-        </SubmitButton>
+        <ButtonRow>
+        <LoadingButton
+          onClick={doSubmit}
+          loadingDelay={1500}
+          disabled={loading}
+          style={{ marginRight: '1rem' }}
+        >
+          {loading ? 'Salvando...' : initialData ? 'Atualizar' : 'Cadastrar Empresa'}
+        </LoadingButton>
+        </ButtonRow>
       </form>
     </FormContainer>
   );

@@ -134,3 +134,21 @@ export const CompanyCard = styled.li`
     color: #34495e;
   }
 `;
+
+export const AddButton = styled.button`
+  background-color: #00509e;
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: #003a75;
+  }
+`;

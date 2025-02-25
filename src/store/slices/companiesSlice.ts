@@ -1,16 +1,17 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { createCompany, findAllCompanies, removeCompany } from 'api/companies';
+import { createCompany, findAllCompanies, findOneCompany, updateCompany, removeCompany } from 'api/companies';
 import { CompanyDTO, CreateCompanyDTO } from 'types/companies';
-import { CreateUserDTO } from 'types/users';
 
 interface CompaniesState {
   list: CompanyDTO[];
+  currentCompany: CompanyDTO | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: CompaniesState = {
   list: [],
+  currentCompany: null,
   loading: false,
   error: null,
 };
@@ -27,17 +28,41 @@ export const fetchAllCompanies = createAsyncThunk(
   }
 );
 
+export const fetchCompanyById = createAsyncThunk(
+  'companies/fetchById',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const data = await findOneCompany(id);
+      return data;
+    } catch (err: any) {
+      return rejectWithValue(err.message || 'Erro ao buscar empresa');
+    }
+  }
+);
+
 export const createCompanyThunk = createAsyncThunk(
-    'companies/create',
-    async (payload: { company: CreateCompanyDTO; user: CreateUserDTO }, { rejectWithValue }) => {
-      try {
-        const response = await createCompany(payload.company); 
-        return response;
-      } catch (err: any) {
-        return rejectWithValue(err.response?.data?.message || err.message);
-      }
-    }  );
-  
+  'companies/create',
+  async (payload: { company: CreateCompanyDTO }, { rejectWithValue }) => {
+    try {
+      const response = await createCompany(payload.company);
+      return response;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+export const updateCompanyThunk = createAsyncThunk(
+  'companies/update',
+  async (payload: { id: string; dto: Partial<CompanyDTO> }, { rejectWithValue }) => {
+    try {
+      const response = await updateCompany(payload.id, payload.dto);
+      return response;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
 
 export const removeCompanyThunk = createAsyncThunk(
   'companies/remove',
@@ -54,11 +79,10 @@ export const removeCompanyThunk = createAsyncThunk(
 const companiesSlice = createSlice({
   name: 'companies',
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
+    // fetchAllCompanies
     builder
-      // fetchAll
       .addCase(fetchAllCompanies.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -71,8 +95,21 @@ const companiesSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
-      // create
+      // fetchCompanyById
+      .addCase(fetchCompanyById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCompanyById.fulfilled, (state, action: PayloadAction<CompanyDTO>) => {
+        state.loading = false;
+        state.currentCompany = action.payload;
+      })
+      .addCase(fetchCompanyById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.currentCompany = null;
+      })
+      // createCompanyThunk
       .addCase(createCompanyThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -85,8 +122,22 @@ const companiesSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
-      // remove
+      // updateCompanyThunk
+      .addCase(updateCompanyThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateCompanyThunk.fulfilled, (state, action: PayloadAction<CompanyDTO>) => {
+        state.loading = false;
+        state.list = state.list.map((company) =>
+          company.id === action.payload.id ? action.payload : company
+        );
+      })
+      .addCase(updateCompanyThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      // removeCompanyThunk
       .addCase(removeCompanyThunk.pending, (state) => {
         state.loading = true;
         state.error = null;

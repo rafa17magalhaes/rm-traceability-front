@@ -45,6 +45,7 @@ const DashboardPage: React.FC = () => {
             {/* EMPRESAS */}
             <Route path="empresas" element={<ListCompaniesPage />} />
             <Route path="empresas/new" element={<AddCompanyPage />} />
+            <Route path="empresas/edit/:id" element={<AddCompanyPage />} />
 
             {/* USUÁRIOS */}
             <Route path="usuarios/*" element={<UserManagementPage />} />

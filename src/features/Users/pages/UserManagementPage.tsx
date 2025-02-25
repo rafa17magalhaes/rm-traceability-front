@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'store';
 import { fetchAllUsers, createUserThunk, updateUserThunk } from 'store/slices/usersSlice';
-import { ListContainer, ListTitle, UserList, UserCard, EditButton, AddButton } from '../styles/ListUsersStyles';
+import { ListContainer, ListTitle, AddButton } from '../styles/ListUsersStyles';
 import { FaEdit, FaPlus } from 'react-icons/fa';
 import UserForm from '../components/UserForm';
-import { CreateUserDTO } from 'types/users';
+import { CreateUserDTO, UserDTO } from 'types/users';
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 
 const UserManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,6 +48,33 @@ const UserManagementPage: React.FC = () => {
     setShowForm(false);
   };
 
+  const columns: ColumnDefinition<UserDTO>[] = [
+    {
+      header: 'Nome',
+      render: (user) => user.name,
+    },
+    {
+      header: 'E-mail',
+      render: (user) => user.email,
+    },
+    {
+      header: 'Ações',
+      render: (user) => (
+        <button
+          onClick={() => handleEdit(user)}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+          title="Editar"
+        >
+          <FaEdit size={18} color="#00509e" />
+        </button>
+      ),
+    },
+  ];
+
   return (
     <ListContainer>
       <ListTitle>Gerenciamento de Usuários</ListTitle>
@@ -82,17 +110,13 @@ const UserManagementPage: React.FC = () => {
           {(!loading && list.length === 0) ? (
             <p style={{ textAlign: 'center' }}>Nenhum usuário encontrado.</p>
           ) : (
-            <UserList>
-              {list.map((user) => (
-                <UserCard key={user.id}>
-                  <h2>{user.name}</h2>
-                  <p>{user.email}</p>
-                  <EditButton onClick={() => handleEdit(user)} title="Editar">
-                    <FaEdit size={18} />
-                  </EditButton>
-                </UserCard>
-              ))}
-            </UserList>
+            <GenericList
+              title="Lista de Usuários"
+              data={list as UserDTO[]}
+              columns={columns}
+              loading={loading}
+              error={error || undefined}
+            />
           )}
         </>
       )}

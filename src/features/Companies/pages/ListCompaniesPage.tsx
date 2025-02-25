@@ -1,38 +1,68 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from 'store';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { useNavigate } from 'react-router-dom';
 import { fetchAllCompanies } from 'store/slices/companiesSlice';
-import { ListContainer, ListTitle, CompanyList, CompanyCard } from '../styles/companiesStyles';
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
+import { ListContainer, ListTitle, AddButton } from '../styles/companiesStyles';
+import { BaseCompanyDTO } from 'types/companies';
+import { FaPlus, FaEdit } from 'react-icons/fa';
 
 const ListCompaniesPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { list, loading, error } = useSelector((state: RootState) => state.companies);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { list, loading, error } = useAppSelector((state) => state.companies);
 
   useEffect(() => {
     dispatch(fetchAllCompanies());
   }, [dispatch]);
 
+  const columns: ColumnDefinition<BaseCompanyDTO>[] = [
+    {
+      header: 'Nome',
+      render: (company) => company.name,
+    },
+    {
+      header: 'Nome Fantasia',
+      render: (company) => company.trade,
+    },
+    {
+      header: 'Documento',
+      render: (company) => company.document,
+    },
+    {
+      header: 'Ações',
+      render: (company) => (
+        <button
+          onClick={() => navigate(`/dashboard/empresas/edit/${company.id}`)}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+          title="Editar"
+        >
+          <FaEdit size={16} color="#00509e" />
+        </button>
+      ),
+    },
+  ];
+
   return (
     <ListContainer>
       <ListTitle>Empresas Cadastradas</ListTitle>
-      {loading && <p style={{ textAlign: 'center' }}>Carregando...</p>}
-      {error && <p style={{ color: 'red', textAlign: 'center' }}>Erro: {error}</p>}
-      {!loading && !error && (
-        <>
-          {list.length === 0 ? (
-            <p style={{ textAlign: 'center' }}>Nenhuma empresa cadastrada.</p>
-          ) : (
-            <CompanyList>
-              {list.map((c) => (
-                <CompanyCard key={c.id}>
-                  <h2>{c.name}</h2>
-                  <p>{c.trade} | {c.document}</p>
-                </CompanyCard>
-              ))}
-            </CompanyList>
-          )}
-        </>
-      )}
+      <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+        <AddButton onClick={() => navigate('/dashboard/empresas/new')}>
+          <FaPlus size={16} style={{ marginRight: '0.5rem' }} />
+          Adicionar nova empresa
+        </AddButton>
+      </div>
+      <GenericList
+        title="Lista de Empresas"
+        data={list}
+        columns={columns}
+        loading={loading}
+        error={error || undefined}
+      />
     </ListContainer>
   );
 };

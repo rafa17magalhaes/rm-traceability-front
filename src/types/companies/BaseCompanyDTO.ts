@@ -1,4 +1,5 @@
 export interface BaseCompanyDTO {
+    id: string;
     code: string;
     document: string;
     name: string;
@@ -14,4 +15,3 @@ export interface BaseCompanyDTO {
     city?: string;
     state?: string;
   }
-  
