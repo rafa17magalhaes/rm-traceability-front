@@ -14,7 +14,9 @@ export const createCode = async (dto: CreateCodeDTO): Promise<CodeDTO> => {
 };
 
 // Gera códigos em lote
-export const bulkGenerateCodes = async (dto: BulkGenerateCodesDTO): Promise<CodeDTO[]> => {
+export const bulkGenerateCodes = async (
+  dto: BulkGenerateCodesDTO,
+): Promise<CodeDTO[]> => {
   const response = await api.post('/codes/bulk-generate', dto);
   return response.data;
 };
@@ -22,7 +24,7 @@ export const bulkGenerateCodes = async (dto: BulkGenerateCodesDTO): Promise<Code
 // Altera o status do código em events
 export const changeCodeStatus = async (
   id: string,
-  dto: { statusId: string; observation?: string }
+  dto: { statusId: string; observation?: string },
 ): Promise<CodeDTO> => {
   const response = await api.patch(`/codes/${id}/move`, dto);
   return response.data;

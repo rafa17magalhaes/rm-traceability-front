@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { createCompany, findAllCompanies, findOneCompany, updateCompany, removeCompany } from 'api/companies';
+import {
+  createCompany,
+  findAllCompanies,
+  findOneCompany,
+  updateCompany,
+  removeCompany,
+} from 'api/companies';
 import { CompanyDTO, CreateCompanyDTO } from 'types/companies';
 
 interface CompaniesState {
@@ -25,7 +31,7 @@ export const fetchAllCompanies = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.message || 'Erro ao buscar empresas');
     }
-  }
+  },
 );
 
 export const fetchCompanyById = createAsyncThunk(
@@ -37,7 +43,7 @@ export const fetchCompanyById = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.message || 'Erro ao buscar empresa');
     }
-  }
+  },
 );
 
 export const createCompanyThunk = createAsyncThunk(
@@ -49,19 +55,22 @@ export const createCompanyThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const updateCompanyThunk = createAsyncThunk(
   'companies/update',
-  async (payload: { id: string; dto: Partial<CompanyDTO> }, { rejectWithValue }) => {
+  async (
+    payload: { id: string; dto: Partial<CompanyDTO> },
+    { rejectWithValue },
+  ) => {
     try {
       const response = await updateCompany(payload.id, payload.dto);
       return response;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const removeCompanyThunk = createAsyncThunk(
@@ -73,7 +82,7 @@ export const removeCompanyThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.message || 'Erro ao remover empresa');
     }
-  }
+  },
 );
 
 const companiesSlice = createSlice({
@@ -87,10 +96,13 @@ const companiesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAllCompanies.fulfilled, (state, action: PayloadAction<CompanyDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchAllCompanies.fulfilled,
+        (state, action: PayloadAction<CompanyDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchAllCompanies.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -100,10 +112,13 @@ const companiesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchCompanyById.fulfilled, (state, action: PayloadAction<CompanyDTO>) => {
-        state.loading = false;
-        state.currentCompany = action.payload;
-      })
+      .addCase(
+        fetchCompanyById.fulfilled,
+        (state, action: PayloadAction<CompanyDTO>) => {
+          state.loading = false;
+          state.currentCompany = action.payload;
+        },
+      )
       .addCase(fetchCompanyById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -114,10 +129,13 @@ const companiesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createCompanyThunk.fulfilled, (state, action: PayloadAction<CompanyDTO>) => {
-        state.loading = false;
-        state.list.push(action.payload);
-      })
+      .addCase(
+        createCompanyThunk.fulfilled,
+        (state, action: PayloadAction<CompanyDTO>) => {
+          state.loading = false;
+          state.list.push(action.payload);
+        },
+      )
       .addCase(createCompanyThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -127,12 +145,15 @@ const companiesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateCompanyThunk.fulfilled, (state, action: PayloadAction<CompanyDTO>) => {
-        state.loading = false;
-        state.list = state.list.map((company) =>
-          company.id === action.payload.id ? action.payload : company
-        );
-      })
+      .addCase(
+        updateCompanyThunk.fulfilled,
+        (state, action: PayloadAction<CompanyDTO>) => {
+          state.loading = false;
+          state.list = state.list.map((company) =>
+            company.id === action.payload.id ? action.payload : company,
+          );
+        },
+      )
       .addCase(updateCompanyThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -142,10 +163,13 @@ const companiesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(removeCompanyThunk.fulfilled, (state, action: PayloadAction<string>) => {
-        state.loading = false;
-        state.list = state.list.filter((c) => c.id !== action.payload);
-      })
+      .addCase(
+        removeCompanyThunk.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.loading = false;
+          state.list = state.list.filter((c) => c.id !== action.payload);
+        },
+      )
       .addCase(removeCompanyThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;

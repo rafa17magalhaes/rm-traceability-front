@@ -14,7 +14,7 @@ export const LayoutContainer = styled.div`
 
 export const Spinner = styled.div`
   border: 3px solid #f3f3f3; /* Fundo do spinner */
-  border-top: 3px solid #fff;  /* Cor da parte giratória */
+  border-top: 3px solid #fff; /* Cor da parte giratória */
   border-radius: 50%;
   width: 18px;
   height: 18px;
@@ -22,8 +22,12 @@ export const Spinner = styled.div`
   margin: auto;
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -36,7 +40,6 @@ export const ContentWrapper = styled.div`
   justify-content: center;
   min-height: 70vh; /* Ajuste conforme necessário */
 `;
-
 
 export const Subtitle = styled.p`
   margin-top: 0.5rem;
@@ -55,7 +58,7 @@ export const DecorativeDivider = styled.div`
 `;
 
 export const LogoContainer = styled.div`
-  margin-top: -77px;  /* Ajuste esse valor conforme necessário */
+  margin-top: -77px; /* Ajuste esse valor conforme necessário */
   margin-bottom: -6rem;
   display: flex;
   justify-content: center; /* Centraliza o logo horizontalmente */
@@ -73,7 +76,9 @@ export const LogoContainer = styled.div`
     height: auto;
     border-radius: 10px; /* Bordas suavizadas */
     filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3)); /* Sombra sutil */
-    transition: transform 0.3s ease, filter 0.3s ease; /* Transição suave */
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease; /* Transição suave */
   }
 
   img:hover {

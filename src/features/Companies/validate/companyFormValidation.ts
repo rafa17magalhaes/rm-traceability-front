@@ -1,5 +1,5 @@
-import { BaseCompanyDTO } from "types/companies";
-import { CreateUserDTO } from "types/users";
+import { BaseCompanyDTO } from 'types/companies';
+import { CreateUserDTO } from 'types/users';
 
 export interface CompanyFormValues {
   company: BaseCompanyDTO;
@@ -13,7 +13,7 @@ export interface ValidationErrors {
 
 export const validateCompanyForm = (
   { company, user, confirmPassword }: CompanyFormValues,
-  editing: boolean = false
+  editing: boolean = false,
 ): ValidationErrors => {
   const errors: ValidationErrors = {};
 

@@ -20,7 +20,7 @@ export const ButtonStyled = styled.button`
   align-items: center;
   justify-content: center;
   /* Gradiente suave */
-  background: linear-gradient(135deg, #00509e 0%,rgb(4, 62, 121) 100%);
+  background: linear-gradient(135deg, #00509e 0%, rgb(4, 62, 121) 100%);
   color: #fff;
   padding: 0.6rem 1.5rem;
   border: none;
@@ -28,13 +28,16 @@ export const ButtonStyled = styled.button`
   font-size: 1rem;
   cursor: pointer;
   font-weight: 600;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
-    background: linear-gradient(135deg, #00509e 0%,rgb(6, 38, 69) 100%);
+    background: linear-gradient(135deg, #00509e 0%, rgb(6, 38, 69) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.20);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   }
 
   &:active {

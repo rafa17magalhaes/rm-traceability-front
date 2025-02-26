@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { fetchAllResources, createResource, updateResource, removeResource } from 'api/resources';
+import {
+  fetchAllResources,
+  createResource,
+  updateResource,
+  removeResource,
+} from 'api/resources';
 import { ResourceDTO } from 'types/resources/ResourceDTO';
 import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';
@@ -25,7 +30,7 @@ export const fetchAllResourcesThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const createResourceThunk = createAsyncThunk(
@@ -37,19 +42,22 @@ export const createResourceThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const updateResourceThunk = createAsyncThunk(
   'resources/update',
-  async ({ id, dto }: { id: string; dto: UpdateResourceDTO }, { rejectWithValue }) => {
+  async (
+    { id, dto }: { id: string; dto: UpdateResourceDTO },
+    { rejectWithValue },
+  ) => {
     try {
       const updated = await updateResource(id, dto);
       return updated;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const removeResourceThunk = createAsyncThunk(
@@ -61,7 +69,7 @@ export const removeResourceThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 const resourcesSlice = createSlice({
@@ -75,10 +83,13 @@ const resourcesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAllResourcesThunk.fulfilled, (state, action: PayloadAction<ResourceDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchAllResourcesThunk.fulfilled,
+        (state, action: PayloadAction<ResourceDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchAllResourcesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -89,10 +100,13 @@ const resourcesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createResourceThunk.fulfilled, (state, action: PayloadAction<ResourceDTO>) => {
-        state.loading = false;
-        state.list.push(action.payload);
-      })
+      .addCase(
+        createResourceThunk.fulfilled,
+        (state, action: PayloadAction<ResourceDTO>) => {
+          state.loading = false;
+          state.list.push(action.payload);
+        },
+      )
       .addCase(createResourceThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -103,13 +117,16 @@ const resourcesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateResourceThunk.fulfilled, (state, action: PayloadAction<ResourceDTO>) => {
-        state.loading = false;
-        const index = state.list.findIndex((r) => r.id === action.payload.id);
-        if (index >= 0) {
-          state.list[index] = action.payload;
-        }
-      })
+      .addCase(
+        updateResourceThunk.fulfilled,
+        (state, action: PayloadAction<ResourceDTO>) => {
+          state.loading = false;
+          const index = state.list.findIndex((r) => r.id === action.payload.id);
+          if (index >= 0) {
+            state.list[index] = action.payload;
+          }
+        },
+      )
       .addCase(updateResourceThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -120,10 +137,13 @@ const resourcesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(removeResourceThunk.fulfilled, (state, action: PayloadAction<string>) => {
-        state.loading = false;
-        state.list = state.list.filter((r) => r.id !== action.payload);
-      })
+      .addCase(
+        removeResourceThunk.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.loading = false;
+          state.list = state.list.filter((r) => r.id !== action.payload);
+        },
+      )
       .addCase(removeResourceThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;

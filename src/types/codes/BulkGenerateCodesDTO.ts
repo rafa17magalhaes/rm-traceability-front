@@ -1,4 +1,4 @@
 export interface BulkGenerateCodesDTO {
-    quantity: number;
-    prefix?: string;
-  }
+  quantity: number;
+  prefix?: string;
+}

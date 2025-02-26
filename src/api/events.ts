@@ -14,7 +14,9 @@ export const findAllEvents = async (): Promise<EventDTO[]> => {
 };
 
 // Busca Events filtrando por codeId
-export const findEventsByCodeId = async (codeId: string): Promise<EventDTO[]> => {
+export const findEventsByCodeId = async (
+  codeId: string,
+): Promise<EventDTO[]> => {
   const response = await api.get('/events/by-code', {
     params: { codeId },
   });
@@ -22,7 +24,9 @@ export const findEventsByCodeId = async (codeId: string): Promise<EventDTO[]> =>
 };
 
 // Busca Events filtrando por statusId
-export const findEventsByStatusId = async (statusId: string): Promise<EventDTO[]> => {
+export const findEventsByStatusId = async (
+  statusId: string,
+): Promise<EventDTO[]> => {
   const response = await api.get('/events/by-status', {
     params: { statusId },
   });

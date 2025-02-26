@@ -2,7 +2,9 @@ import api from './api';
 import { StatusDTO, CreateStatusDTO, UpdateStatusDTO } from 'types/status';
 
 // Cria um novo Status
-export const createStatus = async (dto: CreateStatusDTO): Promise<StatusDTO> => {
+export const createStatus = async (
+  dto: CreateStatusDTO,
+): Promise<StatusDTO> => {
   const response = await api.post('/status', dto);
   return response.data;
 };
@@ -28,7 +30,7 @@ export const findOneStatus = async (id: string): Promise<StatusDTO> => {
 // Busca um Status pelo nome (opcionalmente com companyId)
 export const findStatusByName = async (
   name: string,
-  companyId?: string
+  companyId?: string,
 ): Promise<StatusDTO> => {
   const response = await api.get(`/status/by-name/${name}`, {
     params: { companyId },
@@ -37,7 +39,10 @@ export const findStatusByName = async (
 };
 
 // Atualiza um Status
-export const updateStatus = async (id: string, dto: UpdateStatusDTO): Promise<StatusDTO> => {
+export const updateStatus = async (
+  id: string,
+  dto: UpdateStatusDTO,
+): Promise<StatusDTO> => {
   const response = await api.patch(`/status/${id}`, dto);
   return response.data;
 };

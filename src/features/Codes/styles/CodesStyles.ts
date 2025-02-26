@@ -4,7 +4,7 @@ export const CodesContainer = styled.div`
   padding: 1rem;
   background-color: #fdfdfd;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
   max-width: 1200px; /* opcional, para limitar largura */
 `;
@@ -26,7 +26,7 @@ export const FormCard = styled.div`
   background-color: #fff;
   padding: 1rem 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin: 0 auto 1rem auto;
   max-width: 600px;
   text-align: center;
@@ -108,7 +108,7 @@ export const CodesTable = styled.table`
   background-color: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   /* Listrado nas linhas */
   tr:nth-child(even) {
@@ -144,8 +144,10 @@ export const NoDataText = styled.span`
 
 export const ModalBackdrop = styled.div`
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 
   display: flex;
@@ -162,4 +164,3 @@ export const ModalImage = styled.img`
   padding: 10px;
   border-radius: 8px;
 `;
-

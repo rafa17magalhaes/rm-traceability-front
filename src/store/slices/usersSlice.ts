@@ -23,7 +23,7 @@ export const fetchAllUsers = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const createUserThunk = createAsyncThunk(
@@ -35,19 +35,22 @@ export const createUserThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const updateUserThunk = createAsyncThunk(
   'users/update',
-  async ({ id, dto }: { id: string; dto: UpdateUserDTO }, { rejectWithValue }) => {
+  async (
+    { id, dto }: { id: string; dto: UpdateUserDTO },
+    { rejectWithValue },
+  ) => {
     try {
       const updated = await updateUser(id, dto);
       return updated;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const removeUserThunk = createAsyncThunk(
@@ -59,14 +62,13 @@ export const removeUserThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // fetchAll
@@ -74,10 +76,13 @@ const usersSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAllUsers.fulfilled, (state, action: PayloadAction<UserDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchAllUsers.fulfilled,
+        (state, action: PayloadAction<UserDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchAllUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -88,10 +93,13 @@ const usersSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createUserThunk.fulfilled, (state, action: PayloadAction<UserDTO>) => {
-        state.loading = false;
-        state.list.push(action.payload);
-      })
+      .addCase(
+        createUserThunk.fulfilled,
+        (state, action: PayloadAction<UserDTO>) => {
+          state.loading = false;
+          state.list.push(action.payload);
+        },
+      )
       .addCase(createUserThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -102,13 +110,16 @@ const usersSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateUserThunk.fulfilled, (state, action: PayloadAction<UserDTO>) => {
-        state.loading = false;
-        const index = state.list.findIndex((u) => u.id === action.payload.id);
-        if (index >= 0) {
-          state.list[index] = action.payload;
-        }
-      })
+      .addCase(
+        updateUserThunk.fulfilled,
+        (state, action: PayloadAction<UserDTO>) => {
+          state.loading = false;
+          const index = state.list.findIndex((u) => u.id === action.payload.id);
+          if (index >= 0) {
+            state.list[index] = action.payload;
+          }
+        },
+      )
       .addCase(updateUserThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -119,10 +130,13 @@ const usersSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(removeUserThunk.fulfilled, (state, action: PayloadAction<string>) => {
-        state.loading = false;
-        state.list = state.list.filter((u) => u.id !== action.payload);
-      })
+      .addCase(
+        removeUserThunk.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.loading = false;
+          state.list = state.list.filter((u) => u.id !== action.payload);
+        },
+      )
       .addCase(removeUserThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;

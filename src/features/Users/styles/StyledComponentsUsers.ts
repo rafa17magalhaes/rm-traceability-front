@@ -6,7 +6,7 @@ export const FormContainer = styled.div`
   margin: 2rem auto;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 `;
 
 export const FormTitle = styled.h1`
@@ -70,7 +70,7 @@ export const PrimaryButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;

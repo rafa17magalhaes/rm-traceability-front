@@ -6,7 +6,7 @@ export const FormContainer = styled.div`
   margin: 2rem auto;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 `;
 
 export const FormTitle = styled.h1`
@@ -71,16 +71,19 @@ export const FileInputLabel = styled.label`
   background: #00509e;
   color: #fff;
   border: none;
-  padding: 0.5rem 1.8rem;  /* Menor altura/largura */
-  border-radius: 4px;      /* Bordas levemente arredondadas */
-  font-size: 0.95rem;      /* Texto menor */
+  padding: 0.5rem 1.8rem; /* Menor altura/largura */
+  border-radius: 4px; /* Bordas levemente arredondadas */
+  font-size: 0.95rem; /* Texto menor */
   font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  margin: 0.5rem auto;     /* Centraliza horizontalmente */
-  transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+  margin: 0.5rem auto; /* Centraliza horizontalmente */
+  transition:
+    background 0.3s,
+    transform 0.2s,
+    box-shadow 0.2s;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 
   &:hover {
@@ -117,7 +120,7 @@ export const PrimaryButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
-  
+
   &:hover {
     background: #003a75;
   }

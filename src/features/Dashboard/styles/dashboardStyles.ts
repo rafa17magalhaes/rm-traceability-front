@@ -89,13 +89,15 @@ export const CardContainer = styled.div`
   background-color: #fff;
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   h2 {
@@ -132,7 +134,7 @@ export const MoreButton = styled.button`
 
 /* SIDEBAR */
 export const SidebarContainer = styled.div<{ collapsed: boolean }>`
-  background-color:rgb(43, 52, 62);
+  background-color: rgb(43, 52, 62);
   min-height: 100vh;
   width: ${({ collapsed }) => (collapsed ? '80px' : '250px')};
   transition: width 0.3s;

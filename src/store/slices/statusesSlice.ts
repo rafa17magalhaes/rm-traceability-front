@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { findAllStatus, createStatus, updateStatus, removeStatus, findActiveStatus } from 'api/status';
+import {
+  findAllStatus,
+  createStatus,
+  updateStatus,
+  removeStatus,
+  findActiveStatus,
+} from 'api/status';
 import { StatusDTO } from 'types/status/StatusDTO';
 import { CreateStatusDTO } from 'types/status/CreateStatusDTO';
 import { UpdateStatusDTO } from 'types/status/UpdateStatusDTO';
@@ -25,7 +31,7 @@ export const fetchAllStatusesThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const fetchActiveStatusesThunk = createAsyncThunk(
@@ -37,7 +43,7 @@ export const fetchActiveStatusesThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const createStatusThunk = createAsyncThunk(
@@ -49,19 +55,22 @@ export const createStatusThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const updateStatusThunk = createAsyncThunk(
   'statuses/update',
-  async ({ id, dto }: { id: string; dto: UpdateStatusDTO }, { rejectWithValue }) => {
+  async (
+    { id, dto }: { id: string; dto: UpdateStatusDTO },
+    { rejectWithValue },
+  ) => {
     try {
       const updatedStatus = await updateStatus(id, dto);
       return updatedStatus;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const removeStatusThunk = createAsyncThunk(
@@ -73,7 +82,7 @@ export const removeStatusThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 const statusesSlice = createSlice({
@@ -87,10 +96,13 @@ const statusesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAllStatusesThunk.fulfilled, (state, action: PayloadAction<StatusDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchAllStatusesThunk.fulfilled,
+        (state, action: PayloadAction<StatusDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchAllStatusesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -100,10 +112,13 @@ const statusesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchActiveStatusesThunk.fulfilled, (state, action: PayloadAction<StatusDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchActiveStatusesThunk.fulfilled,
+        (state, action: PayloadAction<StatusDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchActiveStatusesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -113,10 +128,13 @@ const statusesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createStatusThunk.fulfilled, (state, action: PayloadAction<StatusDTO>) => {
-        state.loading = false;
-        state.list.push(action.payload);
-      })
+      .addCase(
+        createStatusThunk.fulfilled,
+        (state, action: PayloadAction<StatusDTO>) => {
+          state.loading = false;
+          state.list.push(action.payload);
+        },
+      )
       .addCase(createStatusThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -126,13 +144,16 @@ const statusesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateStatusThunk.fulfilled, (state, action: PayloadAction<StatusDTO>) => {
-        state.loading = false;
-        const index = state.list.findIndex((s) => s.id === action.payload.id);
-        if (index >= 0) {
-          state.list[index] = action.payload;
-        }
-      })
+      .addCase(
+        updateStatusThunk.fulfilled,
+        (state, action: PayloadAction<StatusDTO>) => {
+          state.loading = false;
+          const index = state.list.findIndex((s) => s.id === action.payload.id);
+          if (index >= 0) {
+            state.list[index] = action.payload;
+          }
+        },
+      )
       .addCase(updateStatusThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -142,10 +163,13 @@ const statusesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(removeStatusThunk.fulfilled, (state, action: PayloadAction<string>) => {
-        state.loading = false;
-        state.list = state.list.filter((s) => s.id !== action.payload);
-      })
+      .addCase(
+        removeStatusThunk.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.loading = false;
+          state.list = state.list.filter((s) => s.id !== action.payload);
+        },
+      )
       .addCase(removeStatusThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;

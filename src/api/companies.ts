@@ -1,7 +1,13 @@
-import { CompanyDTO, CreateCompanyDTO, UpdateCompanyDTO } from 'types/companies';
+import {
+  CompanyDTO,
+  CreateCompanyDTO,
+  UpdateCompanyDTO,
+} from 'types/companies';
 import api from './api';
 
-export const createCompany = async (createCompanyDTO: CreateCompanyDTO): Promise<CompanyDTO> => {
+export const createCompany = async (
+  createCompanyDTO: CreateCompanyDTO,
+): Promise<CompanyDTO> => {
   const response = await api.post('/companies', createCompanyDTO);
   return response.data;
 };
@@ -16,7 +22,10 @@ export const findOneCompany = async (id: string): Promise<CompanyDTO> => {
   return response.data;
 };
 
-export const updateCompany = async (id: string, updateCompanyDTO: UpdateCompanyDTO): Promise<CompanyDTO> => {
+export const updateCompany = async (
+  id: string,
+  updateCompanyDTO: UpdateCompanyDTO,
+): Promise<CompanyDTO> => {
   const response = await api.put(`/companies/${id}`, updateCompanyDTO);
   return response.data;
 };

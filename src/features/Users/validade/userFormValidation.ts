@@ -28,7 +28,7 @@ export const validateUserForm = ({
   }
   if (!user.phone.trim()) {
     errors.userPhone = 'O telefone é obrigatório.';
-  }  
+  }
   if (!user.password) {
     errors.userPassword = 'A senha é obrigatória.';
   } else if (user.password.length < 6) {

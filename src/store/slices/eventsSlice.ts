@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { findAllEvents, createEvent, findEventsByCodeId, findEventsByStatusId } from 'api/events';
+import {
+  findAllEvents,
+  createEvent,
+  findEventsByCodeId,
+  findEventsByStatusId,
+} from 'api/events';
 import { EventDTO } from 'types/events/EventDTO';
 import { CreateEventDTO } from 'types/events/CreateEventDTO';
 
@@ -24,7 +29,7 @@ export const fetchAllEventsThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const createEventThunk = createAsyncThunk(
@@ -36,7 +41,7 @@ export const createEventThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const fetchEventsByCodeIdThunk = createAsyncThunk(
@@ -48,7 +53,7 @@ export const fetchEventsByCodeIdThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 export const fetchEventsByStatusIdThunk = createAsyncThunk(
@@ -60,7 +65,7 @@ export const fetchEventsByStatusIdThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 const eventsSlice = createSlice({
@@ -74,10 +79,13 @@ const eventsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAllEventsThunk.fulfilled, (state, action: PayloadAction<EventDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchAllEventsThunk.fulfilled,
+        (state, action: PayloadAction<EventDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchAllEventsThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -87,10 +95,13 @@ const eventsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createEventThunk.fulfilled, (state, action: PayloadAction<EventDTO>) => {
-        state.loading = false;
-        state.list.push(action.payload);
-      })
+      .addCase(
+        createEventThunk.fulfilled,
+        (state, action: PayloadAction<EventDTO>) => {
+          state.loading = false;
+          state.list.push(action.payload);
+        },
+      )
       .addCase(createEventThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -100,10 +111,13 @@ const eventsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchEventsByCodeIdThunk.fulfilled, (state, action: PayloadAction<EventDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchEventsByCodeIdThunk.fulfilled,
+        (state, action: PayloadAction<EventDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchEventsByCodeIdThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -113,10 +127,13 @@ const eventsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchEventsByStatusIdThunk.fulfilled, (state, action: PayloadAction<EventDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchEventsByStatusIdThunk.fulfilled,
+        (state, action: PayloadAction<EventDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchEventsByStatusIdThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;

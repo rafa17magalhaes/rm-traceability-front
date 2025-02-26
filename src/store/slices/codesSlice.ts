@@ -25,7 +25,7 @@ export const fetchAllCodesThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 // Thunk para criar 1 código
@@ -37,7 +37,7 @@ export const createCodeThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 // Thunk para gerar códigos em lote
@@ -49,7 +49,7 @@ export const bulkGenerateCodesThunk = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
-  }
+  },
 );
 
 const codesSlice = createSlice({
@@ -63,10 +63,13 @@ const codesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAllCodesThunk.fulfilled, (state, action: PayloadAction<CodeDTO[]>) => {
-        state.loading = false;
-        state.list = action.payload;
-      })
+      .addCase(
+        fetchAllCodesThunk.fulfilled,
+        (state, action: PayloadAction<CodeDTO[]>) => {
+          state.loading = false;
+          state.list = action.payload;
+        },
+      )
       .addCase(fetchAllCodesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -77,10 +80,13 @@ const codesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createCodeThunk.fulfilled, (state, action: PayloadAction<CodeDTO>) => {
-        state.loading = false;
-        state.list.push(action.payload);
-      })
+      .addCase(
+        createCodeThunk.fulfilled,
+        (state, action: PayloadAction<CodeDTO>) => {
+          state.loading = false;
+          state.list.push(action.payload);
+        },
+      )
       .addCase(createCodeThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -91,11 +97,14 @@ const codesSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(bulkGenerateCodesThunk.fulfilled, (state, action: PayloadAction<CodeDTO[]>) => {
-        state.loading = false;
-        // adiciona os novos códigos ao final da lista
-        state.list.push(...action.payload);
-      })
+      .addCase(
+        bulkGenerateCodesThunk.fulfilled,
+        (state, action: PayloadAction<CodeDTO[]>) => {
+          state.loading = false;
+          // adiciona os novos códigos ao final da lista
+          state.list.push(...action.payload);
+        },
+      )
       .addCase(bulkGenerateCodesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;

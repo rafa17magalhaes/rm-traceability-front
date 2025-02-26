@@ -54,7 +54,9 @@ export const ResourceCard = styled.li`
   padding: 1.2rem 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 
   &:hover {
     transform: translateY(-3px);
@@ -85,7 +87,9 @@ export const ResourceCard = styled.li`
     color: #00509e;
     cursor: pointer;
     opacity: 0.7;
-    transition: color 0.2s, opacity 0.2s;
+    transition:
+      color 0.2s,
+      opacity 0.2s;
 
     &:hover {
       color: #003a75;
@@ -112,7 +116,8 @@ export const ToggleThumb = styled.div<ToggleSwitchProps>`
   border-radius: 50%;
   background-color: #fff;
   transition: transform 0.3s;
-  transform: ${(props) => (props.active ? 'translateX(22px)' : 'translateX(2px)')};
+  transform: ${(props) =>
+    props.active ? 'translateX(22px)' : 'translateX(2px)'};
 `;
 
 export const ToggleContainer = styled.div`

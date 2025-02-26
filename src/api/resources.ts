@@ -18,7 +18,9 @@ export const fetchOneResource = async (id: string): Promise<ResourceDTO> => {
   return response.data;
 };
 
-export const createResource = async (dto: CreateResourceDTO): Promise<ResourceDTO> => {
+export const createResource = async (
+  dto: CreateResourceDTO,
+): Promise<ResourceDTO> => {
   const formData = new FormData();
   formData.append('name', dto.name);
   formData.append('description', dto.description);
@@ -33,7 +35,10 @@ export const createResource = async (dto: CreateResourceDTO): Promise<ResourceDT
   return response.data;
 };
 
-export const updateResource = async (id: string, dto: UpdateResourceDTO): Promise<ResourceDTO> => {
+export const updateResource = async (
+  id: string,
+  dto: UpdateResourceDTO,
+): Promise<ResourceDTO> => {
   const formData = new FormData();
   if (dto.name !== undefined) {
     formData.append('name', dto.name);
