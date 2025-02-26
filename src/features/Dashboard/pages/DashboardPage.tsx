@@ -20,6 +20,7 @@ import ResourceManagementPage from 'features/Resources/pages/ResourceManagementP
 import CodesRoutes from 'features/Codes/pages/CodesRoutes';
 import CodesListPage from 'features/Codes/pages/CodesListPage';
 import BulkGenerateCodesPage from 'features/Codes/pages/BulkGenerateCodesPage';
+import CodeMovementPage from 'features/Codes/pages/CodeMovementPage';
 
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -58,6 +59,7 @@ const DashboardPage: React.FC = () => {
               <Route index element={<CodesListPage />} />
               <Route path="list" element={<CodesListPage />} />
               <Route path="bulk-generate" element={<BulkGenerateCodesPage />} />
+              <Route path="movements" element={<CodeMovementPage />} />
             </Route>
 
             {/* Fallback */}

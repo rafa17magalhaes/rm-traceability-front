@@ -2,7 +2,12 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { CodeDTO } from 'types/codes/CodeDTO';
 import { CreateCodeDTO } from 'types/codes/CreateCodeDTO';
 import { BulkGenerateCodesDTO } from 'types/codes/BulkGenerateCodesDTO';
-import { fetchAllCodes, createCode, bulkGenerateCodes } from 'api/codes';
+import {
+  fetchAllCodes,
+  createCode,
+  bulkGenerateCodes,
+  changeCodeStatus,
+} from 'api/codes';
 
 interface CodesState {
   list: CodeDTO[];
@@ -16,7 +21,6 @@ const initialState: CodesState = {
   error: null,
 };
 
-// Thunk para buscar todos os códigos
 export const fetchAllCodesThunk = createAsyncThunk(
   'codes/fetchAll',
   async (_, { rejectWithValue }) => {
@@ -28,7 +32,6 @@ export const fetchAllCodesThunk = createAsyncThunk(
   },
 );
 
-// Thunk para criar 1 código
 export const createCodeThunk = createAsyncThunk(
   'codes/create',
   async (dto: CreateCodeDTO, { rejectWithValue }) => {
@@ -40,7 +43,6 @@ export const createCodeThunk = createAsyncThunk(
   },
 );
 
-// Thunk para gerar códigos em lote
 export const bulkGenerateCodesThunk = createAsyncThunk(
   'codes/bulkGenerate',
   async (dto: BulkGenerateCodesDTO, { rejectWithValue }) => {
@@ -52,13 +54,35 @@ export const bulkGenerateCodesThunk = createAsyncThunk(
   },
 );
 
+// thunk para mudar o status do código e registrar o evento
+export const changeCodeStatusThunk = createAsyncThunk(
+  'codes/changeStatus',
+  async (
+    params: {
+      id: string;
+      dto: {
+        statusId: string;
+        observation?: string;
+        resourceId?: string;
+      };
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      return await changeCodeStatus(params.id, params.dto);
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  },
+);
+
 const codesSlice = createSlice({
   name: 'codes',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // fetchAll
     builder
-      // fetchAll
       .addCase(fetchAllCodesThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -74,7 +98,6 @@ const codesSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
       // create
       .addCase(createCodeThunk.pending, (state) => {
         state.loading = true;
@@ -91,7 +114,6 @@ const codesSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
       // bulkGenerate
       .addCase(bulkGenerateCodesThunk.pending, (state) => {
         state.loading = true;
@@ -101,11 +123,28 @@ const codesSlice = createSlice({
         bulkGenerateCodesThunk.fulfilled,
         (state, action: PayloadAction<CodeDTO[]>) => {
           state.loading = false;
-          // adiciona os novos códigos ao final da lista
           state.list.push(...action.payload);
         },
       )
       .addCase(bulkGenerateCodesThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      // changeCodeStatus
+      .addCase(changeCodeStatusThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        changeCodeStatusThunk.fulfilled,
+        (state, action: PayloadAction<CodeDTO>) => {
+          state.loading = false;
+          state.list = state.list.map((code) =>
+            code.id === action.payload.id ? action.payload : code,
+          );
+        },
+      )
+      .addCase(changeCodeStatusThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

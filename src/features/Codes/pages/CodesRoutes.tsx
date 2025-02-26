@@ -37,6 +37,7 @@ const CodesRoutes: React.FC = () => {
       <NavBar>
         <StyledLink to="/dashboard/codigos/list">Listagem</StyledLink>
         <StyledLink to="/dashboard/codigos/bulk-generate">Geração em Lote</StyledLink>
+        <StyledLink to="/dashboard/codigos/movements">Movimentações de Produtos</StyledLink>
       </NavBar>
 
       <Outlet />

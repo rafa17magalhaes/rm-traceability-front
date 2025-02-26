@@ -3,5 +3,12 @@ export interface EventDTO {
   codeId: string;
   valueCode: string;
   statusId: string;
-  description?: string;
+  resourceId?: string;
+  ip?: string;
+  companyId?: string;
+  urlCode?: string;
+  observation?: string;
+  longitude?: number;
+  latitude?: number;
+  userId?: string;
 }
