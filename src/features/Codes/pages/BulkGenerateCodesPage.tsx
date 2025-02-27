@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { bulkGenerateCodesThunk } from 'store/slices/codesSlice';
+
 import {
   CodesContainer,
   CodesTitle,
   GenerateForm,
   InputField,
-  Button,
   FormCard,
   Subtitle,
   MessageContainer,
-  SpinnerContainer,
-  Spinner
 } from '../styles/CodesStyles';
+
+import LoadingButton from 'components/Button/LoadingButton';
+import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
 
 const BulkGenerateCodesPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector((state) => state.codes);
 
+  const { error } = useAppSelector((state) => state.codes);
+
+  // Quantidade de códigos a serem gerados
   const [quantity, setQuantity] = useState<number>(1);
-  const [localError, setLocalError] = useState<string | null>(null);
-  const [waiting, setWaiting] = useState(false);
 
-  const handleGenerate = (e: React.FormEvent) => {
+  // Mensagem de erro local (por exemplo, quantidade < 1)
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  // Estado local para simular loading de 1.5s
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  // Exibe mensagem de sucesso com confetes
+  const [showCelebration, setShowCelebration] = useState(false);
+
+  // Lida com a geração em lote
+  const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (quantity < 1) {
@@ -30,16 +41,33 @@ const BulkGenerateCodesPage: React.FC = () => {
       return;
     }
     setLocalError(null);
-    setWaiting(true);
+    setIsGenerating(true);
 
-    setTimeout(() => {
-      dispatch(bulkGenerateCodesThunk({ quantity }));
-      setWaiting(false);
+    // Simula 1.5s de carregamento local (delay do LoadingButton)
+    setTimeout(async () => {
+      // Chama a thunk de gerar em lote
+      const resultAction = await dispatch(bulkGenerateCodesThunk({ quantity }));
+      setIsGenerating(false);
+
+      // Se a geração deu certo, mostra CelebrationMessage por 3s
+      if (bulkGenerateCodesThunk.fulfilled.match(resultAction)) {
+        setShowCelebration(true);
+        setTimeout(() => {
+          setShowCelebration(false);
+        }, 3000);
+      }
     }, 1500);
   };
 
   return (
     <CodesContainer>
+      {showCelebration && (
+        <CelebrationMessage
+          message="Códigos gerados com sucesso!"
+          duration={3000}
+        />
+      )}
+
       <CodesTitle>Gerar Códigos em Lote</CodesTitle>
       <Subtitle>Escolha quantos códigos deseja gerar de uma só vez.</Subtitle>
 
@@ -49,13 +77,20 @@ const BulkGenerateCodesPage: React.FC = () => {
             type="number"
             min={1}
             value={quantity}
-            disabled={loading || waiting}
+            disabled={isGenerating}
             onChange={(e) => setQuantity(Number(e.target.value))}
             placeholder="Quantidade"
           />
-          <Button type="submit" disabled={loading || waiting}>
-            Gerar
-          </Button>
+
+          <LoadingButton
+            onClick={() => {}}
+            loading={isGenerating}
+            loadingDelay={0}
+            disabled={isGenerating}
+            style={{ padding: '0.5rem 1rem' }}
+          >
+            {isGenerating ? 'Gerando...' : 'Gerar'}
+          </LoadingButton>
         </GenerateForm>
 
         {localError && (
@@ -64,20 +99,6 @@ const BulkGenerateCodesPage: React.FC = () => {
           </MessageContainer>
         )}
       </FormCard>
-
-      {waiting && (
-        <SpinnerContainer>
-          <Spinner />
-          <span>Aguarde...</span>
-        </SpinnerContainer>
-      )}
-
-      {!waiting && loading && (
-        <SpinnerContainer>
-          <Spinner />
-          <span>Gerando códigos, aguarde...</span>
-        </SpinnerContainer>
-      )}
 
       {error && (
         <MessageContainer style={{ backgroundColor: '#ffe6e6', color: '#cc0000' }}>

@@ -4,6 +4,7 @@ import { ButtonStyled, Spinner } from './LoadingButtonStyles';
 interface LoadingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onClick: () => void;
   loadingDelay?: number; // ms
+  loading?: boolean;
 }
 
 const LoadingButton: React.FC<LoadingButtonProps> = ({
@@ -11,14 +12,16 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
   onClick,
   children,
   disabled,
+  loading,
   ...rest
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleClick = () => {
-    if (isLoading) return;
-    setIsLoading(true);
+  const effectiveLoading = loading !== undefined ? loading : isLoading;
 
+  const handleClick = () => {
+    if (effectiveLoading) return;
+    setIsLoading(true);
     setTimeout(() => {
       onClick();
       setIsLoading(false);
@@ -26,8 +29,8 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
   };
 
   return (
-    <ButtonStyled onClick={handleClick} disabled={disabled || isLoading} {...rest}>
-      {isLoading && <Spinner />}
+    <ButtonStyled onClick={handleClick} disabled={disabled || effectiveLoading} {...rest}>
+      {effectiveLoading && <Spinner />}
       {children}
     </ButtonStyled>
   );

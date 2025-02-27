@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Title,
-  Form,
-  Label,
-  Input,
-  Button,
-  ErrorMessage,
-  Spinner,
-} from '../styles/loginStyles';
+import { Container, Title, Form, Label, Input, ErrorMessage } from '../styles/loginStyles';
+import LoadingButton from 'components/Button/LoadingButton';
 import { validateEmail } from '../validate/loginValidation';
 import { login as loginApi } from '../services/authService';
 import { useLogin } from '../hooks/useLogin';
@@ -25,8 +17,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
 
   const login = useLogin();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setError(null);
 
     if (!validateEmail(email)) {
@@ -53,7 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   return (
     <Container>
       <Title>Login</Title>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <div>
           <Label>Email:</Label>
           <Input
@@ -73,9 +64,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
           />
         </div>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Button type="submit" disabled={loading}>
-          {loading ? <Spinner /> : 'Entrar'}
-        </Button>
+        <LoadingButton
+          type="button"
+          onClick={handleSubmit}
+          disabled={loading}
+          loadingDelay={1500}
+        >
+          {loading ? 'Entrando...' : 'Entrar'}
+        </LoadingButton>
       </Form>
     </Container>
   );
