@@ -30,6 +30,13 @@ const CodesListPage: React.FC = () => {
         code.status && code.status.name ? code.status.name : <span style={{ fontStyle: 'italic', color: '#999' }}>Status não informado</span>,
     },
     {
+      header: 'Data de Criação',
+      render: (code) =>
+        code.createdAt
+          ? new Date(code.createdAt).toLocaleString('pt-BR')
+          : 'Sem data',
+    },
+    {
       header: 'QR Code',
       render: (code) =>
         code.qrCodeUrl ? (

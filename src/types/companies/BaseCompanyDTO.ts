@@ -14,4 +14,6 @@ export interface BaseCompanyDTO {
   neighborhood?: string;
   city?: string;
   state?: string;
+  createdAt?: string;
+  updateAt?: string;
 }

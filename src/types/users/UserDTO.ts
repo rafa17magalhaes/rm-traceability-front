@@ -5,4 +5,6 @@ export interface UserDTO extends BaseUserDTO {
   id: string;
   company?: CompanyDTO;
   companyId?: string;
+  createdAt?: string;
+  updateAt?: string;
 }

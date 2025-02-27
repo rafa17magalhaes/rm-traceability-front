@@ -8,4 +8,6 @@ export interface BaseUserDTO {
   password?: string;
   company?: CompanyDTO;
   companyId?: string;
+  createdAt?: string;
+  updateAt?: string;
 }

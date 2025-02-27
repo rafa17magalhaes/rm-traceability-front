@@ -16,4 +16,6 @@ export interface CompanyDTO extends BaseCompanyDTO {
   neighborhood?: string;
   city?: string;
   state?: string;
+  createdAt?: string;
+  updateAt?: string;
 }

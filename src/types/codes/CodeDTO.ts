@@ -17,4 +17,6 @@ export interface CodeDTO {
   invoice?: string;
   driverName?: string;
   accessKey?: string;
+  createdAt?: string;
+  updateAt?: string;
 }

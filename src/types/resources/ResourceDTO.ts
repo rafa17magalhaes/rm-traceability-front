@@ -6,4 +6,6 @@ export interface ResourceDTO {
   companyId?: string;
   imageUrl?: string;
   file?: File;
+  createdAt?: string;
+  updateAt?: string;
 }

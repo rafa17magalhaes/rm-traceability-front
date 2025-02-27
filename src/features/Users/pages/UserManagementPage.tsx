@@ -58,6 +58,13 @@ const UserManagementPage: React.FC = () => {
       render: (user) => user.email,
     },
     {
+      header: 'Data de Criação',
+      render: (user) =>
+        user.createdAt
+          ? new Date(user.createdAt).toLocaleString('pt-BR')
+          : 'Sem data',
+    },
+    {
       header: 'Ações',
       render: (user) => (
         <button

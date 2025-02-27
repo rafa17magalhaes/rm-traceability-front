@@ -5,4 +5,6 @@ export interface StatusDTO {
   active: boolean;
   companyId?: string;
   resourceId?: string;
+  createdAt?: string;
+  updateAt?: string;
 }

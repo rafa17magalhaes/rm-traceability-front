@@ -90,6 +90,13 @@ const ResourceManagementPage: React.FC = () => {
       render: (resource) => resource.description,
     },
     {
+      header: 'Data de Criação',
+      render: (resource) =>
+        resource.createdAt
+          ? new Date(resource.createdAt).toLocaleString('pt-BR')
+          : 'Sem data',
+    },
+    {
       header: 'Ativo',
       render: (resource) => (
         <button

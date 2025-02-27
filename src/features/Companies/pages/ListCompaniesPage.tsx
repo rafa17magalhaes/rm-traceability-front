@@ -30,6 +30,13 @@ const ListCompaniesPage: React.FC = () => {
       render: (company) => company.document,
     },
     {
+      header: 'Data de Criação',
+      render: (company) =>
+        company.createdAt
+          ? new Date(company.createdAt).toLocaleString('pt-BR')
+          : 'Sem data',
+    },
+    {
       header: 'Ações',
       render: (company) => (
         <button
@@ -46,6 +53,7 @@ const ListCompaniesPage: React.FC = () => {
       ),
     },
   ];
+  
 
   return (
     <ListContainer>
