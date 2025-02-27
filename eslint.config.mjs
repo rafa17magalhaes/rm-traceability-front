@@ -1,6 +1,7 @@
-import prettierRecommended from 'eslint-plugin-prettier/recommended';
+/* eslint-disable prettier/prettier */
 import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
   {
@@ -37,16 +38,10 @@ export default [
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
-
-      // Desativa avisos de variáveis não usadas
       '@typescript-eslint/no-unused-vars': 'off',
       'no-unused-vars': 'off',
-
-      // Desativa a regra do Prettier (se preferir, ou ajuste no .prettierrc)
-      'prettier/prettier': 'off',
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
     },
   },
-
-  // Mantém apenas a configuração do Prettier (opcional)
   prettierRecommended,
 ];
