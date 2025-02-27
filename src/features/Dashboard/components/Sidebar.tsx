@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBuilding, FaUserFriends, FaCog, FaBoxes, FaQrcode } from 'react-icons/fa';
+import { FaBuilding, FaUserFriends, FaCog, FaBoxes, FaQrcode, FaList } from 'react-icons/fa';
 import { FooterLogo, MenuItem, MenuWrapper, SidebarContainer } from '../styles/dashboardStyles';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,6 +31,11 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
         <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/codigos')}>
           <FaQrcode size={20} />
           <span>Códigos</span>
+        </MenuItem>
+
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/eventos')}>
+          <FaList size={20} />
+          <span>Eventos</span>
         </MenuItem>
 
         <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/configuracoes')}>

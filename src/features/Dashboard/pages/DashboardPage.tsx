@@ -22,6 +22,9 @@ import CodesListPage from 'features/Codes/pages/CodesListPage';
 import BulkGenerateCodesPage from 'features/Codes/pages/BulkGenerateCodesPage';
 import CodeMovementPage from 'features/Codes/pages/CodeMovementPage';
 
+// Listagem de Eventos
+import EventsListPage from 'features/Events/pages/EventsListPage';
+
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { logout } = useAuth();
@@ -61,6 +64,9 @@ const DashboardPage: React.FC = () => {
               <Route path="bulk-generate" element={<BulkGenerateCodesPage />} />
               <Route path="movements" element={<CodeMovementPage />} />
             </Route>
+
+            {/*Listagem Eventos*/}
+            <Route path="eventos" element={<EventsListPage />} />
 
             {/* Fallback */}
             <Route path="*" element={<ServicesGrid />} />
