@@ -12,7 +12,7 @@ interface GenericListProps<T> {
   data: T[];
   columns: ColumnDefinition<T>[];
   loading?: boolean;
-  error?: string;
+  error?: string | null;
 }
 
 const GenericList = <T extends unknown>({
