@@ -1,19 +1,29 @@
-import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import React, { useEffect, useState } from 'react';
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { fetchAllCodesThunk } from 'store/slices/codesSlice';
-import { CodeDTO } from 'types/codes';
+import { CodeDTO } from 'types/codes/CodeDTO';
+import { QueryParamsDTO } from 'types/pagination';
 
 const CodesListPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { list, loading, error } = useAppSelector((state) => state.codes);
+  const { list, loading, error, total, page, size } = useAppSelector((state) => state.codes);
   const [selectedQRCode, setSelectedQRCode] = useState<string | null>(null);
 
+  const loadCodes = (pageNumber: number) => {
+    const query: QueryParamsDTO = {
+      page: pageNumber,
+      size: 20,
+      search: '',
+      sort: '',
+    };
+    dispatch(fetchAllCodesThunk(query) as any);
+  };
+
   useEffect(() => {
-    dispatch(fetchAllCodesThunk());
+    loadCodes(1);
   }, [dispatch]);
 
-  // Definição das colunas para a listagem de códigos
   const columns: ColumnDefinition<CodeDTO>[] = [
     {
       header: 'Valor do Código',
@@ -22,12 +32,20 @@ const CodesListPage: React.FC = () => {
     {
       header: 'Produto',
       render: (code) =>
-        code.resource?.name ? code.resource.name : <span style={{ fontStyle: 'italic', color: '#999' }}>Produto não informado</span>,
+        code.resource?.name ? (
+          code.resource.name
+        ) : (
+          <span style={{ fontStyle: 'italic', color: '#999' }}>Produto não informado</span>
+        ),
     },
     {
       header: 'Status',
       render: (code) =>
-        code.status && code.status.name ? code.status.name : <span style={{ fontStyle: 'italic', color: '#999' }}>Status não informado</span>,
+        code.status && code.status.name ? (
+          code.status.name
+        ) : (
+          <span style={{ fontStyle: 'italic', color: '#999' }}>Status não informado</span>
+        ),
     },
     {
       header: 'Data de Criação',
@@ -52,10 +70,21 @@ const CodesListPage: React.FC = () => {
     },
   ];
 
+  const totalPages = Math.ceil(total / (size || 20));
+
   return (
     <>
-      <GenericList title="Listagem de Códigos" data={list} columns={columns} loading={loading} error={error || undefined}
- />
+      <GenericList
+        title="Listagem de Códigos"
+        data={list}
+        columns={columns}
+        loading={loading}
+        error={error || undefined}
+        currentPage={page}
+        totalPages={totalPages}
+        totalItems={total}
+        onPageChange={(newPage) => loadCodes(newPage)}
+      />
       {selectedQRCode && (
         <div
           style={{
@@ -72,7 +101,17 @@ const CodesListPage: React.FC = () => {
           }}
           onClick={() => setSelectedQRCode(null)}
         >
-          <img src={selectedQRCode} alt="QR Ampliado" style={{ width: 400, height: 400, backgroundColor: '#fff', padding: 10, borderRadius: 8 }} />
+          <img
+            src={selectedQRCode}
+            alt="QR Ampliado"
+            style={{
+              width: 400,
+              height: 400,
+              backgroundColor: '#fff',
+              padding: 10,
+              borderRadius: 8,
+            }}
+          />
         </div>
       )}
     </>

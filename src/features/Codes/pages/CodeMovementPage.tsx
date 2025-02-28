@@ -29,7 +29,7 @@ const CodeMovementPage: React.FC = () => {
 
   // Busca os dados iniciais
   useEffect(() => {
-    dispatch(fetchAllCodesThunk());
+    dispatch(fetchAllCodesThunk({ page: 1, size: 99999 }));
     dispatch(fetchActiveStatusesThunk());
     dispatch(fetchAllResourcesThunk());
   }, [dispatch]);

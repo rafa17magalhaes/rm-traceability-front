@@ -1,6 +1,13 @@
 import React from 'react';
-import { NoDataText, StyledTable, TableCell, TableContainer, TableHeaderCell, TableTitle } from './GenericListStyles';
-
+import {
+  NoDataText,
+  StyledTable,
+  TableCell,
+  TableContainer,
+  TableHeaderCell,
+  TableTitle,
+} from './GenericListStyles';
+import Pagination from 'components/Pagination/Pagination';
 
 export interface ColumnDefinition<T> {
   header: string;
@@ -13,6 +20,10 @@ interface GenericListProps<T> {
   columns: ColumnDefinition<T>[];
   loading?: boolean;
   error?: string | null;
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
+  totalItems?: number;
 }
 
 const GenericList = <T extends unknown>({
@@ -21,13 +32,43 @@ const GenericList = <T extends unknown>({
   columns,
   loading,
   error,
+  currentPage,
+  totalPages,
+  onPageChange,
+  totalItems,
 }: GenericListProps<T>) => {
   if (loading) return <p>Carregando...</p>;
   if (error) return <p style={{ color: 'red' }}>Erro: {error}</p>;
 
+  // Verifica se há mais de uma página
+  const hasMultiplePages = totalPages && totalPages > 1;
+
   return (
     <TableContainer>
       <TableTitle>{title}</TableTitle>
+
+      {/* Exibe total de registros e paginação no topo */}
+      {typeof totalItems === 'number' && (
+        <div
+          style={{
+            marginBottom: '1rem',
+            textAlign: 'center',
+            fontSize: '0.9rem',
+            fontWeight: 500,
+          }}
+        >
+          Mostrando {data.length} de {totalItems} registros
+        </div>
+      )}
+
+      {hasMultiplePages && currentPage && totalPages && onPageChange && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      )}
+
       <StyledTable>
         <thead>
           <tr>
@@ -54,6 +95,15 @@ const GenericList = <T extends unknown>({
           )}
         </tbody>
       </StyledTable>
+
+      {/* Exibe paginação no rodapé */}
+      {hasMultiplePages && currentPage && totalPages && onPageChange && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      )}
     </TableContainer>
   );
 };

@@ -1,9 +1,12 @@
 import api from './api';
-import { BulkGenerateCodesDTO, CodeDTO, CreateCodeDTO } from 'types/codes';
+import { CodeDTO, CreateCodeDTO, BulkGenerateCodesDTO } from 'types/codes';
+import { QueryParamsDTO, PaginationDTO } from 'types/pagination';
 
-// Busca todos os códigos
-export const fetchAllCodes = async (): Promise<CodeDTO[]> => {
-  const response = await api.get('/codes');
+// Busca todos os códigos com paginação e ordenação
+export const fetchAllCodes = async (
+  queryParams: QueryParamsDTO,
+): Promise<PaginationDTO<CodeDTO>> => {
+  const response = await api.get('/codes', { params: queryParams });
   return response.data;
 };
 

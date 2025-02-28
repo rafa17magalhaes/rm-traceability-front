@@ -7,24 +7,31 @@ import {
 } from 'api/events';
 import { EventDTO } from 'types/events/EventDTO';
 import { CreateEventDTO } from 'types/events/CreateEventDTO';
+import { QueryParamsDTO } from 'types/pagination';
 
 interface EventsState {
   list: EventDTO[];
+  total: number;
+  page: number;
+  size: number;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: EventsState = {
   list: [],
+  total: 0,
+  page: 1,
+  size: 20,
   loading: false,
   error: null,
 };
 
 export const fetchAllEventsThunk = createAsyncThunk(
   'events/fetchAll',
-  async (_, { rejectWithValue }) => {
+  async (queryParams: QueryParamsDTO, { rejectWithValue }) => {
     try {
-      const data = await findAllEvents();
+      const data = await findAllEvents(queryParams);
       return data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
@@ -74,16 +81,27 @@ const eventsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // fetchAll
+    builder.addCase(fetchAllEventsThunk.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
     builder
-      .addCase(fetchAllEventsThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(
         fetchAllEventsThunk.fulfilled,
-        (state, action: PayloadAction<EventDTO[]>) => {
+        (
+          state,
+          action: PayloadAction<{
+            data: EventDTO[];
+            total: number;
+            page: number;
+            size: number;
+          }>,
+        ) => {
           state.loading = false;
-          state.list = action.payload;
+          state.list = action.payload.data;
+          state.total = action.payload.total;
+          state.page = action.payload.page;
+          state.size = action.payload.size;
         },
       )
       .addCase(fetchAllEventsThunk.rejected, (state, action) => {

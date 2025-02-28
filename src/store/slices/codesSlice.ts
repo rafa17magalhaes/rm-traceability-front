@@ -8,24 +8,32 @@ import {
   bulkGenerateCodes,
   changeCodeStatus,
 } from 'api/codes';
+import { QueryParamsDTO, PaginationDTO } from 'types/pagination';
 
 interface CodesState {
   list: CodeDTO[];
+  total: number;
+  page: number;
+  size: number;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: CodesState = {
   list: [],
+  total: 0,
+  page: 1,
+  size: 20,
   loading: false,
   error: null,
 };
 
 export const fetchAllCodesThunk = createAsyncThunk(
   'codes/fetchAll',
-  async (_, { rejectWithValue }) => {
+  async (queryParams: QueryParamsDTO, { rejectWithValue }) => {
     try {
-      return await fetchAllCodes();
+      const data: PaginationDTO<CodeDTO> = await fetchAllCodes(queryParams);
+      return data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
@@ -89,9 +97,12 @@ const codesSlice = createSlice({
       })
       .addCase(
         fetchAllCodesThunk.fulfilled,
-        (state, action: PayloadAction<CodeDTO[]>) => {
+        (state, action: PayloadAction<PaginationDTO<CodeDTO>>) => {
           state.loading = false;
-          state.list = action.payload;
+          state.list = action.payload.data;
+          state.total = action.payload.total;
+          state.page = action.payload.page;
+          state.size = action.payload.size;
         },
       )
       .addCase(fetchAllCodesThunk.rejected, (state, action) => {

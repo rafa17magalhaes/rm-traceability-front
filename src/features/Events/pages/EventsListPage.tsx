@@ -1,29 +1,23 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store'; // Ajuste para o path do seu store
+import { RootState } from 'store';
 import { fetchAllEventsThunk } from 'store/slices/eventsSlice';
 import { EventDTO } from 'types/events';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 
 const EventsListPage: React.FC = () => {
   const dispatch = useDispatch();
-  const { list: events, loading, error } = useSelector((state: RootState) => state.events);
+  const { list, loading, error, total, page, size } = useSelector((state: RootState) => state.events);
   const [selectedQRCode, setSelectedQRCode] = useState<string | null>(null);
 
+  const loadEvents = (pageNumber: number) => {
+    dispatch(fetchAllEventsThunk({ page: pageNumber, size: 20 }) as any);
+  };
+
   useEffect(() => {
-    dispatch(fetchAllEventsThunk() as any);
+    loadEvents(1);
   }, [dispatch]);
 
-  // Ordena os eventos de forma decrescente (do mais recente para o mais antigo)
-  const sortedEvents = useMemo(() => {
-    return [...events].sort((a, b) => {
-      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-      return dateB - dateA;
-    });
-  }, [events]);
-
-  // Definição das colunas para a listagem de eventos
   const columns: ColumnDefinition<EventDTO>[] = [
     {
       header: 'QR Code',
@@ -79,14 +73,21 @@ const EventsListPage: React.FC = () => {
     },
   ];
 
+  const safeSize = size || 20;
+  const totalPages = Math.ceil(total / safeSize);
+
   return (
     <>
       <GenericList
-        title="Ultimas Movimentações"
-        data={sortedEvents}
+        title="Últimas Movimentações"
+        data={list}
         columns={columns}
         loading={loading}
         error={error ?? undefined}
+        currentPage={page}
+        totalPages={totalPages}
+        totalItems={total}
+        onPageChange={(newPage) => loadEvents(newPage)}
       />
       {selectedQRCode && (
         <div

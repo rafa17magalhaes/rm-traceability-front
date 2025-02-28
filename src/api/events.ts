@@ -1,5 +1,6 @@
 import api from './api';
 import { EventDTO, CreateEventDTO } from 'types/events';
+import { QueryParamsDTO, PaginationDTO } from 'types/pagination';
 
 // Cria um novo Event
 export const createEvent = async (dto: CreateEventDTO): Promise<EventDTO> => {
@@ -7,9 +8,11 @@ export const createEvent = async (dto: CreateEventDTO): Promise<EventDTO> => {
   return response.data;
 };
 
-// Busca todos os Events
-export const findAllEvents = async (): Promise<EventDTO[]> => {
-  const response = await api.get('/events');
+// Busca todos os Events com paginação
+export const findAllEvents = async (
+  queryParams: QueryParamsDTO,
+): Promise<PaginationDTO<EventDTO>> => {
+  const response = await api.get('/events', { params: queryParams });
   return response.data;
 };
 
