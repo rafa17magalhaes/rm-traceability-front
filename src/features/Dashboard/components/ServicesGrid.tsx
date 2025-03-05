@@ -49,6 +49,12 @@ const ServicesGrid: React.FC = () => {
       description: 'Acompanhe e gerencie eventos...',
       route: '/dashboard/eventos',
     },
+    {
+      icon: <FaList size={32} />,
+      title: 'Status',
+      description: 'Gerencie Status do sistema...',
+      route: '/dashboard/status',
+    },
   ];
 
   return (

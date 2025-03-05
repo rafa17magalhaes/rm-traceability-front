@@ -16,8 +16,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
   ...rest
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-
-  const effectiveLoading = loading !== undefined ? loading : isLoading;
+  const effectiveLoading = Boolean(loading) || isLoading;
 
   const handleClick = () => {
     if (effectiveLoading) return;

@@ -2,6 +2,6 @@ export interface CreateStatusDTO {
   name: string;
   description?: string;
   active?: boolean;
-  companyId: string;
+  companyId?: string;
   resourceId?: string;
 }

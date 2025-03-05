@@ -38,6 +38,11 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           <span>Eventos</span>
         </MenuItem>
 
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/status')}>
+          <FaList size={20} />
+          <span>Status</span>
+        </MenuItem>
+
         <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/configuracoes')}>
           <FaCog size={20} />
           <span>Configurações</span>

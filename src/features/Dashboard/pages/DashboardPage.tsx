@@ -25,6 +25,10 @@ import CodeMovementPage from 'features/Codes/pages/CodeMovementPage';
 // Listagem de Eventos
 import EventsListPage from 'features/Events/pages/EventsListPage';
 
+// Status
+import AddStatusPage from 'features/Status/pages/AddStatusPage';
+import ListStatusPage from 'features/Status/pages/ListStatusPage';
+
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { logout } = useAuth();
@@ -67,6 +71,11 @@ const DashboardPage: React.FC = () => {
 
             {/*Listagem Eventos*/}
             <Route path="eventos" element={<EventsListPage />} />
+
+                  {/* STATUS */}
+            <Route path="status" element={<ListStatusPage />} />
+            <Route path="status/new" element={<AddStatusPage />} />
+            <Route path="status/edit/:id" element={<AddStatusPage />} />
 
             {/* Fallback */}
             <Route path="*" element={<ServicesGrid />} />
