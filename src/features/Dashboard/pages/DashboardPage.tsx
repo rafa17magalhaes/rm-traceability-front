@@ -43,8 +43,8 @@ const DashboardPage: React.FC = () => {
   return (
     <DashboardContainer>
       <Sidebar collapsed={sidebarCollapsed} />
-      <MainContent>
-        <Header onToggleSidebar={handleToggleSidebar} onLogout={handleLogout} />
+      <MainContent collapsed={sidebarCollapsed}>
+      <Header onToggleSidebar={handleToggleSidebar} onLogout={handleLogout} />
         <div style={{ padding: '1.5rem' }}>
           <Routes>
             {/* Rota padrão: exibe os cards (ServicesGrid) */}
@@ -72,7 +72,7 @@ const DashboardPage: React.FC = () => {
             {/*Listagem Eventos*/}
             <Route path="eventos" element={<EventsListPage />} />
 
-                  {/* STATUS */}
+            {/* STATUS */}
             <Route path="status" element={<ListStatusPage />} />
             <Route path="status/new" element={<AddStatusPage />} />
             <Route path="status/edit/:id" element={<AddStatusPage />} />

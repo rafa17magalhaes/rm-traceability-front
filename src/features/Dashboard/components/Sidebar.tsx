@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBuilding, FaUserFriends, FaCog, FaBoxes, FaQrcode, FaList } from 'react-icons/fa';
+import { FaBuilding, FaUserFriends, FaCog, FaBoxes, FaQrcode, FaHistory, FaClipboardCheck, FaExchangeAlt, FaClone } from 'react-icons/fa';
 import { FooterLogo, MenuItem, MenuWrapper, SidebarContainer } from '../styles/dashboardStyles';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,13 +33,23 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           <span>Códigos</span>
         </MenuItem>
 
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/codigos/bulk-generate')}>
+          <FaClone size={20} />
+          <span>Geração em Lote</span>
+        </MenuItem>
+
         <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/eventos')}>
-          <FaList size={20} />
-          <span>Eventos</span>
+          <FaHistory size={20} />
+          <span>Últimas Movimentações</span>
+        </MenuItem>
+
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/codigos/movements')}>
+          <FaExchangeAlt size={20} />
+          <span>Movimentar Produtos</span>
         </MenuItem>
 
         <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/status')}>
-          <FaList size={20} />
+          <FaClipboardCheck size={20} />
           <span>Status</span>
         </MenuItem>
 

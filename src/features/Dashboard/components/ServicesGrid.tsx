@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContentGrid, CardContainer, IconWrapper, MoreButton } from '../styles/dashboardStyles';
-import { FaBoxes, FaBoxOpen, FaExchangeAlt, FaHistory, FaList, FaQrcode, FaUserFriends } from 'react-icons/fa';
+import { FaBoxes, FaBoxOpen, FaBuilding, FaClipboardCheck, FaClone, FaExchangeAlt, FaHistory, FaQrcode, FaUserFriends } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const ServicesGrid: React.FC = () => {
@@ -14,16 +14,22 @@ const ServicesGrid: React.FC = () => {
       route: '/dashboard/empresas',
     },
     {
+      icon: <FaBuilding size={32} />,
+      title: 'Empresas',
+      description: 'Gerencie empresas e usuários...',
+      route: '/dashboard/empresas',
+    },
+    {
       icon: <FaExchangeAlt size={32} />,
       title: 'Movimentar Produtos',
       description: 'Registre entradas e saídas...',
-      route: '/dashboard/empresas/new',
+      route: '/dashboard/codigos/movements',
     },
     {
       icon: <FaHistory size={32} />,
       title: 'Últimas Movimentações',
       description: 'Acompanhe alterações...',
-      route: '/dashboard/usuarios/new',
+      route: '/dashboard/eventos',
     },
     {
       icon: <FaUserFriends size={32} />,
@@ -40,17 +46,23 @@ const ServicesGrid: React.FC = () => {
     {
       icon: <FaQrcode size={32} />,
       title: 'Códigos',
-      description: 'Gere e gerencie QR Codes...',
+      description: 'Gerencie QR Codes...',
       route: '/dashboard/codigos',
     },
     {
-      icon: <FaList size={32} />,
-      title: 'Eventos',
+      icon: <FaClone size={32} />,
+      title: 'Geração em Lote',
+      description: 'Gere lotes de QR Codes...',
+      route: '/dashboard/codigos/bulk-generate',
+    },
+    {
+      icon: <FaHistory size={32} />,
+      title: 'Últimas Movimentações',
       description: 'Acompanhe e gerencie eventos...',
       route: '/dashboard/eventos',
     },
     {
-      icon: <FaList size={32} />,
+      icon: <FaClipboardCheck  size={32} />,
       title: 'Status',
       description: 'Gerencie Status do sistema...',
       route: '/dashboard/status',

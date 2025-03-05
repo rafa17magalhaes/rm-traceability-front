@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const DashboardContainer = styled.div`
-  display: flex;
   width: 100%;
   min-height: 100vh;
   background: #f4f7fa;
@@ -28,10 +27,11 @@ export const LogoutButton = styled.button`
   }
 `;
 
-export const MainContent = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+export const MainContent = styled.div<{ collapsed: boolean }>`
+  margin-left: ${({ collapsed }) => (collapsed ? '80px' : '250px')};
+  transition: margin-left 0.3s;
+  min-height: 50vh;
+  background: #f4f7fa;
 `;
 
 export const HeaderContainer = styled.header`
@@ -134,18 +134,24 @@ export const MoreButton = styled.button`
 
 /* SIDEBAR */
 export const SidebarContainer = styled.div<{ collapsed: boolean }>`
-  background-color: rgb(43, 52, 62);
-  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
   width: ${({ collapsed }) => (collapsed ? '80px' : '250px')};
+  background-color: rgb(43, 52, 62);
   transition: width 0.3s;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+  z-index: 999;
 `;
 
 export const MenuWrapper = styled.div`
   margin-top: 2rem;
+  overflow-y: auto;
 `;
 
 export const MenuItem = styled.div<{ collapsed: boolean }>`
