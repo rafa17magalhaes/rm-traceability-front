@@ -8,6 +8,7 @@ import UserForm from '../components/UserForm';
 import { CreateUserDTO, UserDTO } from 'types/users';
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
+import StatusToggle from 'components/StatusToggle/StatusToggle';
 
 const UserManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,6 +49,12 @@ const UserManagementPage: React.FC = () => {
     setShowForm(false);
   };
 
+  const handleToggleActive = async (user: UserDTO) => {
+    const newActive = !user.active;
+    await dispatch(updateUserThunk({ id: user.id, dto: { active: newActive } }));
+    dispatch(fetchAllUsers());
+  };
+
   const columns: ColumnDefinition<UserDTO>[] = [
     {
       header: 'Nome',
@@ -60,9 +67,18 @@ const UserManagementPage: React.FC = () => {
     {
       header: 'Data de Criação',
       render: (user) =>
-        user.createdAt
-          ? new Date(user.createdAt).toLocaleString('pt-BR')
-          : 'Sem data',
+        user.createdAt ? new Date(user.createdAt).toLocaleString('pt-BR') : 'Sem data',
+    },
+    {
+      header: 'Ativo',
+      render: (user) => (
+        <StatusToggle
+          active={user.active}
+          onToggle={() => handleToggleActive(user)}
+          titleActive="Clique para desativar"
+          titleInactive="Clique para ativar"
+        />
+      ),
     },
     {
       header: 'Ações',

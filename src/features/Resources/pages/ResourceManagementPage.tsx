@@ -14,6 +14,7 @@ import { FaPlus, FaEdit } from 'react-icons/fa';
 import styled from 'styled-components';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
+import StatusToggle from 'components/StatusToggle/StatusToggle';
 
 const PageContainer = styled.div`
   padding: 2rem;
@@ -99,19 +100,13 @@ const ResourceManagementPage: React.FC = () => {
     {
       header: 'Ativo',
       render: (resource) => (
-        <button
-          style={{
-            background: resource.active ? '#00cc00' : '#cc0000',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '12px',
-            padding: '4px 8px',
-            cursor: 'pointer',
-          }}
-          onClick={() => handleToggleActive(resource)}
-        >
-          {resource.active ? 'Sim' : 'Não'}
-        </button>
+        <StatusToggle
+          active={resource.active}
+          onToggle={() => handleToggleActive(resource)}
+          size={24}
+          titleActive="Clique para desativar"
+          titleInactive="Clique para ativar"
+        />
       ),
     },
     {
@@ -124,7 +119,9 @@ const ResourceManagementPage: React.FC = () => {
 
   return (
     <PageContainer>
-      <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Gerenciamento de Produtos</h1>
+      <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+        Gerenciamento de Produtos
+      </h1>
 
       {showCelebration && (
         <CelebrationMessage
