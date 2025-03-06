@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { fetchAllStatusesThunk, updateStatusThunk } from 'store/slices/statusesSlice';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import { StatusDTO } from 'types/status/StatusDTO';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { UpdateStatusDTO } from 'types/status/UpdateStatusDTO';
 import StatusToggle from 'components/StatusToggle/StatusToggle';
@@ -84,7 +84,8 @@ const ListStatusPage: React.FC = () => {
             cursor: 'pointer',
           }}
         >
-          Novo Status
+        <FaPlus />
+        Adicionar Novo Status              
         </button>
       </div>
       <GenericList

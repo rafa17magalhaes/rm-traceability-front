@@ -1,6 +1,21 @@
 import React from 'react';
-import { ContentGrid, CardContainer, IconWrapper, MoreButton } from '../styles/dashboardStyles';
-import { FaBoxes, FaBoxOpen, FaBuilding, FaClipboardCheck, FaClone, FaExchangeAlt, FaHistory, FaQrcode, FaUserFriends } from 'react-icons/fa';
+import {
+  ContentGrid,
+  CardContainer,
+  IconWrapper,
+  MoreButton,
+} from '../styles/dashboardStyles';
+import {
+  FaBoxOpen,
+  FaBuilding,
+  FaExchangeAlt,
+  FaHistory,
+  FaUserFriends,
+  FaBoxes,
+  FaQrcode,
+  FaClone,
+  FaClipboardCheck,
+} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const ServicesGrid: React.FC = () => {
@@ -56,13 +71,7 @@ const ServicesGrid: React.FC = () => {
       route: '/dashboard/codigos/bulk-generate',
     },
     {
-      icon: <FaHistory size={32} />,
-      title: 'Últimas Movimentações',
-      description: 'Acompanhe e gerencie eventos...',
-      route: '/dashboard/eventos',
-    },
-    {
-      icon: <FaClipboardCheck  size={32} />,
+      icon: <FaClipboardCheck size={32} />,
       title: 'Status',
       description: 'Gerencie Status do sistema...',
       route: '/dashboard/status',
@@ -70,16 +79,31 @@ const ServicesGrid: React.FC = () => {
   ];
 
   return (
-    <ContentGrid>
-      {services.map((service, idx) => (
-        <CardContainer key={idx}>
-          <IconWrapper>{service.icon}</IconWrapper>
-          <h2>{service.title}</h2>
-          <p>{service.description}</p>
-          <MoreButton onClick={() => navigate(service.route)}>Acessar</MoreButton>
-        </CardContainer>
-      ))}
-    </ContentGrid>
+    <>
+      <h2 style={{
+        marginBottom: '1.2rem',
+        fontSize: '1.8rem',
+        fontWeight: 500,
+        color: '#333',
+        letterSpacing: '0.5px',
+        display: 'inline-block',
+        paddingBottom: '0.2rem',
+        borderBottom: '2px solid #00509e'
+      }}>
+        Funcionalidades
+      </h2>
+
+      <ContentGrid>
+        {services.map((service, idx) => (
+          <CardContainer key={idx}>
+            <IconWrapper>{service.icon}</IconWrapper>
+            <h2>{service.title}</h2>
+            <p>{service.description}</p>
+            <MoreButton onClick={() => navigate(service.route)}>Acessar</MoreButton>
+          </CardContainer>
+        ))}
+      </ContentGrid>
+    </>
   );
 };
 

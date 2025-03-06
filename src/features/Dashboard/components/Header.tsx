@@ -1,6 +1,12 @@
 import React from 'react';
 import { FaBars } from 'react-icons/fa';
-import { HeaderContainerHeader, IconButtonHeader, LogoutButton, RightSideHeader, TitleHeader } from '../styles/dashboardStyles';
+import {
+  HeaderContainerHeader,
+  IconButtonHeader,
+  LogoutButton,
+  RightSideHeader,
+  TitleHeader,
+} from '../styles/dashboardStyles';
 
 interface HeaderProps {
   onToggleSidebar?: () => void;
@@ -14,16 +20,13 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
         <IconButtonHeader onClick={onToggleSidebar}>
           <FaBars />
         </IconButtonHeader>
-        Menu
+        Painel de Controle
       </TitleHeader>
 
       <RightSideHeader>
-        <div>Notificações</div>
-        <div>Usuário</div>
-        
-        <LogoutButton onClick={onLogout}>
-          Logout
-        </LogoutButton>
+        <div>🔔</div>
+        <div>👤</div>
+        <LogoutButton onClick={onLogout}>Logout</LogoutButton>
       </RightSideHeader>
     </HeaderContainerHeader>
   );
