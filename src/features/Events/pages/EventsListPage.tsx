@@ -35,23 +35,28 @@ const EventsListPage: React.FC = () => {
     },
     {
       header: 'Produto',
-      render: (event) => (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          {event.resource?.imageUrl ? (
-            <img
-              src={event.resource.imageUrl}
-              alt="Imagem do Produto"
-              style={{ width: 80, height: 80, objectFit: 'cover' }}
-            />
-          ) : (
-            <span style={{ fontStyle: 'italic', color: '#999' }}>Sem imagem</span>
-          )}
-          <span style={{ fontSize: '0.8rem', marginTop: '4px' }}>
-            {event.resource?.name ? event.resource.name : 'Produto não informado'}
-          </span>
-        </div>
-      ),
+      render: (event) => {
+        // Prioriza os dados do recurso vindos do código
+        const productResource = event.code?.resource || event.resource;
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {productResource?.imageUrl ? (
+              <img
+                src={productResource.imageUrl}
+                alt="Imagem do Produto"
+                style={{ width: 80, height: 80, objectFit: 'cover' }}
+              />
+            ) : (
+              <span style={{ fontStyle: 'italic', color: '#999' }}>Sem imagem</span>
+            )}
+            <span style={{ fontSize: '0.8rem', marginTop: '4px' }}>
+              {productResource?.name ? productResource.name : 'Produto não informado'}
+            </span>
+          </div>
+        );
+      },
     },
+    
     {
       header: 'Valor Código',
       render: (event) => event.valueCode,
