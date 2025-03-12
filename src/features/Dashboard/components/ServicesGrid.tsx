@@ -26,7 +26,7 @@ const ServicesGrid: React.FC = () => {
       icon: <FaBoxOpen size={32} />,
       title: 'Inventário',
       description: 'Gerencie e visualize seu estoque...',
-      route: '/dashboard/empresas',
+      route: '/dashboard/codigos/inventory',
     },
     {
       icon: <FaBuilding size={32} />,

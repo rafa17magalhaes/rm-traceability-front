@@ -10,6 +10,14 @@ export const fetchAllCodes = async (
   return response.data;
 };
 
+// Busca códigos de inventário (apenas os com resourceId definidos)
+export const fetchInventoryCodes = async (
+  queryParams: QueryParamsDTO,
+): Promise<PaginationDTO<CodeDTO>> => {
+  const response = await api.get('/codes/inventory', { params: queryParams });
+  return response.data;
+};
+
 // Cria um código individual
 export const createCode = async (dto: CreateCodeDTO): Promise<CodeDTO> => {
   const response = await api.post('/codes', dto);

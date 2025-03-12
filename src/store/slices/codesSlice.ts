@@ -7,6 +7,7 @@ import {
   createCode,
   bulkGenerateCodes,
   changeCodeStatus,
+  fetchInventoryCodes,
 } from 'api/codes';
 import { QueryParamsDTO, PaginationDTO } from 'types/pagination';
 
@@ -33,6 +34,19 @@ export const fetchAllCodesThunk = createAsyncThunk(
   async (queryParams: QueryParamsDTO, { rejectWithValue }) => {
     try {
       const data: PaginationDTO<CodeDTO> = await fetchAllCodes(queryParams);
+      return data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  },
+);
+
+export const fetchInventoryCodesThunk = createAsyncThunk(
+  'codes/fetchInventory',
+  async (queryParams: QueryParamsDTO, { rejectWithValue }) => {
+    try {
+      const data: PaginationDTO<CodeDTO> =
+        await fetchInventoryCodes(queryParams);
       return data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
@@ -106,6 +120,25 @@ const codesSlice = createSlice({
         },
       )
       .addCase(fetchAllCodesThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      // inventory
+      .addCase(fetchInventoryCodesThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchInventoryCodesThunk.fulfilled,
+        (state, action: PayloadAction<PaginationDTO<CodeDTO>>) => {
+          state.loading = false;
+          state.list = action.payload.data;
+          state.total = action.payload.total;
+          state.page = action.payload.page;
+          state.size = action.payload.size;
+        },
+      )
+      .addCase(fetchInventoryCodesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

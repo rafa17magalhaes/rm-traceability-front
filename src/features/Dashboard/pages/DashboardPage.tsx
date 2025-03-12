@@ -6,21 +6,22 @@ import { DashboardContainer, MainContent } from '../styles/dashboardStyles';
 import ServicesGrid from '../components/ServicesGrid';
 import { useAuth } from 'context/AuthContext';
 
-// Páginas de Companies
+// Companies
 import ListCompaniesPage from 'features/Companies/pages/ListCompaniesPage';
 import AddCompanyPage from 'features/Companies/pages/AddCompanyPage';
 
-// Página gerenciamento de usuários
+// Gerenciamento de usuários
 import UserManagementPage from 'features/Users/pages/UserManagementPage';
 
-// Página Produtos
+// Produtos
 import ResourceManagementPage from 'features/Resources/pages/ResourceManagementPage';
 
-// Página de Códigos
+// Códigos
 import CodesRoutes from 'features/Codes/pages/CodesRoutes';
 import CodesListPage from 'features/Codes/pages/CodesListPage';
 import BulkGenerateCodesPage from 'features/Codes/pages/BulkGenerateCodesPage';
 import CodeMovementPage from 'features/Codes/pages/CodeMovementPage';
+import InventoryPage from 'features/Codes/pages/InventoryPage';
 
 // Listagem de Eventos
 import EventsListPage from 'features/Events/pages/EventsListPage';
@@ -67,6 +68,7 @@ const DashboardPage: React.FC = () => {
               <Route path="list" element={<CodesListPage />} />
               <Route path="bulk-generate" element={<BulkGenerateCodesPage />} />
               <Route path="movements" element={<CodeMovementPage />} />
+              <Route path="inventory" element={<InventoryPage />} />
             </Route>
 
             {/*Listagem Eventos*/}
