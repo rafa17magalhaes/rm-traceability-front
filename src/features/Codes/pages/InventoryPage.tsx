@@ -7,7 +7,7 @@ import { ResourceDTO } from 'types/resources';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import { QueryParamsDTO } from 'types/pagination';
 import SideDrawer from '../components/SideDrawer';
-import { FaEye } from 'react-icons/fa';
+import { FaBoxes, FaEye } from 'react-icons/fa';
 import Pagination from 'components/Pagination/Pagination';
 
 interface ResourceGroup {
@@ -137,24 +137,48 @@ const InventoryPage: React.FC = () => {
   style={{
     width: 'fit-content',
     margin: '0 auto 1.5rem auto',
-    padding: '1rem 2rem',
-    backgroundColor: '#f0f0f0',
-    color: '#545454',
-    borderRadius: '8px',
-    boxShadow: '0 2px 6px rgba(49, 31, 90, 0.32)',
+    padding: '1.2rem 2.4rem',
+    background: 'linear-gradient(135deg, #34495e 0%, #4B647C 100%)',
+    color: '#fff',
+    borderRadius: '12px',
+    boxShadow: '0 6px 12px rgba(0,0,0,0.2)',
     fontWeight: 500,
     fontSize: '1.1rem',
     textAlign: 'center',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+  }}
+  onMouseEnter={(e) => {
+    (e.currentTarget as HTMLDivElement).style.transform = 'scale(1.02)';
+    (e.currentTarget as HTMLDivElement).style.boxShadow = '0 8px 16px rgba(0,0,0,0.3)';
+  }}
+  onMouseLeave={(e) => {
+    (e.currentTarget as HTMLDivElement).style.transform = 'scale(1)';
+    (e.currentTarget as HTMLDivElement).style.boxShadow = '0 6px 12px rgba(0,0,0,0.2)';
   }}
 >
-  <div style={{ fontSize: '1.3rem', marginBottom: '0.3rem', fontWeight: 'bold' }}>
-    Controle de Estoque
+  <div
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      fontSize: '1.4rem',
+      marginBottom: '0.4rem',
+      fontWeight: 'bold',
+      textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+    }}
+  >
+    <FaBoxes />
+    <span>Controle de Estoque</span>
   </div>
-  <div style={{ fontSize: '1rem', color: '#545454' }}>
-    {totalProducts} categorias de produtos • Total de {totalCodes} itens em estoque
+  <div
+    style={{
+      fontSize: '1rem',
+      textShadow: '0 1px 1px rgba(0,0,0,0.2)',
+    }}
+  >
+    {totalProducts} tipos de produtos • Total de {totalCodes} itens em estoque
   </div>
 </div>
-
 
   <GenericList
     title="Inventário"
