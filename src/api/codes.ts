@@ -1,5 +1,6 @@
 import api from './api';
 import { CodeDTO, CreateCodeDTO, BulkGenerateCodesDTO } from 'types/codes';
+import { ChangeCodeStatusDTO } from 'types/events';
 import { QueryParamsDTO, PaginationDTO } from 'types/pagination';
 
 // Busca todos os códigos com paginação e ordenação
@@ -35,7 +36,7 @@ export const bulkGenerateCodes = async (
 // Altera o status do código em events
 export const changeCodeStatus = async (
   id: string,
-  dto: { statusId: string; observation?: string },
+  dto: ChangeCodeStatusDTO,
 ): Promise<CodeDTO> => {
   const response = await api.patch(`/codes/${id}/move`, dto);
   return response.data;

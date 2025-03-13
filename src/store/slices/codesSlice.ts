@@ -10,6 +10,7 @@ import {
   fetchInventoryCodes,
 } from 'api/codes';
 import { QueryParamsDTO, PaginationDTO } from 'types/pagination';
+import { ChangeCodeStatusDTO } from 'types/events';
 
 interface CodesState {
   list: CodeDTO[];
@@ -82,11 +83,7 @@ export const changeCodeStatusThunk = createAsyncThunk(
   async (
     params: {
       id: string;
-      dto: {
-        statusId: string;
-        observation?: string;
-        resourceId?: string;
-      };
+      dto: ChangeCodeStatusDTO;
     },
     { rejectWithValue },
   ) => {

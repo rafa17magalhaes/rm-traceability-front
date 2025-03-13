@@ -13,42 +13,19 @@ import {
   ErrorText,
   InputField,
 } from '../styles/CodeMovementStyles';
-
-interface ICode {
-  id: string;
-  value: string;
-  qrCodeUrl?: string;
-  statusId?: string;
-  status: {
-    id: string;
-    name: string;
-  };
-  resource?: {
-    id: string;
-    name: string;
-    imageUrl?: string;
-  };
-}
-
-interface IStatus {
-  id: string;
-  name: string;
-}
-
-interface IResource {
-  id: string;
-  name: string;
-  imageUrl?: string;
-}
+import { CodeDTO } from 'types/codes/CodeDTO';
+import { StatusDTO } from 'types/status';
+import { ResourceDTO } from 'types/resources';
 
 interface CodeMovementFormProps {
-  codesList: ICode[];
-  statusList: IStatus[];
-  resourcesList: IResource[];
+  codesList: CodeDTO[];
+  statusList: StatusDTO[];
+  resourcesList: ResourceDTO[];
   isLoading?: boolean;
+  processing?: boolean;
   globalError?: string | null;
   onSubmitCodeStatus: (
-    addedCodes: ICode[],
+    addedCodes: CodeDTO[],
     selectedStatus: string,
     observation: string,
     selectedResource?: string
@@ -61,6 +38,7 @@ const CodeMovementForm: React.FC<CodeMovementFormProps> = ({
   statusList,
   resourcesList,
   isLoading = false,
+  processing = false,
   globalError,
   onSubmitCodeStatus,
   onSuccess,
@@ -69,7 +47,7 @@ const CodeMovementForm: React.FC<CodeMovementFormProps> = ({
   const [selectedStatus, setSelectedStatus] = useState('');
   const [observation, setObservation] = useState('');
   const [selectedResource, setSelectedResource] = useState('');
-  const [addedCodes, setAddedCodes] = useState<ICode[]>([]);
+  const [addedCodes, setAddedCodes] = useState<CodeDTO[]>([]);
   const [localError, setLocalError] = useState<string | null>(null);
 
   const isStatusAtivado = () => {
@@ -80,7 +58,9 @@ const CodeMovementForm: React.FC<CodeMovementFormProps> = ({
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = e.target.value;
     setSelectedStatus(newStatus);
-    if (!isStatusAtivado()) setSelectedResource('');
+    if (!isStatusAtivado()) {
+      setSelectedResource('');
+    }
   };
 
   const handleAddCode = () => {
@@ -89,7 +69,6 @@ const CodeMovementForm: React.FC<CodeMovementFormProps> = ({
       return;
     }
     setLocalError(null);
-
     const foundCode = codesList.find(
       (code) =>
         code.value.toLowerCase() === valueCodeInput.trim().toLowerCase() ||
@@ -123,7 +102,6 @@ const CodeMovementForm: React.FC<CodeMovementFormProps> = ({
       return;
     }
     setLocalError(null);
-
     const success = await onSubmitCodeStatus(
       addedCodes,
       selectedStatus,
@@ -192,9 +170,7 @@ const CodeMovementForm: React.FC<CodeMovementFormProps> = ({
                     Último evento: {code.status?.name || 'N/A'}
                   </p>
                 </div>
-                <RemoveButton onClick={() => handleRemoveCode(code.id)}>
-                  &times;
-                </RemoveButton>
+                <RemoveButton onClick={() => handleRemoveCode(code.id)}>&times;</RemoveButton>
               </CodeChip>
             );
           })}
@@ -216,10 +192,7 @@ const CodeMovementForm: React.FC<CodeMovementFormProps> = ({
       {isStatusAtivado() && (
         <FormRow>
           <Label>Recurso (Produto)</Label>
-          <SelectField
-            value={selectedResource}
-            onChange={(e) => setSelectedResource(e.target.value)}
-          >
+          <SelectField value={selectedResource} onChange={(e) => setSelectedResource(e.target.value)}>
             <option value="">Selecione um recurso</option>
             {resourcesList.map((res) => (
               <option key={res.id} value={res.id}>
@@ -252,16 +225,18 @@ const CodeMovementForm: React.FC<CodeMovementFormProps> = ({
         />
       </FormRow>
 
-      {(localError || globalError) && <ErrorText>{localError || globalError}</ErrorText>}
+      {(localError || globalError) && (
+        <ErrorText>{localError || globalError}</ErrorText>
+      )}
 
       <FormRow style={{ textAlign: 'center' }}>
         <LoadingButton
           onClick={handleSubmit}
           loadingDelay={1500}
-          disabled={isLoading}
+          disabled={isLoading || processing}
           style={{ padding: '0.6rem 1.2rem', fontSize: '1rem' }}
         >
-          {isLoading ? 'Carregando...' : 'Confirmar Movimentação'}
+          {isLoading || processing ? 'Carregando...' : 'Confirmar Movimentação'}
         </LoadingButton>
       </FormRow>
     </>
