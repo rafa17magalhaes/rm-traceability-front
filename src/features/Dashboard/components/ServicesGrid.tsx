@@ -15,6 +15,7 @@ import {
   FaQrcode,
   FaClone,
   FaClipboardCheck,
+  FaMapMarkerAlt,
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -75,6 +76,12 @@ const ServicesGrid: React.FC = () => {
       title: 'Status',
       description: 'Gerencie Status do sistema...',
       route: '/dashboard/status',
+    },
+    {
+      icon: <FaMapMarkerAlt size={32} />,
+      title: 'Mapa de Rastreio',
+      description: 'Visualize a localização das movimentações...',
+      route: '/dashboard/rastreamento',
     },
   ];
 

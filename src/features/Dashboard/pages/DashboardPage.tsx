@@ -30,6 +30,9 @@ import EventsListPage from 'features/Events/pages/EventsListPage';
 import AddStatusPage from 'features/Status/pages/AddStatusPage';
 import ListStatusPage from 'features/Status/pages/ListStatusPage';
 
+// Rastreabilidade
+import TraceabilityPage from 'features/Traceability/pages/TraceabilityPage';
+
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { logout } = useAuth();
@@ -78,6 +81,9 @@ const DashboardPage: React.FC = () => {
             <Route path="status" element={<ListStatusPage />} />
             <Route path="status/new" element={<AddStatusPage />} />
             <Route path="status/edit/:id" element={<AddStatusPage />} />
+
+            {/* Rastreamento */}
+            <Route path="rastreamento" element={<TraceabilityPage />} />
 
             {/* Fallback */}
             <Route path="*" element={<ServicesGrid />} />

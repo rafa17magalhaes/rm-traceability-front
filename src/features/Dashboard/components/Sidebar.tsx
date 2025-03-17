@@ -16,6 +16,7 @@ import {
   FaExchangeAlt,
   FaClone,
   FaBoxOpen,
+  FaMapMarkerAlt,
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -64,6 +65,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
         <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/status')}>
           <FaClipboardCheck size={20} />
           <span>Status</span>
+        </MenuItem>
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/rastreamento')}>
+        <FaMapMarkerAlt size={20} />
+          <span>Mapa de Rastreio</span>
         </MenuItem>
         <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/configuracoes')}>
           <FaCog size={20} />
