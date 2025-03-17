@@ -6,7 +6,7 @@ export const CodesContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
-  max-width: 1200px; /* opcional, para limitar largura */
+  max-width: 1200px;
 `;
 
 export const CodesTitle = styled.h1`
@@ -28,6 +28,16 @@ export const FormCard = styled.div`
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin: 0 auto 1rem auto;
+  max-width: 600px;
+  text-align: center;
+`;
+
+export const ListCard = styled.div`
+  background-color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 1rem auto;
   max-width: 600px;
   text-align: center;
 `;
@@ -91,7 +101,6 @@ export const Spinner = styled.div`
   border-radius: 50%;
   animation: spin 1s linear infinite;
 
-  /* Keyframe para girar */
   @keyframes spin {
     0% {
       transform: rotate(0deg);
@@ -110,16 +119,12 @@ export const CodesTable = styled.table`
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  /* Listrado nas linhas */
   tr:nth-child(even) {
     background-color: #f9f9f9;
   }
-
-  /* Efeito hover */
   tr:hover {
     background-color: #f3f3f3;
   }
-
   transition: background-color 0.2s ease;
 `;
 
