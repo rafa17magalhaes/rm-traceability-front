@@ -83,7 +83,7 @@ const BulkGenerateCodesPage: React.FC = () => {
           />
 
           <LoadingButton
-            onClick={() => {}}
+            type="submit"
             loading={isGenerating}
             loadingDelay={0}
             disabled={isGenerating}

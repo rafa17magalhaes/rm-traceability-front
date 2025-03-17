@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ButtonStyled, Spinner } from './LoadingButtonStyles';
 
 interface LoadingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  onClick: () => void;
+  onClick?: () => void;
   loadingDelay?: number; // ms
   loading?: boolean;
 }
@@ -19,7 +19,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
   const effectiveLoading = Boolean(loading) || isLoading;
 
   const handleClick = () => {
-    if (effectiveLoading) return;
+    if (!onClick || effectiveLoading) return;
     setIsLoading(true);
     setTimeout(() => {
       onClick();
