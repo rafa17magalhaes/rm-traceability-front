@@ -1,17 +1,19 @@
 import styled from 'styled-components';
 
 export const PageContainer = styled.div`
+  background-color: #fff;
+  min-height: 100vh;
   padding: 2rem;
   font-family: 'Open Sans', sans-serif;
-  background-color: #fff;
 
   .pageTitle {
+    text-align: center;
     margin-bottom: 1rem;
-    font-size: 1.8rem;
-    font-weight: 500;
+    font-size: 2rem;
+    font-weight: 600;
     color: #333;
     padding-bottom: 0.5rem;
-    border-bottom: 3px solid #00509e;
+    border-bottom: 4px solid #00509e;
   }
 `;
 
@@ -23,10 +25,10 @@ export const ContentWrapper = styled.div`
 
 export const SidebarWrapper = styled.div`
   width: 320px;
-  background-color: #f8f8f8;
+  background-color: #fff;
   border-radius: 8px;
   padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   h3 {
     margin-bottom: 0.8rem;
@@ -82,7 +84,7 @@ export const MapWrapper = styled.div`
   height: 550px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   .leaflet-container {
     width: 100%;

@@ -19,7 +19,6 @@ const TraceabilityPage: React.FC = () => {
 
   const [mapEvents, setMapEvents] = useState<EventDTO[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<EventDTO | null>(null);
-
   const [searchResource, setSearchResource] = useState<ResourceDTO | null>(null);
 
   const handleSearch = async (searchTerm: string) => {

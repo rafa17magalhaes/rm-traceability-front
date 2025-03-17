@@ -33,7 +33,7 @@ const TraceabilitySearchForm: React.FC<TraceabilitySearchFormProps> = ({
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <LoadingButton onClick={handleSubmit} loading={loading}>
-          Search
+          Buscar
         </LoadingButton>
       </div>
 
