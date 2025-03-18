@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { fetchAllEventsThunk } from 'store/slices/eventsSlice';
 import { EventDTO } from 'types/events/EventDTO';
@@ -13,6 +13,8 @@ import {
   EventItem 
 } from '../styles';
 
+import { useSearchParams } from 'react-router-dom';
+
 const TraceabilityPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector((state) => state.events);
@@ -20,6 +22,7 @@ const TraceabilityPage: React.FC = () => {
   const [mapEvents, setMapEvents] = useState<EventDTO[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<EventDTO | null>(null);
   const [searchResource, setSearchResource] = useState<ResourceDTO | null>(null);
+  const [searchParams] = useSearchParams();
 
   const handleSearch = async (searchTerm: string) => {
     if (!searchTerm.trim()) return;
@@ -51,6 +54,14 @@ const TraceabilityPage: React.FC = () => {
   const handleSelectEvent = (evt: EventDTO) => {
     setSelectedEvent(evt);
   };
+
+  // Se tiver "?code=XYZ" na URL, faz a busca automaticamente
+  useEffect(() => {
+    const codeFromURL = searchParams.get('code');
+    if (codeFromURL) {
+      handleSearch(codeFromURL);
+    }
+  }, [searchParams]);
 
   return (
     <PageContainer>

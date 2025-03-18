@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CodeDTO } from 'types/codes/CodeDTO';
 import { ResourceDTO } from 'types/resources';
 import Pagination from 'components/Pagination/Pagination';
+import { useNavigate } from 'react-router-dom';
 
 interface ResourceGroup {
   resource: ResourceDTO;
@@ -14,25 +15,28 @@ interface SideDrawerProps {
   resourceGroup: ResourceGroup | null;
 }
 
-const PAGE_SIZE = 10; // mostra 10 códigos por página
+const PAGE_SIZE = 10;
 
 const SideDrawer: React.FC<SideDrawerProps> = ({ open, onClose, resourceGroup }) => {
-  if (!open || !resourceGroup) return null;
-  const { resource, codes } = resourceGroup;
-
-  // Paginação para os códigos
   const [drawerPage, setDrawerPage] = useState(1);
+  const navigate = useNavigate();
+
+  // reseta a página quando o grupo mudar
+  useEffect(() => {
+    setDrawerPage(1);
+  }, [resourceGroup]);
+
+  if (!open || !resourceGroup) {
+    return null;
+  }
+
+  const { resource, codes } = resourceGroup;
   const totalPagesDrawer = Math.ceil(codes.length / PAGE_SIZE);
 
-  // Cálculo dos itens visíveis
+  // Paginação local
   const startIndex = (drawerPage - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
   const visibleCodes = codes.slice(startIndex, endIndex);
-
-  // Sempre que trocar de produto, reseta a página
-  React.useEffect(() => {
-    setDrawerPage(1);
-  }, [resourceGroup]);
 
   return (
     <div
@@ -99,19 +103,17 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, onClose, resourceGroup })
         <h3 style={{ fontSize: '1.2rem', marginBottom: '0.8rem', color: '#00509e' }}>
           Produtos Rastreáveis
         </h3>
-
         <div style={{ fontSize: '0.95rem', color: '#333', marginBottom: '1rem' }}>
           Total em estoque: {codes.length}
         </div>
 
-
-        {/* Lista de códigos (paginada) */}
         {visibleCodes.map((code) => (
           <div
             key={code.id}
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'space-between',
               padding: '0.75rem',
               marginBottom: '0.75rem',
               border: '1px solid #e0e0e0',
@@ -119,50 +121,69 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, onClose, resourceGroup })
               boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
             }}
           >
-            {code.qrCodeUrl ? (
-              <img
-                src={code.qrCodeUrl}
-                alt={code.value}
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  objectFit: 'cover',
-                  borderRadius: '4px',
-                  marginRight: '1rem',
-                }}
-              />
-            ) : (
-              <div
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  backgroundColor: '#f0f0f0',
-                  borderRadius: '4px',
-                  marginRight: '1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#aaa',
-                  fontSize: '0.8rem',
-                }}
-              >
-                Sem QR
-              </div>
-            )}
-            <div>
-              <div style={{ fontWeight: 500, marginBottom: '0.25rem' }}>
-                {code.value}
-              </div>
-              <div style={{ fontSize: '0.9rem', color: '#666' }}>
-                Último evento: {code.status?.name || code.statusId || 'N/D'}
-              </div>
-              <div style={{ fontSize: '0.8rem', color: '#999' }}>
-                Data da movimentação:{" "}
-                {code.createdAt
-                  ? new Date(code.createdAt).toLocaleString('pt-BR')
-                  : 'N/D'}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {code.qrCodeUrl ? (
+                <img
+                  src={code.qrCodeUrl}
+                  alt={code.value}
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    objectFit: 'cover',
+                    borderRadius: '4px',
+                    marginRight: '1rem',
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    backgroundColor: '#f0f0f0',
+                    borderRadius: '4px',
+                    marginRight: '1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#aaa',
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  Sem QR
+                </div>
+              )}
+              <div>
+                <div style={{ fontWeight: 500, marginBottom: '0.25rem' }}>
+                  {code.value}
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#666' }}>
+                  Último evento: {code.status?.name || code.statusId || 'N/D'}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#999' }}>
+                  Data da movimentação:{' '}
+                  {code.createdAt
+                    ? new Date(code.createdAt).toLocaleString('pt-BR')
+                    : 'N/D'}
+                </div>
               </div>
             </div>
+
+            {/* Botão que leva ao mapa */}
+            <button
+              style={{
+                backgroundColor: '#00509e',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '0.4rem 0.6rem',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                navigate(`/dashboard/rastreamento?code=${code.value}`);
+              }}
+            >
+              Ver no mapa
+            </button>
           </div>
         ))}
 

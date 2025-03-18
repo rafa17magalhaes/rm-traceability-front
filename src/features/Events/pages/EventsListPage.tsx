@@ -4,10 +4,14 @@ import { RootState } from 'store';
 import { fetchAllEventsThunk } from 'store/slices/eventsSlice';
 import { EventDTO } from 'types/events';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
+import { useNavigate } from 'react-router-dom';
 
 const EventsListPage: React.FC = () => {
   const dispatch = useDispatch();
-  const { list, loading, error, total, page, size } = useSelector((state: RootState) => state.events);
+  const navigate = useNavigate();
+  const { list, loading, error, total, page, size } = useSelector(
+    (state: RootState) => state.events
+  );
   const [selectedQRCode, setSelectedQRCode] = useState<string | null>(null);
 
   const loadEvents = (pageNumber: number) => {
@@ -18,6 +22,7 @@ const EventsListPage: React.FC = () => {
     loadEvents(1);
   }, [dispatch]);
 
+  // Define as colunas, incluindo a nova coluna de “Ver no mapa”
   const columns: ColumnDefinition<EventDTO>[] = [
     {
       header: 'QR Code',
@@ -27,7 +32,7 @@ const EventsListPage: React.FC = () => {
             src={event.code.qrCodeUrl}
             alt="QR Code"
             style={{ width: 80, height: 80, cursor: 'pointer' }}
-            onClick={() => setSelectedQRCode(event.code.qrCodeUrl ?? null)}
+            onClick={() => setSelectedQRCode(event.code?.qrCodeUrl ?? null)}
           />
         ) : (
           <span style={{ fontStyle: 'italic', color: '#999' }}>Sem QR Code</span>
@@ -36,7 +41,6 @@ const EventsListPage: React.FC = () => {
     {
       header: 'Produto',
       render: (event) => {
-        // Prioriza os dados do recurso vindos do código
         const productResource = event.code?.resource || event.resource;
         return (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -56,7 +60,6 @@ const EventsListPage: React.FC = () => {
         );
       },
     },
-    
     {
       header: 'Valor Código',
       render: (event) => event.valueCode,
@@ -75,6 +78,32 @@ const EventsListPage: React.FC = () => {
         event.createdAt
           ? new Date(event.createdAt).toLocaleString('pt-BR')
           : 'Sem data',
+    },
+    {
+      header: 'Mapa',
+      render: (event) => {
+        if (!event.valueCode) {
+          return <span style={{ color: '#999' }}>N/A</span>;
+        }
+
+        return (
+          <button
+            style={{
+              backgroundColor: '#00509e',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '0.4rem 0.6rem',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              navigate(`/dashboard/rastreamento?code=${event.valueCode}`);
+            }}
+          >
+            Ver no mapa
+          </button>
+        );
+      },
     },
   ];
 
