@@ -29,7 +29,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
     try {
       const data = await loginApi(email, password);
       if (data.accessToken) {
-        login(data.accessToken);
+        await login(data.accessToken, data.user);
         onSuccess();
       } else {
         setError('Credenciais inválidas');

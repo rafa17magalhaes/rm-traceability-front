@@ -21,64 +21,6 @@ export const MainContent = styled.div<{ collapsed: boolean }>`
   padding: 1.5rem;
 `;
 
-export const HeaderContainerHeader = styled.header`
-  background: linear-gradient(90deg, #ffffff, #f8f9fa);
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #ced4da;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 998;
-`;
-
-export const TitleHeader = styled.h1`
-  margin: 0;
-  font-size: 1.75rem;
-  font-weight: 500;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-export const IconButtonHeader = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-right: 1rem;
-  font-size: 1.5rem;
-  color: #00509e;
-  transition: color 0.3s ease;
-  &:hover {
-    color: #003a75;
-  }
-`;
-
-export const RightSideHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  font-size: 1rem;
-  color: #333;
-`;
-
-export const LogoutButton = styled.button`
-  background-color: #00509e;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: #003a75;
-  }
-`;
-
 export const ContentGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
