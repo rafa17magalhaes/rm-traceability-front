@@ -13,7 +13,7 @@ const fadeInUp = keyframes`
 
 const primaryColor = '#00509E';
 
-// Container geral do Header
+// =========== Cabeçalho e Botões ===========
 export const HeaderContainerHeader = styled.header`
   display: flex;
   align-items: center;
@@ -78,7 +78,7 @@ export const UserMenuButton = styled.button`
 `;
 
 export const UserAvatar = styled.div`
-  width: 40px; /* Avatar maior */
+  width: 40px;
   height: 40px;
   background-color: ${primaryColor};
   color: #fff;
@@ -96,11 +96,12 @@ export const UserAvatar = styled.div`
   }
 `;
 
+// =========== Dropdown do Usuário ===========
 export const UserMenuDropdown = styled.div`
   position: absolute;
   top: 2.8rem;
   right: 0;
-  background-color: rgba(235, 235, 235, 0.95); /* Fundo cinza mais claro */
+  background-color: rgba(235, 235, 235, 0.95);
   backdrop-filter: blur(4px);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   border-radius: 6px;
@@ -140,7 +141,6 @@ export const InfoLine = styled.span`
     margin-bottom: 0.3rem;
   }
 
-  /* Ícone maior e com margem */
   .icon {
     margin-right: 7px;
     font-size: 1.7rem;
@@ -153,4 +153,97 @@ export const Divider = styled.div`
   height: 1px;
   background-color: #ddd;
   margin: 0.5rem 0;
+`;
+
+// =========== Dropdown de Notificações ===========
+export const NotificationsContainer = styled.div`
+  position: absolute;
+  top: 2.8rem;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  min-width: 320px; /* aumentado para 320px */
+  max-height: 500px; /* até 500px de altura */
+  overflow-y: auto;
+  padding: 0.75rem;
+  z-index: 999;
+  animation: ${fadeInUp} 0.2s ease forwards;
+`;
+
+export const NotificationTitle = styled.div`
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+`;
+
+export const NotificationItem = styled.div`
+  background-color: #fafafa;
+  border-radius: 4px;
+  padding: 0.5rem 0.6rem;
+  margin-bottom: 0.5rem;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  p {
+    margin: 0.2rem 0;
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  .notiIcon {
+    margin-right: 5px;
+    font-size: 1rem;
+    color: #fa8c16;
+  }
+`;
+
+// Cabeçalho do item de notificação (ícone + texto)
+export const NotificationItemHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.2rem;
+
+  strong {
+    margin-left: 4px;
+    font-size: 0.9rem;
+    color: #333;
+  }
+`;
+
+// Data do item
+export const NotificationItemDate = styled.small`
+  display: block;
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 0.2rem;
+`;
+
+// Badge (bolinha vermelha) sobre o ícone do sino
+export const NotificationBadge = styled.span`
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ff4d4f;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+// Imagem do produto (caso exista)
+export const NotificationProductImage = styled.img`
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  /* Removemos o float e as margens laterais */
 `;

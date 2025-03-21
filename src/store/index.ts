@@ -5,6 +5,7 @@ import resourcesReducer from './slices/resourcesSlice';
 import codesReducer from './slices/codesSlice';
 import statusesReducer from './slices/statusesSlice';
 import eventsReducer from './slices/eventsSlice';
+import notificationsReducer from './slices/notificationsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     codes: codesReducer,
     statuses: statusesReducer,
     events: eventsReducer,
+    notifications: notificationsReducer,
   },
 });
 

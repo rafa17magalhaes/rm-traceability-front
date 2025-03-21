@@ -97,7 +97,7 @@ const ServicesGrid: React.FC = () => {
         paddingBottom: '0.2rem',
         borderBottom: '2px solid #00509e'
       }}>
-        Funcionalidades
+        Serviços
       </h2>
 
       <ContentGrid>
