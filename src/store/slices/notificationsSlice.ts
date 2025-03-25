@@ -19,7 +19,6 @@ export const fetchNotificationsThunk = createAsyncThunk(
   'notifications/fetch',
   async (queryParams: QueryParamsDTO, { rejectWithValue }) => {
     try {
-      // chama a mesma API, mas com page=1 e size=8 (ou outro)
       const data = await findAllEvents(queryParams);
       return data;
     } catch (err: any) {
@@ -49,7 +48,6 @@ const notificationsSlice = createSlice({
         }>,
       ) => {
         state.loading = false;
-        // data.data é o array de events
         state.list = action.payload.data;
       },
     );

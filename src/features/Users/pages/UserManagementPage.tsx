@@ -57,6 +57,13 @@ const UserManagementPage: React.FC = () => {
 
   const columns: ColumnDefinition<UserDTO>[] = [
     {
+      header: 'Matrícula',
+      render: (usr) => {
+        if (!usr.id) return '------';
+        return usr.id.slice(0, 6).toUpperCase();
+      },
+    },
+    {
       header: 'Nome',
       render: (user) => user.name,
     },

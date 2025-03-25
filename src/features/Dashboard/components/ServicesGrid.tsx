@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ContentGrid,
   CardContainer,
@@ -16,99 +17,153 @@ import {
   FaClone,
   FaClipboardCheck,
   FaMapMarkerAlt,
+  FaCog,
 } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from 'store/hooks';
+import { RootState } from 'store';
+import { useAuth } from 'context/AuthContext';
+import { ModuleKey } from 'store/slices/permissionsSlice';
+interface ServiceItem {
+  icon: JSX.Element;
+  title: string;
+  description: string;
+  route: string;
+  permissionKey: ModuleKey;
+}
+
+const defaultPermissions: Record<ModuleKey, boolean> = {
+  empresas: true,
+  usuarios: true,
+  produtos: true,
+  codigos: true,
+  geracaoLote: true,
+  movimentacoes: true,
+  status: true,
+  rastreamento: true,
+  configuracoes: true,
+  inventario: true,
+};
+
+const services: ServiceItem[] = [
+  {
+    icon: <FaBoxOpen size={32} />,
+    title: 'Inventário',
+    description: 'Gerencie e visualize seu estoque...',
+    route: '/dashboard/codigos/inventory',
+    permissionKey: 'inventario',
+  },
+  {
+    icon: <FaBuilding size={32} />,
+    title: 'Empresas',
+    description: 'Gerencie empresas e usuários...',
+    route: '/dashboard/empresas',
+    permissionKey: 'empresas',
+  },
+  {
+    icon: <FaExchangeAlt size={32} />,
+    title: 'Movimentar Produtos',
+    description: 'Registre entradas e saídas...',
+    route: '/dashboard/codigos/movements',
+    permissionKey: 'movimentacoes',
+  },
+  {
+    icon: <FaHistory size={32} />,
+    title: 'Últimas Movimentações',
+    description: 'Acompanhe alterações...',
+    route: '/dashboard/eventos',
+    permissionKey: 'movimentacoes',
+  },
+  {
+    icon: <FaUserFriends size={32} />,
+    title: 'Usuários',
+    description: 'Gerencie contas e permissões...',
+    route: '/dashboard/usuarios',
+    permissionKey: 'usuarios',
+  },
+  {
+    icon: <FaBoxes size={32} />,
+    title: 'Produtos',
+    description: 'Gerencie produtos da empresa...',
+    route: '/dashboard/recursos',
+    permissionKey: 'produtos',
+  },
+  {
+    icon: <FaQrcode size={32} />,
+    title: 'Códigos',
+    description: 'Gerencie QR Codes...',
+    route: '/dashboard/codigos',
+    permissionKey: 'codigos',
+  },
+  {
+    icon: <FaClone size={32} />,
+    title: 'Geração em Lote',
+    description: 'Gere lotes de QR Codes...',
+    route: '/dashboard/codigos/bulk-generate',
+    permissionKey: 'geracaoLote',
+  },
+  {
+    icon: <FaClipboardCheck size={32} />,
+    title: 'Status',
+    description: 'Gerencie Status do sistema...',
+    route: '/dashboard/status',
+    permissionKey: 'status',
+  },
+  {
+    icon: <FaMapMarkerAlt size={32} />,
+    title: 'Mapa de Rastreio',
+    description: 'Visualize a localização das movimentações...',
+    route: '/dashboard/rastreamento',
+    permissionKey: 'rastreamento',
+  },
+  {
+    icon: <FaCog size={32} />,
+    title: 'Configurações',
+    description: 'Gerencie dados do usuário e empresa...',
+    route: '/dashboard/configuracoes',
+    permissionKey: 'configuracoes',
+  },
+];
 
 const ServicesGrid: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const services = [
-    {
-      icon: <FaBoxOpen size={32} />,
-      title: 'Inventário',
-      description: 'Gerencie e visualize seu estoque...',
-      route: '/dashboard/codigos/inventory',
-    },
-    {
-      icon: <FaBuilding size={32} />,
-      title: 'Empresas',
-      description: 'Gerencie empresas e usuários...',
-      route: '/dashboard/empresas',
-    },
-    {
-      icon: <FaExchangeAlt size={32} />,
-      title: 'Movimentar Produtos',
-      description: 'Registre entradas e saídas...',
-      route: '/dashboard/codigos/movements',
-    },
-    {
-      icon: <FaHistory size={32} />,
-      title: 'Últimas Movimentações',
-      description: 'Acompanhe alterações...',
-      route: '/dashboard/eventos',
-    },
-    {
-      icon: <FaUserFriends size={32} />,
-      title: 'Usuários',
-      description: 'Gerencie contas e permissões...',
-      route: '/dashboard/usuarios',
-    },
-    {
-      icon: <FaBoxes size={32} />,
-      title: 'Produtos',
-      description: 'Gerencie produtos da empresa...',
-      route: '/dashboard/recursos',
-    },
-    {
-      icon: <FaQrcode size={32} />,
-      title: 'Códigos',
-      description: 'Gerencie QR Codes...',
-      route: '/dashboard/codigos',
-    },
-    {
-      icon: <FaClone size={32} />,
-      title: 'Geração em Lote',
-      description: 'Gere lotes de QR Codes...',
-      route: '/dashboard/codigos/bulk-generate',
-    },
-    {
-      icon: <FaClipboardCheck size={32} />,
-      title: 'Status',
-      description: 'Gerencie Status do sistema...',
-      route: '/dashboard/status',
-    },
-    {
-      icon: <FaMapMarkerAlt size={32} />,
-      title: 'Mapa de Rastreio',
-      description: 'Visualize a localização das movimentações...',
-      route: '/dashboard/rastreamento',
-    },
-  ];
+  const storedPermissions = useAppSelector(
+    (state: RootState) => state.permissions.data[user?.id || ''] || {}
+  );
+  const finalPermissions: Record<ModuleKey, boolean> = { ...defaultPermissions, ...storedPermissions };
 
   return (
     <>
-      <h2 style={{
-        marginBottom: '1.2rem',
-        fontSize: '1.8rem',
-        fontWeight: 500,
-        color: '#333',
-        letterSpacing: '0.5px',
-        display: 'inline-block',
-        paddingBottom: '0.2rem',
-        borderBottom: '2px solid #00509e'
-      }}>
+      <h2
+        style={{
+          marginBottom: '1.2rem',
+          fontSize: '1.8rem',
+          fontWeight: 500,
+          color: '#333',
+          letterSpacing: '0.5px',
+          display: 'inline-block',
+          paddingBottom: '0.2rem',
+          borderBottom: '2px solid #00509e',
+        }}
+      >
         Serviços
       </h2>
 
       <ContentGrid>
-        {services.map((service, idx) => (
-          <CardContainer key={idx}>
-            <IconWrapper>{service.icon}</IconWrapper>
-            <h2>{service.title}</h2>
-            <p>{service.description}</p>
-            <MoreButton onClick={() => navigate(service.route)}>Acessar</MoreButton>
-          </CardContainer>
-        ))}
+        {services.map((service, idx) => {
+          if (finalPermissions[service.permissionKey] === false) return null;
+          return (
+            <CardContainer key={idx}>
+              <IconWrapper>{service.icon}</IconWrapper>
+              <h2>{service.title}</h2>
+              <p>{service.description}</p>
+              <MoreButton onClick={() => navigate(service.route)}>
+                Acessar
+              </MoreButton>
+            </CardContainer>
+          );
+        })}
       </ContentGrid>
     </>
   );

@@ -6,32 +6,23 @@ import { DashboardContainer, MainContent } from '../styles/dashboardStyles';
 import ServicesGrid from '../components/ServicesGrid';
 import { useAuth } from 'context/AuthContext';
 
-// Companies
+// Páginas (ajuste os paths conforme sua estrutura)
 import ListCompaniesPage from 'features/Companies/pages/ListCompaniesPage';
 import AddCompanyPage from 'features/Companies/pages/AddCompanyPage';
-
-// Gerenciamento de usuários
 import UserManagementPage from 'features/Users/pages/UserManagementPage';
-
-// Produtos
 import ResourceManagementPage from 'features/Resources/pages/ResourceManagementPage';
-
-// Códigos
 import CodesRoutes from 'features/Codes/pages/CodesRoutes';
 import CodesListPage from 'features/Codes/pages/CodesListPage';
 import BulkGenerateCodesPage from 'features/Codes/pages/BulkGenerateCodesPage';
 import CodeMovementPage from 'features/Codes/pages/CodeMovementPage';
 import InventoryPage from 'features/Codes/pages/InventoryPage';
-
-// Listagem de Eventos
 import EventsListPage from 'features/Events/pages/EventsListPage';
-
-// Status
 import AddStatusPage from 'features/Status/pages/AddStatusPage';
 import ListStatusPage from 'features/Status/pages/ListStatusPage';
-
-// Rastreabilidade
 import TraceabilityPage from 'features/Traceability/pages/TraceabilityPage';
+import SettingsPage from 'features/Settings/pages/SettingsPage';
+import RequirePermission from 'routes/RequirePermission';
+import NoPermissionPage from '../components/NoPermissionPage';
 
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -48,42 +39,153 @@ const DashboardPage: React.FC = () => {
     <DashboardContainer>
       <Sidebar collapsed={sidebarCollapsed} />
       <MainContent collapsed={sidebarCollapsed}>
-      <Header onToggleSidebar={handleToggleSidebar} onLogout={handleLogout} />
+        <Header onToggleSidebar={handleToggleSidebar} onLogout={handleLogout} />
         <div style={{ padding: '1.5rem' }}>
           <Routes>
-            {/* Rota padrão: exibe os cards (ServicesGrid) */}
+            {/* Rota padrão: ServicesGrid */}
             <Route index element={<ServicesGrid />} />
 
             {/* EMPRESAS */}
-            <Route path="empresas" element={<ListCompaniesPage />} />
-            <Route path="empresas/new" element={<AddCompanyPage />} />
-            <Route path="empresas/edit/:id" element={<AddCompanyPage />} />
+            <Route
+              path="empresas"
+              element={
+                <RequirePermission permKey="empresas">
+                  <ListCompaniesPage />
+                </RequirePermission>
+              }
+            />
+            <Route
+              path="empresas/new"
+              element={
+                <RequirePermission permKey="empresas">
+                  <AddCompanyPage />
+                </RequirePermission>
+              }
+            />
+            <Route
+              path="empresas/edit/:id"
+              element={
+                <RequirePermission permKey="empresas">
+                  <AddCompanyPage />
+                </RequirePermission>
+              }
+            />
 
             {/* USUÁRIOS */}
-            <Route path="usuarios/*" element={<UserManagementPage />} />
+            <Route
+              path="usuarios/*"
+              element={
+                <RequirePermission permKey="usuarios">
+                  <UserManagementPage />
+                </RequirePermission>
+              }
+            />
 
             {/* PRODUTOS */}
-            <Route path="recursos" element={<ResourceManagementPage />} />
+            <Route
+              path="recursos"
+              element={
+                <RequirePermission permKey="produtos">
+                  <ResourceManagementPage />
+                </RequirePermission>
+              }
+            />
 
-            {/* CODIGO */}
-            <Route path="codigos/*" element={<CodesRoutes />}>
+            {/* CÓDIGOS */}
+            <Route
+              path="codigos/*"
+              element={
+                <RequirePermission permKey="codigos">
+                  <CodesRoutes />
+                </RequirePermission>
+              }
+            >
               <Route index element={<CodesListPage />} />
               <Route path="list" element={<CodesListPage />} />
-              <Route path="bulk-generate" element={<BulkGenerateCodesPage />} />
-              <Route path="movements" element={<CodeMovementPage />} />
-              <Route path="inventory" element={<InventoryPage />} />
+              <Route
+                path="bulk-generate"
+                element={
+                  <RequirePermission permKey="geracaoLote">
+                    <BulkGenerateCodesPage />
+                  </RequirePermission>
+                }
+              />
+              <Route
+                path="movements"
+                element={
+                  <RequirePermission permKey="movimentacoes">
+                    <CodeMovementPage />
+                  </RequirePermission>
+                }
+              />
+              <Route
+                path="inventory"
+                element={
+                  <RequirePermission permKey="inventario">
+                    <InventoryPage />
+                  </RequirePermission>
+                }
+              />
             </Route>
 
-            {/*Listagem Eventos*/}
-            <Route path="eventos" element={<EventsListPage />} />
+            {/* EVENTOS */}
+            <Route
+              path="eventos"
+              element={
+                <RequirePermission permKey="movimentacoes">
+                  <EventsListPage />
+                </RequirePermission>
+              }
+            />
 
             {/* STATUS */}
-            <Route path="status" element={<ListStatusPage />} />
-            <Route path="status/new" element={<AddStatusPage />} />
-            <Route path="status/edit/:id" element={<AddStatusPage />} />
+            <Route
+              path="status"
+              element={
+                <RequirePermission permKey="status">
+                  <ListStatusPage />
+                </RequirePermission>
+              }
+            />
+            <Route
+              path="status/new"
+              element={
+                <RequirePermission permKey="status">
+                  <AddStatusPage />
+                </RequirePermission>
+              }
+            />
+            <Route
+              path="status/edit/:id"
+              element={
+                <RequirePermission permKey="status">
+                  <AddStatusPage />
+                </RequirePermission>
+              }
+            />
 
-            {/* Rastreamento */}
-            <Route path="rastreamento" element={<TraceabilityPage />} />
+            {/* RASTREAMENTO */}
+            <Route
+              path="rastreamento"
+              element={
+                <RequirePermission permKey="rastreamento">
+                  <TraceabilityPage />
+                </RequirePermission>
+              }
+            />
+
+            {/* CONFIGURAÇÕES */}
+            <Route
+              path="configuracoes"
+              element={
+                <RequirePermission permKey="configuracoes">
+                  <SettingsPage />
+                </RequirePermission>
+              }
+            />
+
+            {/* Rota de Acesso Negado */}
+            <Route path="acesso-negado" element={<NoPermissionPage />} />
 
             {/* Fallback */}
             <Route path="*" element={<ServicesGrid />} />
