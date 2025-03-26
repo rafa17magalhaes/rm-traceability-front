@@ -9,7 +9,10 @@ import {
 } from 'react-icons/fa';
 import { useAuth } from 'context/AuthContext';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { fetchNotificationsThunk } from 'store/slices/notificationsSlice';
+import {
+  fetchNotificationsThunk,
+  markAsReadThunk,
+} from 'store/slices/notificationsSlice';
 import { useNavigate } from 'react-router-dom';
 import { EventDTO } from 'types/events';
 
@@ -49,30 +52,23 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
 
-  // Estado do menu do usuário
+  // Dropdown states
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  // Estado do menu de notificações
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
-  // Pega a lista de notificações do slice notifications
-  const { list: notificationsList, loading: notificationsLoading } = useAppSelector(
-    (state) => state.notifications
-  );
+  // Redux notifications
+  const { list: notificationsList, loading: notificationsLoading } =
+    useAppSelector((state) => state.notifications);
 
-  // Armazena localmente quais IDs ainda não foram "clicados"
-  const [unreadIds, setUnreadIds] = useState<string[]>([]);
-
-  // Ao clicar fora, fecha ambos os menus
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      // Fecha menu de usuário
       if (
         userDropdownRef.current &&
         !userDropdownRef.current.contains(event.target as Node)
       ) {
         setIsUserMenuOpen(false);
       }
-      // Fecha menu de notificações
+      // Fecha menu notificações
       if (
         notificationsRef.current &&
         !notificationsRef.current.contains(event.target as Node)
@@ -80,40 +76,25 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
         setIsNotificationsOpen(false);
       }
     }
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Quando abrir o menu de notificações, busca as últimas 8
+  // Quando abrir as notificações, buscar as últimas 8
   useEffect(() => {
     if (isNotificationsOpen) {
       dispatch(fetchNotificationsThunk({ page: 1, size: 8 }));
     }
   }, [isNotificationsOpen, dispatch]);
 
-  // Quando terminar de carregar as notificações, definimos todas como não lidas (exemplo)
-  useEffect(() => {
-    if (
-      isNotificationsOpen &&
-      !notificationsLoading &&
-      notificationsList.length > 0 &&
-      unreadIds.length === 0
-    ) {
-      // Só marca como não lidos se ainda estiver vazio
-      const newIds = notificationsList.map((evt) => evt.id);
-      setUnreadIds(newIds);
-    }
-  }, [isNotificationsOpen, notificationsLoading, notificationsList, unreadIds]);
-  
   // Contagem de não lidas
-  const notificationCount = unreadIds.length;
+  const notificationCount = notificationsList.filter((evt) => !evt.isRead).length;
 
-  // Ao clicar na notificação, marca como lida e vai para /dashboard/eventos
+  // Ao clicar, marca como lido e navega
   const handleNotificationClick = (evt: EventDTO) => {
-    // Remove do array local
-    setUnreadIds((prev) => prev.filter((id) => id !== evt.id));
-    // Redireciona
+    if (!evt.isRead) {
+      dispatch(markAsReadThunk(evt.id));
+    }
     navigate('/dashboard/eventos');
   };
 
@@ -122,11 +103,12 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
   const toggleNotifications = () => setIsNotificationsOpen((prev) => !prev);
 
   // Iniciais do usuário
-  const initials = user?.name
-    ?.split(' ')
-    .map((p) => p[0])
-    .join('')
-    .toUpperCase() || 'U';
+  const initials =
+    user?.name
+      ?.split(' ')
+      .map((p) => p[0])
+      .join('')
+      .toUpperCase() || 'U';
 
   // Matrícula
   const matricula = user?.id ? user.id.slice(0, 6).toUpperCase() : '------';
@@ -145,80 +127,71 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
       <RightSideHeader>
         {/* Ícone do sino com badge */}
         <UserMenuContainer ref={notificationsRef}>
-          <IconButtonHeader onClick={toggleNotifications} style={{ position: 'relative' }}>
-            <FaRegBell /> {/* Sino outline */}
+          <IconButtonHeader
+            onClick={toggleNotifications}
+            style={{ position: 'relative' }}
+          >
+            <FaRegBell />
             {notificationCount > 0 && (
               <NotificationBadge>{notificationCount}</NotificationBadge>
             )}
           </IconButtonHeader>
 
           {isNotificationsOpen && (
-            <NotificationsContainer
-              style={{
-                minWidth: '320px',
-                maxHeight: '500px',
-              }}
-            >
+            <NotificationsContainer style={{ minWidth: '320px', maxHeight: '500px' }}>
               <NotificationTitle>Notificações</NotificationTitle>
               <Divider />
 
-              {notificationsLoading && (
-                <div style={{ padding: '0.5rem' }}>Carregando...</div>
-              )}
+              {notificationsLoading && <div style={{ padding: '0.5rem' }}>Carregando...</div>}
 
               {!notificationsLoading && notificationsList.length === 0 && (
                 <div style={{ padding: '0.5rem' }}>Nenhuma notificação</div>
               )}
 
               {!notificationsLoading &&
-                notificationsList.map((evt) => {
-                  const isUnread = unreadIds.includes(evt.id);
+                notificationsList.map((evt) => (
+                  <NotificationItem
+                    key={evt.id}
+                    onClick={() => handleNotificationClick(evt)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <NotificationItemHeader>
+                      {/* Exibe o ícone "!" somente se não lido */}
+                      {!evt.isRead && <FaExclamationCircle className="notiIcon" />}
+                      <strong>{evt.code?.value || 'Código'}</strong>
+                    </NotificationItemHeader>
 
-                  return (
-                    <NotificationItem
-                      key={evt.id}
-                      onClick={() => handleNotificationClick(evt)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <NotificationItemHeader>
-                        {/* Ícone "!" apenas se estiver não lido */}
-                        {isUnread && <FaExclamationCircle className="notiIcon" />}
-                        <strong>{evt.code?.value || 'Código'}</strong>
-                      </NotificationItemHeader>
+                    {/* Exemplo: imagem do produto */}
+                    {evt.resource?.imageUrl && (
+                      <NotificationProductImage
+                        src={evt.resource.imageUrl}
+                        alt="Produto"
+                      />
+                    )}
 
-                      {/* Imagem do produto */}
-                      {evt.resource?.imageUrl && (
-                        <NotificationProductImage
-                          src={evt.resource.imageUrl}
-                          alt="Produto"
-                        />
-                      )}
+                    <p style={{ margin: '0.2rem 0', fontSize: '0.85rem' }}>
+                      Movimentação com o código <strong>{evt.code?.value}</strong>
+                      {evt.resource?.name && (
+                        <> - produto <strong>{evt.resource.name}</strong></>
+                      )}{' '}
+                      em{' '}
+                      {evt.createdAt
+                        ? new Date(evt.createdAt).toLocaleString()
+                        : 'data não informada'}
+                      .
+                    </p>
 
-                      {/* Mensagem genérica */}
-                      <p style={{ margin: '0.2rem 0', fontSize: '0.85rem' }}>
-                        Movimentação com o código <strong>{evt.code?.value}</strong>
-                        {evt.resource?.name && (
-                          <> - produto <strong>{evt.resource.name}</strong></>
-                        )}{' '}
-                        em{' '}
-                        {evt.createdAt
-                          ? new Date(evt.createdAt).toLocaleString()
-                          : 'data não informada'}
-                        .
-                      </p>
+                    <p style={{ margin: '0.2rem 0', fontSize: '0.8rem', color: '#666' }}>
+                      Status: <strong>{evt.status?.name || '---'}</strong>
+                    </p>
 
-                      <p style={{ margin: '0.2rem 0', fontSize: '0.8rem', color: '#666' }}>
-                        Status: <strong>{evt.status?.name || '---'}</strong>
-                      </p>
-
-                      {evt.createdAt && (
-                        <NotificationItemDate>
-                          {new Date(evt.createdAt).toLocaleString()}
-                        </NotificationItemDate>
-                      )}
-                    </NotificationItem>
-                  );
-                })}
+                    {evt.createdAt && (
+                      <NotificationItemDate>
+                        {new Date(evt.createdAt).toLocaleString()}
+                      </NotificationItemDate>
+                    )}
+                  </NotificationItem>
+                ))}
 
               <Divider />
               <div style={{ textAlign: 'center' }}>

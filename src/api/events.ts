@@ -35,3 +35,9 @@ export const findEventsByStatusId = async (
   });
   return response.data;
 };
+
+// Marca um Event como lido
+export const markEventAsRead = async (id: string): Promise<EventDTO> => {
+  const response = await api.patch(`/events/${id}/mark-as-read`);
+  return response.data; // retorna o Event atualizado (com isRead = true)
+};

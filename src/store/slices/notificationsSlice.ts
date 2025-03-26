@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { EventDTO } from 'types/events';
-import { findAllEvents } from 'api/events';
+import { findAllEvents, markEventAsRead } from 'api/events'; // <-- importar nova função
 import { QueryParamsDTO } from 'types/pagination';
 
 interface NotificationsState {
@@ -21,6 +21,19 @@ export const fetchNotificationsThunk = createAsyncThunk(
     try {
       const data = await findAllEvents(queryParams);
       return data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  },
+);
+
+// Thunk para marcar como lido
+export const markAsReadThunk = createAsyncThunk(
+  'notifications/markAsRead',
+  async (eventId: string, { rejectWithValue }) => {
+    try {
+      const updatedEvent = await markEventAsRead(eventId);
+      return updatedEvent;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || err.message);
     }
@@ -54,6 +67,16 @@ const notificationsSlice = createSlice({
     builder.addCase(fetchNotificationsThunk.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
+    });
+
+    // markAsReadThunk
+    builder.addCase(markAsReadThunk.fulfilled, (state, action) => {
+      const updatedEvent = action.payload;
+      // Atualiza no array local
+      const idx = state.list.findIndex((e) => e.id === updatedEvent.id);
+      if (idx !== -1) {
+        state.list[idx] = updatedEvent; // agora isRead = true
+      }
     });
   },
 });

@@ -6,6 +6,7 @@ import { UserDTO } from 'types/users';
 
 export interface EventDTO {
   id: string;
+  ip?: string;
   codeId: string;
   code: CodeDTO;
   valueCode: string;
@@ -13,7 +14,6 @@ export interface EventDTO {
   status: StatusDTO;
   resourceId?: string;
   resource: ResourceDTO;
-  ip?: string;
   companyId?: string;
   company: CompanyDTO;
   urlCode?: string;
@@ -22,6 +22,7 @@ export interface EventDTO {
   latitude?: number;
   userId?: string;
   user: UserDTO;
+  isRead: boolean;
   createdAt?: string;
   updateAt?: string;
 }
