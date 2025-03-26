@@ -52,7 +52,7 @@ export const ToggleContainer = styled.div`
   gap: 0.6rem;
 `;
 
-/** Switch, usando gradient e glow */
+/** Switch, usando gradient e glow em tons de azul */
 export const ToggleSlider = styled.div<ToggleSliderProps>`
   width: 42px;
   height: 22px;
@@ -63,9 +63,9 @@ export const ToggleSlider = styled.div<ToggleSliderProps>`
   flex-shrink: 0;
 
   background: ${({ $isActive }) =>
-    $isActive ? 'linear-gradient(135deg, #4ade80, #22c55e)' : '#555'};
+    $isActive ? 'linear-gradient(135deg, #00509e, #2563eb)' : '#555'};
   box-shadow: ${({ $isActive }) =>
-    $isActive ? '0 0 10px rgba(34, 197, 94, 0.6)' : 'none'};
+    $isActive ? '0 0 10px rgba(59, 130, 246, 0.6)' : 'none'};
 
   &:before {
     content: '';
@@ -94,29 +94,30 @@ export const ActionsRow = styled.div`
   margin-top: 1rem;
 
   button {
-    background: linear-gradient(135deg, #4ade80, #22c55e);
-    border: none;
-    color: #fff;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.9rem;
     margin: 0 0.4rem;
     min-width: 80px;
-    box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
     transition: background 0.3s ease;
+    border: none;
+    color: #fff;
 
     &:hover {
       filter: brightness(1.1);
     }
 
+    /* Botão "Salvar": gradiente azul */
     &:first-child {
-      /* Salvar */
+      background: linear-gradient(135deg, #00509e 0%, rgb(4, 62, 121) 100%);
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
     }
+
+    /* Botão "Cancelar": gradiente cinza */
     &:last-child {
-      /* Cancelar, pode trocar cor se quiser */
-      background: linear-gradient(135deg, #f87171, #ef4444);
-      box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+      background: linear-gradient(135deg, #9ca3af, #6b7280);
+      box-shadow: 0 0 8px rgba(156, 163, 175, 0.4);
     }
   }
 `;

@@ -6,25 +6,34 @@ import { useAuth } from 'context/AuthContext';
 
 import CompanyCard from '../components/CompanyCard';
 import UserPermissionsForm from '../components/UserPermissionsForm';
-import LoadingButton from 'components/Button/LoadingButton';
-import { UserDTO } from 'types/users';
+import UsersTable from '../components/UsersTable';
 
-
-import GenericList, { ColumnDefinition } from 'components/List/GenericList';
-import { SettingsContainer, SettingsContent, Title, CompanyCardWrapper, CardSection, ModalOverlay } from '../styles/SettingsPageStyles';
+import {
+  SettingsContainer,
+  SettingsContent,
+  Title,
+  CompanyCardWrapper,
+  CardSection,
+  ModalOverlay,
+} from '../styles/SettingsPageStyles';
+import Pagination from 'components/Pagination/Pagination';
 
 const SettingsPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAuth();
 
-  // Carregamos a lista de usuários do Redux
+  // Lista de usuários do Redux
   const { list: users, loading, error } = useAppSelector(
     (state: RootState) => state.users
   );
 
-  // Estado para abrir/fechar modal de permissões
+  // Modal de permissões
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [selectedUserName, setSelectedUserName] = useState<string>('');
+
+  // Paginação
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     dispatch(fetchAllUsers());
@@ -40,36 +49,13 @@ const SettingsPage: React.FC = () => {
     setSelectedUserName('');
   };
 
-  // Define as colunas para GenericList
-  const columns: ColumnDefinition<UserDTO>[] = [
-    {
-        header: 'Matrícula',
-        render: (usr) => {
-          if (!usr.id) return '------';
-          return usr.id.slice(0, 6).toUpperCase();
-        },
-      },
-    {
-      header: 'Nome',
-      render: (usr) => usr.name,
-    },
-    {
-      header: 'E-mail',
-      render: (usr) => usr.email,
-    },
-    {
-      header: 'Ações',
-      render: (usr) => (
-        <LoadingButton
-          onClick={() => handleOpenPermissions(usr.id, usr.name)}
-          loadingDelay={800}
-          style={{ minWidth: '120px' }}
-        >
-          Nível de Acesso
-        </LoadingButton>
-      ),
-    },
-  ];
+  // Lógica de paginação
+  const totalItems = users.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const usersPage = users.slice(startIndex, endIndex);
 
   return (
     <SettingsContainer>
@@ -81,13 +67,27 @@ const SettingsPage: React.FC = () => {
         </CompanyCardWrapper>
 
         <CardSection>
-          <GenericList
-            title="Gerenciar Acesso dos Usuários"
-            data={users}
-            columns={columns}
-            loading={loading}
-            error={error}
-          />
+          <h3 style={{ marginBottom: '1rem', color: '#333', textAlign: 'center' }}>
+            Gerenciar Acesso dos Usuários
+          </h3>
+
+          {loading && <p>Carregando usuários...</p>}
+          {error && <p>Erro ao carregar usuários: {error}</p>}
+
+          {!loading && !error && users.length > 0 && (
+            <>
+              <UsersTable data={usersPage} onOpenPermissions={handleOpenPermissions} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </>
+          )}
+
+          {!loading && !error && users.length === 0 && (
+            <p style={{ textAlign: 'center' }}>Nenhum usuário cadastrado.</p>
+          )}
         </CardSection>
       </SettingsContent>
 
