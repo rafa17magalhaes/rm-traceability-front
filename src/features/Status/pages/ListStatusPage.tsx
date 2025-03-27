@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { fetchAllStatusesThunk, updateStatusThunk } from 'store/slices/statusesSlice';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
@@ -7,11 +7,16 @@ import { FaEdit, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { UpdateStatusDTO } from 'types/status/UpdateStatusDTO';
 import StatusToggle from 'components/StatusToggle/StatusToggle';
+import Pagination from 'components/Pagination/Pagination';
 
 const ListStatusPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { list, loading, error } = useAppSelector((state) => state.statuses);
+
+  // PAGINAÇÃO
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     dispatch(fetchAllStatusesThunk());
@@ -37,12 +42,12 @@ const ListStatusPage: React.FC = () => {
       render: (status) => status.description || 'Sem descrição',
     },
     {
-        header: 'Data de Criação',
-        render: (event) =>
-          event.createdAt
-            ? new Date(event.createdAt).toLocaleString('pt-BR')
-            : 'Sem data',
-      },
+      header: 'Data de Criação',
+      render: (status) =>
+        status.createdAt
+          ? new Date(status.createdAt).toLocaleString('pt-BR')
+          : 'Sem data',
+    },
     {
       header: 'Ativo?',
       render: (status) => (
@@ -70,6 +75,11 @@ const ListStatusPage: React.FC = () => {
     },
   ];
 
+  const totalItems = list.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pageData = list.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <>
       <div style={{ marginBottom: '1rem', textAlign: 'center' }}>
@@ -84,16 +94,27 @@ const ListStatusPage: React.FC = () => {
             cursor: 'pointer',
           }}
         >
-        <FaPlus />
-        Adicionar Novo Status              
+          <FaPlus />
+          Adicionar Novo Status
         </button>
       </div>
+
       <GenericList
         title="Listagem de Status"
-        data={list}
+        data={pageData}
         columns={columns}
         loading={loading}
-        error={error ?? undefined}
+        error={error || undefined}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={totalItems}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
       />
     </>
   );

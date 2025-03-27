@@ -9,6 +9,7 @@ import { CreateUserDTO, UserDTO } from 'types/users';
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import StatusToggle from 'components/StatusToggle/StatusToggle';
+import Pagination from 'components/Pagination/Pagination';
 
 const UserManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,50 +19,18 @@ const UserManagementPage: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<(Partial<CreateUserDTO> & { id: string }) | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
 
+  // PAGINAÇÃO
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
   useEffect(() => {
     dispatch(fetchAllUsers());
   }, [dispatch]);
 
-  const handleAddNew = () => {
-    setSelectedUser(null);
-    setShowForm(true);
-  };
-
-  const handleEdit = (user: Partial<CreateUserDTO> & { id: string }) => {
-    setSelectedUser(user);
-    setShowForm(true);
-  };
-
-  const handleFormSubmit = async (userData: CreateUserDTO) => {
-    if (selectedUser && selectedUser.id) {
-      await dispatch(updateUserThunk({ id: selectedUser.id, dto: userData }));
-    } else {
-      await dispatch(createUserThunk(userData));
-    }
-    setSelectedUser(null);
-    setShowForm(false);
-    dispatch(fetchAllUsers());
-    setShowCelebration(true);
-  };
-
-  const handleCancel = () => {
-    setSelectedUser(null);
-    setShowForm(false);
-  };
-
-  const handleToggleActive = async (user: UserDTO) => {
-    const newActive = !user.active;
-    await dispatch(updateUserThunk({ id: user.id, dto: { active: newActive } }));
-    dispatch(fetchAllUsers());
-  };
-
   const columns: ColumnDefinition<UserDTO>[] = [
     {
       header: 'Matrícula',
-      render: (usr) => {
-        if (!usr.id) return '------';
-        return usr.id.slice(0, 6).toUpperCase();
-      },
+      render: (usr) => (usr.id ? usr.id.slice(0, 6).toUpperCase() : '------'),
     },
     {
       header: 'Nome',
@@ -81,7 +50,7 @@ const UserManagementPage: React.FC = () => {
       render: (user) => (
         <StatusToggle
           active={user.active}
-          onToggle={() => handleToggleActive(user)}
+          onToggle={() => dispatch(updateUserThunk({ id: user.id, dto: { active: !user.active } }))}
           titleActive="Clique para desativar"
           titleInactive="Clique para ativar"
         />
@@ -91,12 +60,11 @@ const UserManagementPage: React.FC = () => {
       header: 'Ações',
       render: (user) => (
         <button
-          onClick={() => handleEdit(user)}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
+          onClick={() => {
+            setSelectedUser(user);
+            setShowForm(true);
           }}
+          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
           title="Editar"
         >
           <FaEdit size={18} color="#00509e" />
@@ -104,6 +72,12 @@ const UserManagementPage: React.FC = () => {
       ),
     },
   ];
+
+  // PAGINAÇÃO: cálculo dos dados
+  const totalItems = list.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pageData = list.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <ListContainer>
@@ -118,7 +92,7 @@ const UserManagementPage: React.FC = () => {
 
       {!showForm && (
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <AddButton onClick={handleAddNew}>
+          <AddButton onClick={() => { setSelectedUser(null); setShowForm(true); }}>
             <FaPlus size={16} style={{ marginRight: '0.5rem' }} />
             Adicionar Novo Usuário
           </AddButton>
@@ -129,9 +103,22 @@ const UserManagementPage: React.FC = () => {
         <UserForm
           loading={loading}
           error={error}
-          onSubmit={handleFormSubmit}
+          onSubmit={async (data) => {
+            if (selectedUser && selectedUser.id) {
+              await dispatch(updateUserThunk({ id: selectedUser.id, dto: data }));
+            } else {
+              await dispatch(createUserThunk(data));
+            }
+            setSelectedUser(null);
+            setShowForm(false);
+            dispatch(fetchAllUsers());
+            setShowCelebration(true);
+          }}
           initialData={selectedUser || undefined}
-          onCancel={handleCancel}
+          onCancel={() => {
+            setSelectedUser(null);
+            setShowForm(false);
+          }}
         />
       ) : (
         <>
@@ -140,13 +127,24 @@ const UserManagementPage: React.FC = () => {
           {(!loading && list.length === 0) ? (
             <p style={{ textAlign: 'center' }}>Nenhum usuário encontrado.</p>
           ) : (
-            <GenericList
-              title="Lista de Usuários"
-              data={list as UserDTO[]}
-              columns={columns}
-              loading={loading}
-              error={error || undefined}
-            />
+            <>
+              <GenericList
+                title="Lista de Usuários"
+                data={pageData}
+                columns={columns}
+                loading={loading}
+                error={error || undefined}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            </>
           )}
         </>
       )}

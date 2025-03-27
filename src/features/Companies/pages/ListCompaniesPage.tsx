@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useNavigate } from 'react-router-dom';
 import { fetchAllCompanies } from 'store/slices/companiesSlice';
@@ -6,11 +6,16 @@ import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import { ListContainer, ListTitle, AddButton } from '../styles/companiesStyles';
 import { BaseCompanyDTO } from 'types/companies';
 import { FaPlus, FaEdit } from 'react-icons/fa';
+import Pagination from 'components/Pagination/Pagination';
 
 const ListCompaniesPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { list, loading, error } = useAppSelector((state) => state.companies);
+
+  // PAGINAÇÃO
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     dispatch(fetchAllCompanies());
@@ -53,7 +58,11 @@ const ListCompaniesPage: React.FC = () => {
       ),
     },
   ];
-  
+
+  const totalItems = list.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pageData = list.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <ListContainer>
@@ -66,10 +75,19 @@ const ListCompaniesPage: React.FC = () => {
       </div>
       <GenericList
         title="Lista de Empresas"
-        data={list}
+        data={pageData}
         columns={columns}
         loading={loading}
         error={error || undefined}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={totalItems}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
       />
     </ListContainer>
   );

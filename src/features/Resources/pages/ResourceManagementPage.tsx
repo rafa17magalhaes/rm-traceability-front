@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
 import StatusToggle from 'components/StatusToggle/StatusToggle';
+import Pagination from 'components/Pagination/Pagination';
 
 const PageContainer = styled.div`
   padding: 2rem;
@@ -29,6 +30,10 @@ const ResourceManagementPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedResource, setSelectedResource] = useState<ResourceDTO | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
+
+  // PAGINAÇÃO
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     dispatch(fetchAllResourcesThunk());
@@ -117,6 +122,11 @@ const ResourceManagementPage: React.FC = () => {
     },
   ];
 
+  const totalItems = list.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pageData = list.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <PageContainer>
       <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
@@ -162,13 +172,25 @@ const ResourceManagementPage: React.FC = () => {
           onCancel={handleCancel}
         />
       ) : (
-        <GenericList
-          title="Lista de Produtos"
-          data={list}
-          columns={columns}
-          loading={loading}
-          error={error || undefined}
-        />
+        <>
+          <GenericList
+            title="Lista de Produtos"
+            data={pageData}
+            columns={columns}
+            loading={loading}
+            error={error || undefined}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        </>
       )}
     </PageContainer>
   );
