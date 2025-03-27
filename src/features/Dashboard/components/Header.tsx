@@ -6,6 +6,7 @@ import {
   FaBuilding,
   FaIdBadge,
   FaExclamationCircle,
+  FaHome,
 } from 'react-icons/fa';
 import { useAuth } from 'context/AuthContext';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -118,9 +119,16 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
   return (
     <HeaderContainerHeader>
       <TitleHeader>
+        {/* Ícone para abrir/fechar sidebar */}
         <IconButtonHeader onClick={onToggleSidebar}>
           <FaBars />
         </IconButtonHeader>
+
+        {/* Ícone para voltar ao dashboard */}
+        <IconButtonHeader onClick={() => navigate('/dashboard')}>
+          <FaHome />
+        </IconButtonHeader>
+
         Painel de Controle
       </TitleHeader>
 

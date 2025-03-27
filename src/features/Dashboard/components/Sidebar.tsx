@@ -1,4 +1,3 @@
-// src/components/Sidebar.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -19,6 +18,7 @@ import {
   FaClone,
   FaBoxOpen,
   FaMapMarkerAlt,
+  FaHome,
 } from 'react-icons/fa';
 import { useAuth } from 'context/AuthContext';
 import { useAppSelector } from 'store/hooks';
@@ -49,13 +49,22 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
   const storedPermissions = useAppSelector(
     (state: RootState) => state.permissions.data[user?.id || ''] || {}
   );
-  const finalPermissions: Record<ModuleKey, boolean> = { ...defaultPermissions, ...storedPermissions };
+  const finalPermissions: Record<ModuleKey, boolean> = {
+    ...defaultPermissions,
+    ...storedPermissions,
+  };
 
   const isVisible = (permKey: ModuleKey) => finalPermissions[permKey] !== false;
 
   return (
     <SidebarContainer collapsed={collapsed}>
       <MenuWrapper>
+        {/* NOVO ITEM PARA O DASHBOARD */}
+        <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard')}>
+          <FaHome size={20} />
+          <span>Dashboard</span>
+        </MenuItem>
+
         {isVisible('empresas') && (
           <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/empresas')}>
             <FaBuilding size={20} />
@@ -81,7 +90,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           </MenuItem>
         )}
         {isVisible('geracaoLote') && (
-          <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/codigos/bulk-generate')}>
+          <MenuItem
+            collapsed={collapsed}
+            onClick={() => navigate('/dashboard/codigos/bulk-generate')}
+          >
             <FaClone size={20} />
             <span>Geração em Lote</span>
           </MenuItem>
@@ -92,14 +104,20 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
               <FaHistory size={20} />
               <span>Últimas Movimentações</span>
             </MenuItem>
-            <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/codigos/movements')}>
+            <MenuItem
+              collapsed={collapsed}
+              onClick={() => navigate('/dashboard/codigos/movements')}
+            >
               <FaExchangeAlt size={20} />
               <span>Movimentar Produtos</span>
             </MenuItem>
           </>
         )}
         {isVisible('inventario') && (
-          <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/codigos/inventory')}>
+          <MenuItem
+            collapsed={collapsed}
+            onClick={() => navigate('/dashboard/codigos/inventory')}
+          >
             <FaBoxOpen size={20} />
             <span>Inventário</span>
           </MenuItem>
@@ -111,13 +129,19 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           </MenuItem>
         )}
         {isVisible('rastreamento') && (
-          <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/rastreamento')}>
+          <MenuItem
+            collapsed={collapsed}
+            onClick={() => navigate('/dashboard/rastreamento')}
+          >
             <FaMapMarkerAlt size={20} />
             <span>Mapa de Rastreio</span>
           </MenuItem>
         )}
         {isVisible('configuracoes') && (
-          <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/configuracoes')}>
+          <MenuItem
+            collapsed={collapsed}
+            onClick={() => navigate('/dashboard/configuracoes')}
+          >
             <FaCog size={20} />
             <span>Configurações</span>
           </MenuItem>
