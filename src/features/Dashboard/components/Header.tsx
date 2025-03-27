@@ -32,11 +32,13 @@ import {
   InfoLine,
   NotificationsContainer,
   NotificationTitle,
-  NotificationItem,
-  NotificationBadge,
   NotificationItemHeader,
   NotificationItemDate,
   NotificationProductImage,
+  NotificationListItem,
+  NotificationContent,
+  NotificationNoImage,
+  NotificationBadge,
 } from '../styles/headerStyles';
 
 interface HeaderProps {
@@ -61,6 +63,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
   const { list: notificationsList, loading: notificationsLoading } =
     useAppSelector((state) => state.notifications);
 
+  // Fecha dropdowns ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -69,7 +72,6 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
       ) {
         setIsUserMenuOpen(false);
       }
-      // Fecha menu notificações
       if (
         notificationsRef.current &&
         !notificationsRef.current.contains(event.target as Node)
@@ -91,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
   // Contagem de não lidas
   const notificationCount = notificationsList.filter((evt) => !evt.isRead).length;
 
-  // Ao clicar, marca como lido e navega
+  // Ao clicar na notificação, marca como lido e navega
   const handleNotificationClick = (evt: EventDTO) => {
     if (!evt.isRead) {
       dispatch(markAsReadThunk(evt.id));
@@ -146,62 +148,93 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
           </IconButtonHeader>
 
           {isNotificationsOpen && (
-            <NotificationsContainer style={{ minWidth: '320px', maxHeight: '500px' }}>
+            <NotificationsContainer
+              style={{
+                minWidth: '340px',
+                maxWidth: '400px',
+                maxHeight: '500px',
+                padding: '0.8rem',
+              }}
+            >
               <NotificationTitle>Notificações</NotificationTitle>
               <Divider />
 
-              {notificationsLoading && <div style={{ padding: '0.5rem' }}>Carregando...</div>}
-
-              {!notificationsLoading && notificationsList.length === 0 && (
-                <div style={{ padding: '0.5rem' }}>Nenhuma notificação</div>
+              {/* Carregando */}
+              {notificationsLoading && (
+                <div style={{ padding: '1rem', textAlign: 'center' }}>
+                  Carregando...
+                </div>
               )}
 
+              {/* Sem notificações */}
+              {!notificationsLoading && notificationsList.length === 0 && (
+                <div style={{ padding: '1rem', textAlign: 'center', color: '#666' }}>
+                  Nenhuma notificação
+                </div>
+              )}
+
+              {/* Lista de notificações */}
               {!notificationsLoading &&
-                notificationsList.map((evt) => (
-                  <NotificationItem
+              notificationsList.map((evt) => {
+                // Lógica de fallback para a imagem
+                const imageUrl = evt.resource?.imageUrl || evt.code?.resource?.imageUrl;
+
+                return (
+                  <NotificationListItem
                     key={evt.id}
                     onClick={() => handleNotificationClick(evt)}
-                    style={{ cursor: 'pointer' }}
                   >
-                    <NotificationItemHeader>
-                      {/* Exibe o ícone "!" somente se não lido */}
-                      {!evt.isRead && <FaExclamationCircle className="notiIcon" />}
-                      <strong>{evt.code?.value || 'Código'}</strong>
-                    </NotificationItemHeader>
-
-                    {/* Exemplo: imagem do produto */}
-                    {evt.resource?.imageUrl && (
+                    {/* Se existir imageUrl, mostra a imagem; caso contrário, placeholder */}
+                    {imageUrl ? (
                       <NotificationProductImage
-                        src={evt.resource.imageUrl}
+                        src={imageUrl}
                         alt="Produto"
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          objectFit: 'cover',
+                        }}
                       />
+                    ) : (
+                      <NotificationNoImage>Sem img</NotificationNoImage>
                     )}
 
-                    <p style={{ margin: '0.2rem 0', fontSize: '0.85rem' }}>
-                      Movimentação com o código <strong>{evt.code?.value}</strong>
-                      {evt.resource?.name && (
-                        <> - produto <strong>{evt.resource.name}</strong></>
-                      )}{' '}
-                      em{' '}
-                      {evt.createdAt
-                        ? new Date(evt.createdAt).toLocaleString()
-                        : 'data não informada'}
-                      .
-                    </p>
+                    <NotificationContent>
+                      <NotificationItemHeader>
+                        {!evt.isRead && (
+                          <FaExclamationCircle style={{ fontSize: '1rem', color: '#fa8c16' }} />
+                        )}
+                        <span>Movimentação</span>
+                      </NotificationItemHeader>
 
-                    <p style={{ margin: '0.2rem 0', fontSize: '0.8rem', color: '#666' }}>
-                      Status: <strong>{evt.status?.name || '---'}</strong>
-                    </p>
+                      <p style={{ margin: '0.2rem 0', fontSize: '0.85rem', color: '#444' }}>
+                        Código: <strong>{evt.code?.value}</strong>
+                        {evt.resource?.name && (
+                          <> - Produto: <strong>{evt.resource.name}</strong></>
+                        )}{' '}
+                        em{' '}
+                        {evt.createdAt
+                          ? new Date(evt.createdAt).toLocaleString()
+                          : 'data não informada'}
+                        .
+                      </p>
 
-                    {evt.createdAt && (
-                      <NotificationItemDate>
-                        {new Date(evt.createdAt).toLocaleString()}
-                      </NotificationItemDate>
-                    )}
-                  </NotificationItem>
-                ))}
+                      <p style={{ margin: '0.2rem 0', fontSize: '0.8rem', color: '#666' }}>
+                        Status: <strong>{evt.status?.name || '---'}</strong>
+                      </p>
 
+                      {evt.createdAt && (
+                        <NotificationItemDate>
+                          {new Date(evt.createdAt).toLocaleString()}
+                        </NotificationItemDate>
+                      )}
+                    </NotificationContent>
+                  </NotificationListItem>
+                );
+              })}
               <Divider />
+
+              {/* Botão "Ver todas" */}
               <div style={{ textAlign: 'center' }}>
                 <button
                   style={{
@@ -210,7 +243,16 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
                     color: '#00509E',
                     cursor: 'pointer',
                     fontSize: '0.85rem',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '4px',
+                    transition: 'background-color 0.2s ease',
                   }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor = '#e6f0fa')
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = 'transparent')
+                  }
                   onClick={() => navigate('/dashboard/eventos')}
                 >
                   Ver todas

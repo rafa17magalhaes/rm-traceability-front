@@ -156,29 +156,6 @@ export const Divider = styled.div`
 `;
 
 // =========== Dropdown de Notificações ===========
-export const NotificationsContainer = styled.div`
-  position: absolute;
-  top: 2.8rem;
-  right: 0;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-  border-radius: 6px;
-  min-width: 320px; /* aumentado para 320px */
-  max-height: 500px; /* até 500px de altura */
-  overflow-y: auto;
-  padding: 0.75rem;
-  z-index: 999;
-  animation: ${fadeInUp} 0.2s ease forwards;
-`;
-
-export const NotificationTitle = styled.div`
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
-`;
-
 export const NotificationItem = styled.div`
   background-color: #fafafa;
   border-radius: 4px;
@@ -202,20 +179,39 @@ export const NotificationItem = styled.div`
   }
 `;
 
-// Cabeçalho do item de notificação (ícone + texto)
+export const NotificationsContainer = styled.div`
+  position: absolute;
+  top: 2.8rem;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  min-width: 320px;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 0.75rem;
+  z-index: 999;
+  animation: ${fadeInUp} 0.2s ease forwards;
+`;
+
+export const NotificationTitle = styled.div`
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+`;
+
 export const NotificationItemHeader = styled.div`
   display: flex;
   align-items: center;
+  gap: 0.4rem;
   margin-bottom: 0.2rem;
-
-  strong {
-    margin-left: 4px;
-    font-size: 0.9rem;
-    color: #333;
-  }
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: bold;
 `;
 
-// Data do item
 export const NotificationItemDate = styled.small`
   display: block;
   font-size: 0.75rem;
@@ -223,7 +219,6 @@ export const NotificationItemDate = styled.small`
   margin-top: 0.2rem;
 `;
 
-// Badge (bolinha vermelha) sobre o ícone do sino
 export const NotificationBadge = styled.span`
   position: absolute;
   top: -4px;
@@ -239,11 +234,42 @@ export const NotificationBadge = styled.span`
   justify-content: center;
 `;
 
-// Imagem do produto (caso exista)
+export const NotificationListItem = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  border-radius: 6px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const NotificationContent = styled.div`
+  flex: 1;
+`;
+
 export const NotificationProductImage = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   border-radius: 4px;
-  /* Removemos o float e as margens laterais */
+`;
+
+export const NotificationNoImage = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: #ddd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: #666;
 `;
