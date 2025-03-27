@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { fetchAllUsers } from 'store/slices/usersSlice';
 import { RootState } from 'store';
-import { useAuth } from 'context/AuthContext';
 
 import CompanyCard from '../components/CompanyCard';
 import UserPermissionsForm from '../components/UserPermissionsForm';
@@ -17,10 +16,10 @@ import {
   ModalOverlay,
 } from '../styles/SettingsPageStyles';
 import Pagination from 'components/Pagination/Pagination';
+import { FaUserShield, FaCog } from 'react-icons/fa';
 
 const SettingsPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAuth();
 
   // Lista de usuários do Redux
   const { list: users, loading, error } = useAppSelector(
@@ -60,14 +59,30 @@ const SettingsPage: React.FC = () => {
   return (
     <SettingsContainer>
       <SettingsContent>
-        <Title>Configurações</Title>
+        {/* Título principal com ícone de engrenagem */}
+        <Title>
+          <FaCog style={{ marginRight: '0.5rem' }} />
+          Configurações
+        </Title>
 
         <CompanyCardWrapper>
           <CompanyCard />
         </CompanyCardWrapper>
 
         <CardSection>
-          <h3 style={{ marginBottom: '1rem', color: '#333', textAlign: 'center' }}>
+          {/* Subtítulo com ícone de “escudo de usuário” */}
+          <h3
+            style={{
+              marginBottom: '1rem',
+              color: '#333',
+              textAlign: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+          >
+            <FaUserShield />
             Gerenciar Acesso dos Usuários
           </h3>
 

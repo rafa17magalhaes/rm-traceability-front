@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { EventDTO } from 'types/events';
-import { findAllEvents, markEventAsRead } from 'api/events'; // <-- importar nova função
+import { findAllEvents, markEventAsRead } from 'api/events';
 import { QueryParamsDTO } from 'types/pagination';
 
 interface NotificationsState {

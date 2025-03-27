@@ -2,6 +2,7 @@ import React from 'react';
 import { UserDTO } from 'types/users';
 import LoadingButton from 'components/Button/LoadingButton';
 import { TableContainer } from '../styles/UsersTableStyles';
+import { FaUserLock } from 'react-icons/fa';
 
 interface UsersTableProps {
   data: UserDTO[];
@@ -14,7 +15,6 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, onOpenPermissions }) => {
       <table>
         <thead>
           <tr>
-            {/* Definindo larguras fixas ou proporcionais para cada coluna */}
             <th style={{ width: '120px' }}>Matrícula</th>
             <th style={{ width: '180px' }}>Nome</th>
             <th style={{ width: '300px' }}>E-mail</th>
@@ -24,9 +24,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, onOpenPermissions }) => {
         <tbody>
           {data.map((usr) => (
             <tr key={usr.id}>
-              <td>
-                {usr.id ? usr.id.slice(0, 6).toUpperCase() : '------'}
-              </td>
+              <td>{usr.id ? usr.id.slice(0, 6).toUpperCase() : '------'}</td>
               <td>{usr.name}</td>
               <td>{usr.email}</td>
               <td>
@@ -34,6 +32,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, onOpenPermissions }) => {
                   onClick={() => onOpenPermissions(usr.id, usr.name)}
                   loadingDelay={800}
                 >
+                  {/* Ícone + texto */}
+                  <FaUserLock style={{ marginRight: '0.2rem' }} />
                   Nível de Acesso
                 </LoadingButton>
               </td>
