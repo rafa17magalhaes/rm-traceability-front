@@ -1,3 +1,4 @@
+import { FaTools } from 'react-icons/fa';
 import styled from 'styled-components';
 
 export const DashboardContainer = styled.div`
@@ -127,4 +128,35 @@ export const MenuItem = styled.div<{ collapsed: boolean }>`
     display: ${({ collapsed }) => (collapsed ? 'none' : 'inline')};
     font-size: 1rem;
   }
+`;
+
+export const TitleContainer = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #f0f0f0, #cccccc);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: #333;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+export const TitleIcon = styled(FaTools)`
+  font-size: 1.6rem;
+  color: #555; /* Se quiser o ícone um pouco mais escuro */
+`;
+
+export const TitleText = styled.h2`
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+`;
+
+// Subtítulo (opcional)
+export const TitleSubtitle = styled.p`
+  margin: 0 0 1.5rem 0;
+  font-size: 0.9rem;
+  color: #666;
 `;

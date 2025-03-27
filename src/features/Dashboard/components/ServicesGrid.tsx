@@ -5,6 +5,10 @@ import {
   CardContainer,
   IconWrapper,
   MoreButton,
+  TitleContainer,
+  TitleIcon,
+  TitleSubtitle,
+  TitleText,
 } from '../styles/dashboardStyles';
 import {
   FaBoxOpen,
@@ -128,30 +132,27 @@ const ServicesGrid: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  // Permissões do usuário
   const storedPermissions = useAppSelector(
     (state: RootState) => state.permissions.data[user?.id || ''] || {}
   );
-  const finalPermissions: Record<ModuleKey, boolean> = { ...defaultPermissions, ...storedPermissions };
+  const finalPermissions: Record<ModuleKey, boolean> = {
+    ...defaultPermissions,
+    ...storedPermissions,
+  };
 
   return (
     <>
-      <h2
-        style={{
-          marginBottom: '1.2rem',
-          fontSize: '1.8rem',
-          fontWeight: 500,
-          color: '#333',
-          letterSpacing: '0.5px',
-          display: 'inline-block',
-          paddingBottom: '0.2rem',
-          borderBottom: '2px solid #00509e',
-        }}
-      >
-        Serviços
-      </h2>
+      <TitleContainer>
+        <TitleIcon />
+        <TitleText>Painel de Serviços</TitleText>
+      </TitleContainer>
+
+      <TitleSubtitle>Selecione um módulo abaixo para gerenciar:</TitleSubtitle>
 
       <ContentGrid>
         {services.map((service, idx) => {
+          // Se o usuário não tiver permissão, não renderiza o card
           if (finalPermissions[service.permissionKey] === false) return null;
           return (
             <CardContainer key={idx}>
