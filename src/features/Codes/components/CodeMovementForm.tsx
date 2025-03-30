@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+
+import { CodeDTO } from 'types/codes/CodeDTO';
+import { StatusDTO } from 'types/status';
+import { ResourceDTO } from 'types/resources';
+
 import LoadingButton from 'components/Button/LoadingButton';
 import {
   FormRow,
@@ -13,9 +18,6 @@ import {
   ErrorText,
   InputField,
 } from '../styles/CodeMovementStyles';
-import { CodeDTO } from 'types/codes/CodeDTO';
-import { StatusDTO } from 'types/status';
-import { ResourceDTO } from 'types/resources';
 
 interface CodeMovementFormProps {
   codesList: CodeDTO[];

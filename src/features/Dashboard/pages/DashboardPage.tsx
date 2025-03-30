@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+
+import { useAuth } from 'context/AuthContext';
+import RequirePermission from 'routes/RequirePermission';
+
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import { DashboardContainer, MainContent } from '../styles/dashboardStyles';
 import ServicesGrid from '../components/ServicesGrid';
-import { useAuth } from 'context/AuthContext';
+import NoPermissionPage from '../components/NoPermissionPage';
 
-// Páginas (ajuste os paths conforme sua estrutura)
 import ListCompaniesPage from 'features/Companies/pages/ListCompaniesPage';
 import AddCompanyPage from 'features/Companies/pages/AddCompanyPage';
 import UserManagementPage from 'features/Users/pages/UserManagementPage';
@@ -21,8 +23,8 @@ import AddStatusPage from 'features/Status/pages/AddStatusPage';
 import ListStatusPage from 'features/Status/pages/ListStatusPage';
 import TraceabilityPage from 'features/Traceability/pages/TraceabilityPage';
 import SettingsPage from 'features/Settings/pages/SettingsPage';
-import RequirePermission from 'routes/RequirePermission';
-import NoPermissionPage from '../components/NoPermissionPage';
+
+import { DashboardContainer, MainContent } from '../styles/dashboardStyles';
 
 const DashboardPage: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);

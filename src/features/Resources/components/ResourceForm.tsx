@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { validateResourceForm, ResourceFormValues } from '../validate/resourceFormValidation';
+
 import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';
+
+import LoadingButton from 'components/Button/LoadingButton';
+import { validateResourceForm, ResourceFormValues } from '../validate/resourceFormValidation';
 import {
   FormContainer,
   FormTitle,
@@ -17,7 +20,6 @@ import {
   ButtonRow,
   SecondaryButton
 } from '../styles/StyledComponentsResources';
-import LoadingButton from 'components/Button/LoadingButton';
 
 type ResourceFormProps = {
   loading: boolean;

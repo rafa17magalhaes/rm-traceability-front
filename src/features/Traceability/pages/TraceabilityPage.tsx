@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { useSearchParams } from 'react-router-dom';
+
 import { fetchAllEventsThunk } from 'store/slices/eventsSlice';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { EventDTO } from 'types/events/EventDTO';
 import { ResourceDTO } from 'types/resources';
+
 import TraceabilitySearchForm from '../components/TraceabilitySearchForm';
 import TraceabilityMap from '../components/TraceabilityMap';
 import { 
@@ -12,8 +15,6 @@ import {
   EventsList, 
   EventItem 
 } from '../styles';
-
-import { useSearchParams } from 'react-router-dom';
 
 const TraceabilityPage: React.FC = () => {
   const dispatch = useAppDispatch();

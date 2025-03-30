@@ -1,4 +1,5 @@
 import api from './api';
+
 import { ResourceDTO } from 'types/resources/ResourceDTO';
 import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';

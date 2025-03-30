@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { FaUserShield, FaCog } from 'react-icons/fa';
+
 import { fetchAllUsers } from 'store/slices/usersSlice';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { RootState } from 'store';
+
+import Pagination from 'components/Pagination/Pagination';
 
 import CompanyCard from '../components/CompanyCard';
 import UserPermissionsForm from '../components/UserPermissionsForm';
 import UsersTable from '../components/UsersTable';
-
 import {
   SettingsContainer,
   SettingsContent,
@@ -15,8 +18,6 @@ import {
   CardSection,
   ModalOverlay,
 } from '../styles/SettingsPageStyles';
-import Pagination from 'components/Pagination/Pagination';
-import { FaUserShield, FaCog } from 'react-icons/fa';
 
 const SettingsPage: React.FC = () => {
   const dispatch = useAppDispatch();

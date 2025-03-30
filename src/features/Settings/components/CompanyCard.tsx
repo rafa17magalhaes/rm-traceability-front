@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
+import { BiBuildingHouse } from 'react-icons/bi';
+
 import { useAuth } from 'context/AuthContext';
+
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { fetchCompanyById } from 'store/slices/companiesSlice';
 import { RootState } from 'store';
@@ -13,8 +16,6 @@ import {
   FieldLabel,
   FieldValue,
 } from '../styles/CompanyCardStyles';
-
-import { BiBuildingHouse } from 'react-icons/bi';
 
 const CompanyCard: React.FC = () => {
   const dispatch = useAppDispatch();

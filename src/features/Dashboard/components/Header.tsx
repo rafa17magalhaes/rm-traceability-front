@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FaBars,
   FaRegBell,
@@ -8,13 +9,14 @@ import {
   FaExclamationCircle,
   FaHome,
 } from 'react-icons/fa';
+
 import { useAuth } from 'context/AuthContext';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import {
   fetchNotificationsThunk,
   markAsReadThunk,
 } from 'store/slices/notificationsSlice';
-import { useNavigate } from 'react-router-dom';
+
 import { EventDTO } from 'types/events';
 
 import {

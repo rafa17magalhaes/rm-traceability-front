@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { Container, Title, Message, ActionsContainer, BackButton } from '../styles/NoPermissionPageStyles';
 
 const NoPermissionPage: React.FC = () => {

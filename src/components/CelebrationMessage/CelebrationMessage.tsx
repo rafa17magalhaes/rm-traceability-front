@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Confetti from 'react-confetti';
+
 import styled, { keyframes } from 'styled-components';
 
 interface CelebrationMessageProps {

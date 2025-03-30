@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaPlus, FaEdit } from 'react-icons/fa';
+
 import { AppDispatch, RootState } from 'store';
 import {
   fetchAllResourcesThunk,
   createResourceThunk,
   updateResourceThunk,
 } from 'store/slices/resourcesSlice';
-import ResourceForm from '../components/ResourceForm';
+
 import { CreateResourceDTO } from 'types/resources/CreateResourceDTO';
 import { UpdateResourceDTO } from 'types/resources/UpdateResourceDTO';
 import { ResourceDTO } from 'types/resources/ResourceDTO';
-import { FaPlus, FaEdit } from 'react-icons/fa';
-import styled from 'styled-components';
-import GenericList, { ColumnDefinition } from 'components/List/GenericList';
+
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import StatusToggle from 'components/StatusToggle/StatusToggle';
 import Pagination from 'components/Pagination/Pagination';
-
-const PageContainer = styled.div`
-  padding: 2rem;
-  background: #f4f7f9;
-  min-height: 100vh;
-`;
+import ResourceForm from '../components/ResourceForm';
+import { PageContainer } from '../styles/StyledComponentsResources';
 
 const ResourceManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

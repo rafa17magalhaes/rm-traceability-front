@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useNavigate } from 'react-router-dom';
-import { fetchAllCompanies } from 'store/slices/companiesSlice';
-import GenericList, { ColumnDefinition } from 'components/List/GenericList';
-import { ListContainer, ListTitle, AddButton } from '../styles/companiesStyles';
-import { BaseCompanyDTO } from 'types/companies';
 import { FaPlus, FaEdit } from 'react-icons/fa';
+
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { fetchAllCompanies } from 'store/slices/companiesSlice';
+
+import { BaseCompanyDTO } from 'types/companies';
+
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import Pagination from 'components/Pagination/Pagination';
+import { ListContainer, ListTitle, AddButton } from '../styles/companiesStyles';
 
 const ListCompaniesPage: React.FC = () => {
   const dispatch = useAppDispatch();

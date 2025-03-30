@@ -1,4 +1,5 @@
 import api from './api';
+
 import { CodeDTO, CreateCodeDTO, BulkGenerateCodesDTO } from 'types/codes';
 import { ChangeCodeStatusDTO } from 'types/events';
 import { QueryParamsDTO, PaginationDTO } from 'types/pagination';

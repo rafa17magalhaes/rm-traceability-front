@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
+
 import { UserDTO } from 'types/users';
 
 interface AuthContextType {

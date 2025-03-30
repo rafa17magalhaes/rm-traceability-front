@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { CodeDTO } from 'types/codes/CodeDTO';
 import { ResourceDTO } from 'types/resources';
+
 import Pagination from 'components/Pagination/Pagination';
-import { useNavigate } from 'react-router-dom';
 import { Title } from '../styles/CodeMovementStyles';
 import { DrawerOverlay, DrawerContent, CloseButton, HeaderContainer, InfoText, CodeItem } from '../styles/SideDrawerStyles';
 

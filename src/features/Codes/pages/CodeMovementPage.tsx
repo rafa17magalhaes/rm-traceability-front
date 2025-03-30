@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { fetchAllCodesThunk, changeCodeStatusThunk } from 'store/slices/codesSlice';
 import { fetchActiveStatusesThunk } from 'store/slices/statusesSlice';
 import { fetchAllResourcesThunk } from 'store/slices/resourcesSlice';
-import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
-import { Container, Title } from '../styles/CodeMovementStyles';
-import CodeMovementForm from '../components/CodeMovementForm';
+
 import { ChangeCodeStatusDTO } from 'types/events';
+
+import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
+import CodeMovementForm from '../components/CodeMovementForm';
+import { Container, Title } from '../styles/CodeMovementStyles';
 
 const CodeMovementPage: React.FC = () => {
   const dispatch = useAppDispatch();

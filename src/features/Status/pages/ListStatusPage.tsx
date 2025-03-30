@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { fetchAllStatusesThunk, updateStatusThunk } from 'store/slices/statusesSlice';
-import GenericList, { ColumnDefinition } from 'components/List/GenericList';
-import { StatusDTO } from 'types/status/StatusDTO';
 import { FaEdit, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { fetchAllStatusesThunk, updateStatusThunk } from 'store/slices/statusesSlice';
+
+import { StatusDTO } from 'types/status/StatusDTO';
 import { UpdateStatusDTO } from 'types/status/UpdateStatusDTO';
+
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import StatusToggle from 'components/StatusToggle/StatusToggle';
 import Pagination from 'components/Pagination/Pagination';
 

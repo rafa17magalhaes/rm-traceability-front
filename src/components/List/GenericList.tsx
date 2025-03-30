@@ -1,4 +1,6 @@
 import React from 'react';
+
+import Pagination from 'components/Pagination/Pagination';
 import {
   NoDataText,
   StyledTable,
@@ -7,7 +9,6 @@ import {
   TableHeaderCell,
   TableTitle,
 } from './GenericListStyles';
-import Pagination from 'components/Pagination/Pagination';
 
 export interface ColumnDefinition<T> {
   header: string;

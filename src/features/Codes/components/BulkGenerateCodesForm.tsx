@@ -1,11 +1,12 @@
 import React from 'react';
+
+import LoadingButton from 'components/Button/LoadingButton';
 import {
   FormCard,
   GenerateForm,
   InputField,
   MessageContainer,
 } from '../styles/CodesStyles';
-import LoadingButton from 'components/Button/LoadingButton';
 
 interface BulkGenerateCodesFormProps {
   prefix: string;

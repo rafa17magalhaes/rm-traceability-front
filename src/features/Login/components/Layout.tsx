@@ -1,4 +1,5 @@
 import React from 'react';
+
 import AnimatedBackgroundAdvanced from './AnimatedBackgroundAdvanced';
 import {
   LayoutContainer,

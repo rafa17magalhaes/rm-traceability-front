@@ -1,9 +1,10 @@
 import React from 'react';
+
 import { CreateStatusDTO } from 'types/status/CreateStatusDTO';
 import { UpdateStatusDTO } from 'types/status/UpdateStatusDTO';
+
 import LoadingButton from 'components/Button/LoadingButton';
 import { FormContainer, FormTitle, FormGroup, Label, Input, TextArea, CheckboxContainer } from '../styles/StatusFormStyles';
-
 
 interface StatusFormProps {
   formData: CreateStatusDTO | UpdateStatusDTO;

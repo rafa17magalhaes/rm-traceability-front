@@ -1,8 +1,10 @@
 import React from 'react';
+import { FaUserLock } from 'react-icons/fa';
+
 import { UserDTO } from 'types/users';
+
 import LoadingButton from 'components/Button/LoadingButton';
 import { TableContainer } from '../styles/UsersTableStyles';
-import { FaUserLock } from 'react-icons/fa';
 
 interface UsersTableProps {
   data: UserDTO[];

@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
-import CompanyForm from '../components/CompanyForm';
+
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { fetchCompanyById, createCompanyThunk, updateCompanyThunk } from 'store/slices/companiesSlice';
+import { createUserThunk } from 'store/slices/usersSlice';
+
 import { CreateCompanyDTO } from 'types/companies';
 import { CreateUserDTO } from 'types/users';
-import { fetchCompanyById, createCompanyThunk, updateCompanyThunk } from 'store/slices/companiesSlice';
+
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
-import { createUserThunk } from 'store/slices/usersSlice';
+import CompanyForm from '../components/CompanyForm';
 
 const AddCompanyPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>(); // Se existir, estamos em modo edição
+  const { id } = useParams<{ id: string }>();
   const { loading, error, currentCompany } = useAppSelector((state) => state.companies);
   const [showCelebration, setShowCelebration] = useState(false);
 

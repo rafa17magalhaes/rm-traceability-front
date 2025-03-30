@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import { RootState } from 'store';
 import { fetchAllEventsThunk } from 'store/slices/eventsSlice';
+
 import { EventDTO } from 'types/events';
+
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
-import { useNavigate } from 'react-router-dom';
 
 const EventsListPage: React.FC = () => {
   const dispatch = useDispatch();

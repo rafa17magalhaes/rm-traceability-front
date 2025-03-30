@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { FaBuilding, FaMapMarkerAlt, FaUserTie } from 'react-icons/fa';
+
 import { BaseCompanyDTO } from 'types/companies';
 import { CreateCompanyDTO } from 'types/companies';
 import { CreateUserDTO } from 'types/users';
-import { FaBuilding, FaMapMarkerAlt, FaUserTie } from 'react-icons/fa';
+
+import LoadingButton from 'components/Button/LoadingButton';
+import { ValidationErrors, validateCompanyForm } from '../validate/companyFormValidation';
+import { ButtonRow } from 'features/Users/styles/StyledComponentsUsers';
 import { 
   FormContainer, 
   FormTitle, 
@@ -13,9 +18,6 @@ import {
   InputField, 
   ErrorText 
 } from '../styles/companiesStyles';
-import { ValidationErrors, validateCompanyForm } from '../validate/companyFormValidation';
-import LoadingButton from 'components/Button/LoadingButton';
-import { ButtonRow } from 'features/Users/styles/StyledComponentsUsers';
 
 type CompanyFormProps = {
   loading: boolean;

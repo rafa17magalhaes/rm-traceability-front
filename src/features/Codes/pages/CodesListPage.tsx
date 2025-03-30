@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import GenericList, { ColumnDefinition } from 'components/List/GenericList';
+
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { fetchAllCodesThunk } from 'store/slices/codesSlice';
+
 import { CodeDTO } from 'types/codes/CodeDTO';
 import { QueryParamsDTO } from 'types/pagination';
+
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 
 const CodesListPage: React.FC = () => {
   const dispatch = useAppDispatch();

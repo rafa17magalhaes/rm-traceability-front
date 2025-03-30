@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { CreateUserDTO } from 'types/users';
 import { FaUser } from 'react-icons/fa';
+
+import { CreateUserDTO } from 'types/users';
+
+import LoadingButton from 'components/Button/LoadingButton';
+import { ValidationErrors, validateUserForm } from '../validade/userFormValidation';
 import { 
   FormContainer, 
   FormTitle, 
@@ -12,8 +16,6 @@ import {
   ButtonRow,
   SecondaryButton
 } from '../styles/StyledComponentsUsers';
-import { ValidationErrors, validateUserForm } from '../validade/userFormValidation';
-import LoadingButton from 'components/Button/LoadingButton';
 
 interface UserFormProps {
   loading: boolean;

@@ -1,5 +1,6 @@
-import { CreateUserDTO, UpdateUserDTO, UserDTO } from 'types/users';
 import api from './api';
+
+import { CreateUserDTO, UpdateUserDTO, UserDTO } from 'types/users';
 
 export const createUser = async (
   createUserDTO: CreateUserDTO,

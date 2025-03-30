@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { PaginationContainer, PageButton } from './PaginationStyles';
 
 interface PaginationProps {

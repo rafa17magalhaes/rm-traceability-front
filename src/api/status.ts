@@ -1,4 +1,5 @@
 import api from './api';
+
 import { StatusDTO, CreateStatusDTO, UpdateStatusDTO } from 'types/status';
 
 // Cria um novo Status

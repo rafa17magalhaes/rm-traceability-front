@@ -1,12 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  FooterLogo,
-  MenuItem,
-  MenuWrapper,
-  SidebarContainer,
-} from '../styles/dashboardStyles';
-import {
   FaBuilding,
   FaUserFriends,
   FaCog,
@@ -20,10 +14,18 @@ import {
   FaMapMarkerAlt,
   FaHome,
 } from 'react-icons/fa';
+
 import { useAuth } from 'context/AuthContext';
 import { useAppSelector } from 'store/hooks';
 import { RootState } from 'store';
 import { ModuleKey } from 'store/slices/permissionsSlice';
+
+import {
+  FooterLogo,
+  MenuItem,
+  MenuWrapper,
+  SidebarContainer,
+} from '../styles/dashboardStyles';
 
 const defaultPermissions: Record<ModuleKey, boolean> = {
   empresas: true,

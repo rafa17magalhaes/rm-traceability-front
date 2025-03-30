@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const PageContainer = styled.div`
+  padding: 2rem;
+  background: #f4f7f9;
+  min-height: 100vh;
+`;
+
 export const FormContainer = styled.div`
   background: #fff;
   max-width: 600px;

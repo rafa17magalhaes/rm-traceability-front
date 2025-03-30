@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Container, Title, Form, Label, Input, ErrorMessage } from '../styles/loginStyles';
-import LoadingButton from 'components/Button/LoadingButton';
-import { validateEmail } from '../validate/loginValidation';
+
 import { login as loginApi } from '../services/authService';
 import { useLogin } from '../hooks/useLogin';
+
+import LoadingButton from 'components/Button/LoadingButton';
+import { validateEmail } from '../validate/loginValidation';
+import { Container, Title, Form, Label, Input, ErrorMessage } from '../styles/loginStyles';
 
 interface LoginFormProps {
   onSuccess: () => void;

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+
+import { ResourceDTO } from 'types/resources';
+
 import LoadingButton from 'components/Button/LoadingButton';
 import { ErrorMessage } from 'features/Login/styles/loginStyles';
 import { SearchContainer } from '../styles/TraceabilitySearchFormStyles';
-import { ResourceDTO } from 'types/resources';
 
 interface TraceabilitySearchFormProps {
   onSearch: (searchTerm: string) => void;

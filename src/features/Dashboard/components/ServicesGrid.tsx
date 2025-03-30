@@ -1,16 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ContentGrid,
-  CardContainer,
-  IconWrapper,
-  MoreButton,
-  TitleContainer,
-  TitleIcon,
-  TitleSubtitle,
-  TitleText,
-} from '../styles/dashboardStyles';
-import {
   FaBoxOpen,
   FaBuilding,
   FaExchangeAlt,
@@ -23,10 +13,22 @@ import {
   FaMapMarkerAlt,
   FaCog,
 } from 'react-icons/fa';
+
+import { useAuth } from 'context/AuthContext';
 import { useAppSelector } from 'store/hooks';
 import { RootState } from 'store';
-import { useAuth } from 'context/AuthContext';
 import { ModuleKey } from 'store/slices/permissionsSlice';
+
+import {
+  ContentGrid,
+  CardContainer,
+  IconWrapper,
+  MoreButton,
+  TitleContainer,
+  TitleIcon,
+  TitleSubtitle,
+  TitleText,
+} from '../styles/dashboardStyles';
 interface ServiceItem {
   icon: JSX.Element;
   title: string;

@@ -1,9 +1,10 @@
+import api from './api';
+
 import {
   CompanyDTO,
   CreateCompanyDTO,
   UpdateCompanyDTO,
 } from 'types/companies';
-import api from './api';
 
 export const createCompany = async (
   createCompanyDTO: CreateCompanyDTO,

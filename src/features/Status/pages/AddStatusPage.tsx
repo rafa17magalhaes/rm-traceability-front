@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { createStatusThunk, updateStatusThunk, fetchAllStatusesThunk } from 'store/slices/statusesSlice';
+
 import { CreateStatusDTO } from 'types/status/CreateStatusDTO';
 import { UpdateStatusDTO } from 'types/status/UpdateStatusDTO';
-import { useNavigate, useParams } from 'react-router-dom';
-import StatusForm from '../components/StatusForm';
+
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
+import StatusForm from '../components/StatusForm';
 import { PageBackground } from '../styles/StatusFormStyles';
 
 const AddStatusPage: React.FC = () => {

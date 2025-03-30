@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { bulkGenerateCodesThunk } from 'store/slices/codesSlice';
 
+import { CodeDTO } from 'types/codes/CodeDTO';
+
+import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
+import BulkGenerateCodesForm from '../components/BulkGenerateCodesForm';
 import {
   CodesContainer,
   CodesTitle,
@@ -12,10 +17,6 @@ import {
   CodesTd,
   ListCard,
 } from '../styles/CodesStyles';
-
-import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
-import BulkGenerateCodesForm from '../components/BulkGenerateCodesForm';
-import { CodeDTO } from 'types/codes/CodeDTO';
 
 const BulkGenerateCodesPage: React.FC = () => {
   const dispatch = useAppDispatch();

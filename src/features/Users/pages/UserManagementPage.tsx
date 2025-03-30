@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaEdit, FaPlus } from 'react-icons/fa';
+
 import { AppDispatch, RootState } from 'store';
 import { fetchAllUsers, createUserThunk, updateUserThunk } from 'store/slices/usersSlice';
-import { ListContainer, ListTitle, AddButton } from '../styles/ListUsersStyles';
-import { FaEdit, FaPlus } from 'react-icons/fa';
-import UserForm from '../components/UserForm';
 import { CreateUserDTO, UserDTO } from 'types/users';
+
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
+import Pagination from 'components/Pagination/Pagination';
 import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import StatusToggle from 'components/StatusToggle/StatusToggle';
-import Pagination from 'components/Pagination/Pagination';
+import UserForm from '../components/UserForm';
+import { ListContainer, ListTitle, AddButton } from '../styles/ListUsersStyles';
 
 const UserManagementPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

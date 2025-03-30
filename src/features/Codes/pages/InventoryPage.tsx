@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { FaBoxes, FaEye } from 'react-icons/fa';
+
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { RootState } from 'store';
 import { fetchInventoryCodesThunk } from 'store/slices/codesSlice';
+import { RootState } from 'store';
+
 import { CodeDTO } from 'types/codes/CodeDTO';
 import { ResourceDTO } from 'types/resources';
-import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import { QueryParamsDTO } from 'types/pagination';
+
+import GenericList, { ColumnDefinition } from 'components/List/GenericList';
 import Pagination from 'components/Pagination/Pagination';
-import { FaBoxes, FaEye } from 'react-icons/fa';
 import SideDrawer from '../components/SideDrawer';
 import { InventoryContainer, SummaryCard } from '../styles/InventoryPageStyles';
 
