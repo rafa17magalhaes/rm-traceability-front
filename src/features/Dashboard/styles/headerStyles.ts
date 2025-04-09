@@ -49,6 +49,8 @@ export const IconButtonHeader = styled.button`
 export const RightSideHeader = styled.div`
   display: flex;
   align-items: center;
+  gap: 1.2rem; /* Dá espaço entre ChatSearch e sininho/avatar */
+  margin-right: 1.5rem;
 `;
 
 export const LogoutButton = styled.button`
@@ -272,4 +274,43 @@ export const NotificationNoImage = styled.div`
   justify-content: center;
   font-size: 0.8rem;
   color: #666;
+`;
+
+export const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  transition: border-color 0.2s ease;
+  gap: 0.4rem; /* espaço entre o ícone e o input */
+
+  &:hover {
+    border-color: #999;
+  }
+
+  &:focus-within {
+    border-color: #00509e;
+  }
+`;
+
+export const SearchIcon = styled.div`
+  font-size: 1.2rem;
+  color: #777;
+  display: flex;
+  align-items: center;
+`;
+
+export const SearchInput = styled.input`
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.9rem;
+  color: #333;
+  width: 180px; /* Largura ajustável */
+
+  &::placeholder {
+    color: #aaa;
+  }
 `;

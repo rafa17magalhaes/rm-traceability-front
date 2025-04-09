@@ -19,6 +19,7 @@ import statusesReducer from './slices/statusesSlice';
 import eventsReducer from './slices/eventsSlice';
 import notificationsReducer from './slices/notificationsSlice';
 import permissionsReducer from './slices/permissionsSlice';
+import chatReducer from './slices/chatSlice';
 
 const rootReducer = combineReducers({
   companies: companiesReducer,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   events: eventsReducer,
   notifications: notificationsReducer,
   permissions: permissionsReducer,
+  chat: chatReducer,
 });
 
 const persistConfig = {
