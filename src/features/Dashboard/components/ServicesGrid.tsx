@@ -13,6 +13,7 @@ import {
   FaMapMarkerAlt,
   FaCog,
 } from 'react-icons/fa';
+import { BsStars } from 'react-icons/bs';
 
 import { useAuth } from 'context/AuthContext';
 import { useAppSelector } from 'store/hooks';
@@ -48,6 +49,7 @@ const defaultPermissions: Record<ModuleKey, boolean> = {
   rastreamento: true,
   configuracoes: true,
   inventario: true,
+  ai: true,
 };
 
 const services: ServiceItem[] = [
@@ -120,6 +122,13 @@ const services: ServiceItem[] = [
     description: 'Visualize a localização das movimentações...',
     route: '/dashboard/rastreamento',
     permissionKey: 'rastreamento',
+  },
+  {
+    icon: <BsStars size={32} />,
+    title: 'Assistente IA',
+    description: 'Converse com a assistente e resolva dúvidas...',
+    route: '/dashboard/ai',
+    permissionKey: 'ai',
   },
   {
     icon: <FaCog size={32} />,

@@ -14,6 +14,7 @@ import {
   FaMapMarkerAlt,
   FaHome,
 } from 'react-icons/fa';
+import { BsStars } from 'react-icons/bs';
 
 import { useAuth } from 'context/AuthContext';
 import { useAppSelector } from 'store/hooks';
@@ -38,6 +39,7 @@ const defaultPermissions: Record<ModuleKey, boolean> = {
   rastreamento: true,
   configuracoes: true,
   inventario: true,
+  ai: true,
 };
 
 interface SidebarProps {
@@ -137,6 +139,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
           >
             <FaMapMarkerAlt size={20} />
             <span>Mapa de Rastreio</span>
+          </MenuItem>
+        )}
+        {isVisible('ai') && (
+          <MenuItem collapsed={collapsed} onClick={() => navigate('/dashboard/ai')}>
+            <BsStars size={20} />
+            <span>Assistente IA</span>
           </MenuItem>
         )}
         {isVisible('configuracoes') && (

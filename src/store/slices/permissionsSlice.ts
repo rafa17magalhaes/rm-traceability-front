@@ -10,7 +10,8 @@ export type ModuleKey =
   | 'status'
   | 'rastreamento'
   | 'configuracoes'
-  | 'inventario';
+  | 'inventario'
+  | 'ai';
 
 export interface UserPermissions {
   [module: string]: boolean;

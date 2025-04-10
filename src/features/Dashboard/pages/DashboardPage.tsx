@@ -23,6 +23,7 @@ import AddStatusPage from 'features/Status/pages/AddStatusPage';
 import ListStatusPage from 'features/Status/pages/ListStatusPage';
 import TraceabilityPage from 'features/Traceability/pages/TraceabilityPage';
 import SettingsPage from 'features/Settings/pages/SettingsPage';
+import AiPage from 'features/Chat/pages/AiPage';
 
 import { DashboardContainer, MainContent } from '../styles/dashboardStyles';
 
@@ -182,6 +183,16 @@ const DashboardPage: React.FC = () => {
               element={
                 <RequirePermission permKey="configuracoes">
                   <SettingsPage />
+                </RequirePermission>
+              }
+            />
+
+            {/* CHAT AI */}
+            <Route
+              path="ai"
+              element={
+                <RequirePermission permKey="ai"> 
+                  <AiPage />
                 </RequirePermission>
               }
             />

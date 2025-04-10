@@ -37,6 +37,7 @@ const MODULES: { key: ModuleKey; label: string }[] = [
   { key: 'rastreamento', label: 'Mapa de Rastreio' },
   { key: 'configuracoes', label: 'Configurações' },
   { key: 'inventario', label: 'Inventário' },
+  { key: 'ai', label: 'Assistente IA' },
 ];
 
 // Todas as permissões = true por padrão
@@ -51,6 +52,7 @@ const defaultPermissions: UserPermissions = {
   rastreamento: true,
   configuracoes: true,
   inventario: true,
+  ai: true,
 };
 
 const UserPermissionsForm: React.FC<UserPermissionsFormProps> = ({
@@ -63,7 +65,6 @@ const UserPermissionsForm: React.FC<UserPermissionsFormProps> = ({
     (state: RootState) => state.permissions.data[userId]
   );
 
-  // Estado local do form
   const [permissions, setPermissions] = useState<UserPermissions>({});
 
   useEffect(() => {
