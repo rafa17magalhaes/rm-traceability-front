@@ -67,27 +67,30 @@ export const ChatSearchInput = styled.input`
   }
 `;
 
+/* ─── Dropdown Body ────────────────────────────────────── */
+
 export const ChatSearchBody = styled.div`
   position: absolute;
   top: 3.1rem;
   left: 0;
-  /* estica até o mesmo tamanho do container pai */
   width: inherit;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 6px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-height: 350px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   z-index: 999;
+  /* para o scroll interno funcionar corretamente */
+  min-height: 0;
 `;
 
 export const ChatSearchMessagesWrapper = styled.div`
   flex: 1;
   padding: 0.75rem;
   overflow-y: auto;
+  min-height: 0;
 `;
 
 /* ─── Mensagens ───────────────────────────────────────── */
@@ -106,6 +109,10 @@ export const ChatMessageUser = styled.div`
   font-size: 0.9rem;
   color: #333;
   max-width: 70%;
+  white-space: pre-line;
+  word-break: break-word;
+  text-align: left;
+  line-height: 1.4;
 `;
 
 export const ChatMessageBot = styled.div`
@@ -115,6 +122,10 @@ export const ChatMessageBot = styled.div`
   font-size: 0.9rem;
   color: #333;
   max-width: 70%;
+  white-space: pre-line;
+  word-break: break-word;
+  text-align: left;
+  line-height: 1.4;
 `;
 
 /* ─── Digitação (“…”) ──────────────────────────────────── */

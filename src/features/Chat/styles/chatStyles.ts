@@ -58,6 +58,7 @@ export const ChatUIContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 `;
 
 /* ─── Tela Inicial ────────────────────────────────────── */
@@ -111,8 +112,9 @@ export const SuggestionButton = styled.button`
 export const MessagesContainer = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem;
   padding-bottom: 5rem;
+  min-height: 0;
 `;
 
 export const ChatMessageContainer = styled.div<{ isUser: boolean }>`
@@ -123,22 +125,30 @@ export const ChatMessageContainer = styled.div<{ isUser: boolean }>`
 
 export const ChatMessageUser = styled.div`
   background: #00509e;
-  color: #ffffff;
-  padding: 0.8rem 1.2rem;
+  color: #fff;
+  padding: 0.8rem 1rem;
   border-radius: 16px;
-  max-width: 60%;
+  max-width: 70%;
   font-size: 1rem;
-  line-height: 1.4;
+  line-height: 1.5;
+  text-align: left;
+  white-space: normal;
+  word-wrap: break-word;
+  margin-bottom: 0.5rem;
 `;
 
 export const ChatMessageBot = styled.div`
-  background: #fafafa;
-  color: #333333;
-  padding: 0.8rem 1.2rem;
+  background: #f2f2f2;
+  color: #333;
+  padding: 0.8rem 1rem;
   border-radius: 16px;
-  max-width: 65%;
+  max-width: 70%;
   font-size: 1rem;
-  line-height: 1.4;
+  line-height: 1.5;
+  text-align: left;
+  white-space: normal;
+  word-wrap: break-word;
+  margin-bottom: 0.5rem;
 `;
 
 /* ─── Indicador de Digitação ───────────────────────────── */
