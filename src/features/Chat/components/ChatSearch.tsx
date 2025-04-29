@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { BsStars } from 'react-icons/bs';
 import { useAppDispatch } from 'store/hooks';
 import { sendChatMessageThunk } from 'store/slices/chatSlice';
 import { AuthContext } from 'context/AuthContext';
@@ -24,6 +23,7 @@ import {
   SuggestionButton,
   ResponseTimeBadge,
   RouteLink,
+  AnimatedIcon,
 } from '../styles/chatSearchStyles';
 
 interface ChatMessage {
@@ -38,19 +38,16 @@ const SUGGESTIONS = [
   'Como gerar lote?',
   'Como realizar movimentação?'
 ];
-
 const ROUTE_REGEX = /(\/[a-zA-Z0-9\-\/]+)/g;
 
-// formata milisegundos em s/min
 const formatDuration = (ms: number): string => {
-  const totalSec = Math.round(ms/1000);
+  const totalSec = Math.round(ms / 1000);
   if (totalSec < 60) return `${totalSec}s`;
-  const m = Math.floor(totalSec/60);
-  const s = totalSec%60;
-  return s>0? `${m}m ${s}s` : `${m}m`;
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return s > 0 ? `${m}m ${s}s` : `${m}m`;
 };
 
-// substitui rotas por <RouteLink>
 const renderWithRoutes = (text: string) =>
   text.split(ROUTE_REGEX).map((part, i) =>
     ROUTE_REGEX.test(part)
@@ -70,43 +67,38 @@ const ChatSearch: React.FC = () => {
   const [thinkingIndex, setThinkingIndex] = useState(0);
   const startRef = useRef<number>(0);
 
-  // placeholders animados
   const placeholders = [
     'Localize funcionalidades...',
     'Como acessar o inventário?',
     'Como gerar QRCode?',
     'Precisa de ajuda? Pergunte aqui!',
   ];
-  
   const [phIndex, setPhIndex] = useState(0);
   useEffect(() => {
     const iv = setInterval(() => {
-      setPhIndex(i => (i+1) % placeholders.length);
+      setPhIndex(i => (i + 1) % placeholders.length);
     }, 3000);
     return () => clearInterval(iv);
   }, []);
 
-  // fecha ao clicar fora
   useEffect(() => {
-    function onClick(e: MouseEvent) {
+    function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setExpanded(false);
       }
     }
-    document.addEventListener('mousedown', onClick);
-    return () => document.removeEventListener('mousedown', onClick);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // animação de "pensando" a cada 10s
   useEffect(() => {
     if (!isThinking) return;
     const iv = window.setInterval(() => {
-      setThinkingIndex(i => (i+1) % thinkingMessages.length);
+      setThinkingIndex(i => (i + 1) % thinkingMessages.length);
     }, 10000);
     return () => window.clearInterval(iv);
   }, [isThinking]);
 
-  // envia mensagem ao backend
   const sendMessage = async (txt: string) => {
     setInputValue('');
     setMessages(m => [...m, { from: 'user', text: txt }]);
@@ -117,10 +109,7 @@ const ChatSearch: React.FC = () => {
     if (sendChatMessageThunk.fulfilled.match(resp)) {
       const { response } = resp.payload as { response: string };
       const delta = performance.now() - startRef.current;
-      setMessages(m => [
-        ...m,
-        { from: 'bot', text: response, timeMs: delta }
-      ]);
+      setMessages(m => [...m, { from: 'bot', text: response, timeMs: delta }]);
     }
     setIsThinking(false);
   };
@@ -133,7 +122,9 @@ const ChatSearch: React.FC = () => {
 
   return (
     <ChatSearchContainer ref={containerRef} expanded={expanded}>
-      <IconContainer><BsStars /></IconContainer>
+      <IconContainer>
+        <AnimatedIcon />
+      </IconContainer>
 
       <ChatSearchWrapper expanded={expanded}>
         <ChatSearchInput
@@ -156,10 +147,7 @@ const ChatSearch: React.FC = () => {
                 </GreetingText>
                 <SuggestionContainer>
                   {SUGGESTIONS.map(s => (
-                    <SuggestionButton
-                      key={s}
-                      onClick={() => handleSuggestion(s)}
-                    >
+                    <SuggestionButton key={s} onClick={() => handleSuggestion(s)}>
                       {s}
                     </SuggestionButton>
                   ))}
@@ -190,7 +178,9 @@ const ChatSearch: React.FC = () => {
                 {isThinking && (
                   <ChatMessageContainer isUser={false}>
                     <ChatMessageBot>
-                      <TypingBubble><Dot/><Dot/><Dot/></TypingBubble>
+                      <TypingBubble>
+                        <Dot/><Dot/><Dot/>
+                      </TypingBubble>
                     </ChatMessageBot>
                   </ChatMessageContainer>
                 )}

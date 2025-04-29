@@ -1,26 +1,41 @@
 import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
+import { BsStars } from 'react-icons/bs';
 
 interface ContainerProps {
   expanded: boolean;
 }
 
-/* ─── Animações ───────────────────────────────────────── */
+/* ─── Ícone “Spin-and-Pop” Animation ─────────────────── */
+const iconAnim = keyframes`
+  0%   { transform: rotate(0deg)   scale(1);   }
+  10%  { transform: rotate(45deg)  scale(1.2); }
+  30%  { transform: rotate(360deg) scale(1);   }
+  100% { transform: rotate(360deg) scale(1);   }
+`;
 
+/* ─── Digitação (“…”) ──────────────────────────────────── */
 const dotBounce = keyframes`
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-7px); }
   100% { transform: translateY(0); }
 `;
 
+/* ─── Brilho no “pensando” ───────────────────────────── */
 const shine = keyframes`
   0%   { background-position: -200%; }
   60%  { background-position: 200%; }
   100% { background-position: 200%; }
 `;
 
-/* ─── Container Principal ───────────────────────────────── */
+/* ─── Componente de Ícone Animado ────────────────────── */
+export const AnimatedIcon = styled(BsStars)`
+  font-size: 1.3rem;
+  color: #777;
+  animation: ${iconAnim} 8s ease-in-out infinite;
+`;
 
+/* ─── Container Principal ───────────────────────────────── */
 export const ChatSearchContainer = styled.div<ContainerProps>`
   position: relative;
   display: flex;
@@ -32,12 +47,11 @@ export const ChatSearchContainer = styled.div<ContainerProps>`
 `;
 
 export const IconContainer = styled.div`
-  font-size: 1.3rem;
-  color: #777;
   display: flex;
   align-items: center;
 `;
 
+/* ─── Wrapper e Input ──────────────────────────────────── */
 export const ChatSearchWrapper = styled.div<{ expanded: boolean }>`
   flex: 1;
   display: flex;
@@ -67,8 +81,7 @@ export const ChatSearchInput = styled.input`
   }
 `;
 
-/* ─── Dropdown Body ────────────────────────────────────── */
-
+/* ─── Dropdown Body ───────────────────────────────────── */
 export const ChatSearchBody = styled.div`
   position: absolute;
   top: 3.1rem;
@@ -82,7 +95,6 @@ export const ChatSearchBody = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 999;
-  /* para o scroll interno funcionar corretamente */
   min-height: 0;
 `;
 
@@ -94,7 +106,6 @@ export const ChatSearchMessagesWrapper = styled.div`
 `;
 
 /* ─── Mensagens ───────────────────────────────────────── */
-
 export const ChatMessageContainer = styled.div<{ isUser: boolean }>`
   display: flex;
   flex-direction: column;
@@ -129,7 +140,6 @@ export const ChatMessageBot = styled.div`
 `;
 
 /* ─── Digitação (“…”) ──────────────────────────────────── */
-
 export const TypingBubble = styled.div`
   display: inline-flex;
   align-items: center;
@@ -153,8 +163,7 @@ export const Dot = styled.div`
   }
 `;
 
-/* ─── Barra “pensando” ─────────────────────────────────── */
-
+/* ─── Barra “Pensando” ─────────────────────────────────── */
 export const ThinkingStatusBar = styled.div`
   padding: 0.6rem 1rem;
   font-size: 0.9rem;
@@ -164,6 +173,7 @@ export const ThinkingStatusBar = styled.div`
   margin-left: 1rem;
 `;
 
+/* ─── Texto Brilhante ─────────────────────────────────── */
 export const ShiningText = styled.span`
   display: inline-block;
   background: linear-gradient(90deg, #aaa 20%, #fff 50%, #aaa 80%);
@@ -175,7 +185,6 @@ export const ShiningText = styled.span`
 `;
 
 /* ─── Saudação Inicial ─────────────────────────────────── */
-
 export const GreetingContainer = styled.div`
   padding: 1rem;
   text-align: center;
@@ -209,7 +218,6 @@ export const SuggestionButton = styled.button`
 `;
 
 /* ─── Badge de Tempo ───────────────────────────────────── */
-
 export const ResponseTimeBadge = styled.span`
   margin-left: 0.5rem;
   font-size: 0.75rem;
@@ -217,7 +225,6 @@ export const ResponseTimeBadge = styled.span`
 `;
 
 /* ─── Link de Rota Clicável ─────────────────────────────── */
-
 export const RouteLink = styled(Link)`
   display: inline-block;
   background: linear-gradient(90deg, #0e69b0 0%, #00509e 100%);
