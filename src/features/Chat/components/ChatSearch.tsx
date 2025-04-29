@@ -49,11 +49,20 @@ const formatDuration = (ms: number): string => {
 };
 
 const renderWithRoutes = (text: string) =>
-  text.split(ROUTE_REGEX).map((part, i) =>
-    ROUTE_REGEX.test(part)
-      ? <RouteLink key={i} to={part}>{part}</RouteLink>
-      : part
-  );
+  text
+    .split(ROUTE_REGEX)
+    .map((part, i) => {
+      if (!ROUTE_REGEX.test(part)) return part
+
+      // extrai só o "slug" após a última "/"
+      const slug = part.replace(/\/+$/, '').split('/').pop()!
+
+      return (
+        <RouteLink key={i} to={part}>
+          {slug}
+        </RouteLink>
+      )
+    })
 
 const ChatSearch: React.FC = () => {
   const dispatch = useAppDispatch();

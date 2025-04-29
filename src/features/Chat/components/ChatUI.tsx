@@ -45,19 +45,21 @@ const SUGGESTIONS = [
 
 const ROUTE_REGEX = /(\/[a-zA-Z0-9\-\/]+)/g;
 
-// divide o texto em partes e substitui rotas por <RouteLink>
-const renderWithRoutes = (text: string) => {
-  const parts = text.split(ROUTE_REGEX);
-  return parts.map((part, idx) =>
-    ROUTE_REGEX.test(part) ? (
-      <RouteLink key={idx} to={part}>
-        {part}
-      </RouteLink>
-    ) : (
-      part
-    )
-  );
-};
+const renderWithRoutes = (text: string) =>
+  text
+    .split(ROUTE_REGEX)
+    .map((part, i) => {
+      if (!ROUTE_REGEX.test(part)) return part
+
+      // extrai só o "slug" após a última "/"
+      const slug = part.replace(/\/+$/, '').split('/').pop()!
+
+      return (
+        <RouteLink key={i} to={part}>
+          {slug}
+        </RouteLink>
+      )
+    })
 
 const ChatUI: React.FC = () => {
   const dispatch = useAppDispatch();
