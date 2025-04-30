@@ -148,12 +148,14 @@ const ChatUI: React.FC = () => {
                   ) : (
                     <ChatMessageBot>
                       <strong>Agente IA:</strong>{' '}
-                      {renderWithRoutes(msg.text)}
-                      {'timeMs' in msg && (
-                        <ResponseTimeBadge>
-                          🕒 {formatDuration(msg.timeMs!)}
-                        </ResponseTimeBadge>
-                      )}
+                            {renderWithRoutes(msg.text)}
+                            {'timeMs' in msg && (
+                              <> {' '}
+                                <ResponseTimeBadge>
+                                  🕒 {formatDuration(msg.timeMs!)}
+                                </ResponseTimeBadge>
+                              </>
+                            )}
                     </ChatMessageBot>
                   )}
                 </ChatMessageContainer>
