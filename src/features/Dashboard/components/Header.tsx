@@ -9,17 +9,16 @@ import {
   FaExclamationCircle,
   FaHome,
 } from 'react-icons/fa';
-
 import { useAuth } from 'context/AuthContext';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import {
   fetchNotificationsThunk,
   markAsReadThunk,
+  fetchUnreadCountThunk,
 } from 'store/slices/notificationsSlice';
-
 import { EventDTO } from 'types/events';
-
 import ChatSearch from 'features/Chat/components/ChatSearch';
+import NotificationPagination from 'components/Pagination/NotificationPagination';
 import {
   HeaderContainerHeader,
   TitleHeader,
@@ -35,15 +34,16 @@ import {
   InfoLine,
   NotificationsContainer,
   NotificationTitle,
+  NotificationListItem,
+  NotificationProductImage,
+  NotificationNoImage,
+  NotificationContent,
   NotificationItemHeader,
   NotificationItemDate,
-  NotificationProductImage,
-  NotificationListItem,
-  NotificationContent,
-  NotificationNoImage,
   NotificationBadge,
 } from '../styles/headerStyles';
 
+const PAGE_SIZE = 20;
 
 interface HeaderProps {
   onToggleSidebar?: () => void;
@@ -55,53 +55,66 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const userDropdownRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
 
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const {
+    list: notificationsList,
+    total,
+    page,
+    unreadCount,
+    loading: notificationsLoading,
+  } = useAppSelector((s) => s.notifications);
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        userDropdownRef.current &&
-        !userDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsUserMenuOpen(false);
-      }
+    dispatch(fetchUnreadCountThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isNotificationsOpen) {
+      dispatch(fetchNotificationsThunk({ page, size: PAGE_SIZE }));
+      dispatch(fetchUnreadCountThunk());
+    }
+  }, [isNotificationsOpen, page, dispatch]);
+
+  // fecha dropdown ao clicar fora
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
       if (
         notificationsRef.current &&
-        !notificationsRef.current.contains(event.target as Node)
+        !notificationsRef.current.contains(e.target as Node)
       ) {
         setIsNotificationsOpen(false);
+      }
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsUserMenuOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const { list: notificationsList, loading: notificationsLoading } = useAppSelector(
-    (state) => state.notifications
-  );
-
-  useEffect(() => {
-    if (isNotificationsOpen) {
-      dispatch(fetchNotificationsThunk({ page: 1, size: 8 }));
-    }
-  }, [isNotificationsOpen, dispatch]);
-
-  const notificationCount = notificationsList.filter((evt) => !evt.isRead).length;
-
-  const handleNotificationClick = (evt: EventDTO) => {
+  const handleNotificationClick = async (evt: EventDTO) => {
     if (!evt.isRead) {
-      dispatch(markAsReadThunk(evt.id));
+      await dispatch(markAsReadThunk(evt.id));
+      dispatch(fetchUnreadCountThunk());
+      dispatch(fetchNotificationsThunk({ page, size: PAGE_SIZE }));
     }
+    setIsNotificationsOpen(false);
     navigate('/dashboard/eventos');
   };
 
-  // Toggles
-  const toggleUserMenu = () => setIsUserMenuOpen((prev) => !prev);
-  const toggleNotifications = () => setIsNotificationsOpen((prev) => !prev);
+  const handlePageChange = (newPage: number) => {
+    dispatch(fetchNotificationsThunk({ page: newPage, size: PAGE_SIZE }));
+  };
 
   return (
     <HeaderContainerHeader>
@@ -115,51 +128,54 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
         Painel de Controle
       </TitleHeader>
 
-        {/*ChatSearch*/}
-        <RightSideHeader>
-         <ChatSearch />
+      <RightSideHeader>
+        <ChatSearch />
 
-        {/* Notificações */}
         <UserMenuContainer ref={notificationsRef}>
-          <IconButtonHeader onClick={toggleNotifications} style={{ position: 'relative' }}>
+          <IconButtonHeader
+            onClick={() => setIsNotificationsOpen((o) => !o)}
+            style={{ position: 'relative' }}
+          >
             <FaRegBell />
-            {notificationCount > 0 && <NotificationBadge>{notificationCount}</NotificationBadge>}
+            {unreadCount > 0 && (
+              <NotificationBadge>{unreadCount}</NotificationBadge>
+            )}
           </IconButtonHeader>
 
           {isNotificationsOpen && (
-            <NotificationsContainer
-              style={{
-                minWidth: '340px',
-                maxWidth: '400px',
-                maxHeight: '500px',
-                padding: '0.8rem',
-              }}
-            >
+            <NotificationsContainer>
               <NotificationTitle>Notificações</NotificationTitle>
               <Divider />
+
               {notificationsLoading && (
-                <div style={{ padding: '1rem', textAlign: 'center' }}>Carregando...</div>
+                <div style={{ padding: '1rem', textAlign: 'center' }}>
+                  Carregando...
+                </div>
               )}
+
               {!notificationsLoading && notificationsList.length === 0 && (
-                <div style={{ padding: '1rem', textAlign: 'center', color: '#666' }}>
+                <div
+                  style={{
+                    padding: '1rem',
+                    textAlign: 'center',
+                    color: '#666',
+                  }}
+                >
                   Nenhuma notificação
                 </div>
               )}
+
               {!notificationsLoading &&
                 notificationsList.map((evt) => {
-                  const imageUrl =
+                  const img =
                     evt.resource?.imageUrl || evt.code?.resource?.imageUrl;
                   return (
                     <NotificationListItem
                       key={evt.id}
                       onClick={() => handleNotificationClick(evt)}
                     >
-                      {imageUrl ? (
-                        <NotificationProductImage
-                          src={imageUrl}
-                          alt="Produto"
-                          style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                        />
+                      {img ? (
+                        <NotificationProductImage src={img} alt="Produto" />
                       ) : (
                         <NotificationNoImage>Sem img</NotificationNoImage>
                       )}
@@ -172,10 +188,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
                           )}
                           <span>Movimentação</span>
                         </NotificationItemHeader>
-
-                        <p
-                          style={{ margin: '0.2rem 0', fontSize: '0.85rem', color: '#444' }}
-                        >
+                        <p style={{ margin: '0.2rem 0' }}>
                           Código: <strong>{evt.code?.value}</strong>
                           {evt.resource?.name && (
                             <>
@@ -189,9 +202,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
                             : 'data não informada'}
                           .
                         </p>
-                        <p
-                          style={{ margin: '0.2rem 0', fontSize: '0.8rem', color: '#666' }}
-                        >
+                        <p style={{ margin: '0.2rem 0', color: '#666' }}>
                           Status: <strong>{evt.status?.name || '---'}</strong>
                         </p>
                         {evt.createdAt && (
@@ -203,8 +214,15 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
                     </NotificationListItem>
                   );
                 })}
+
               <Divider />
-              <div style={{ textAlign: 'center' }}>
+              <NotificationPagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+              <Divider />
+              <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
                 <button
                   style={{
                     background: 'none',
@@ -212,16 +230,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
                     color: '#00509E',
                     cursor: 'pointer',
                     fontSize: '0.85rem',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '4px',
-                    transition: 'background-color 0.2s ease',
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor = '#e6f0fa')
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = 'transparent')
-                  }
                   onClick={() => navigate('/dashboard/eventos')}
                 >
                   Ver todas
@@ -231,11 +240,14 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
           )}
         </UserMenuContainer>
 
-        {/* Menu do usuário */}
         <UserMenuContainer ref={userDropdownRef}>
-          <UserMenuButton onClick={toggleUserMenu}>
+          <UserMenuButton onClick={() => setIsUserMenuOpen((u) => !u)}>
             <UserAvatar>
-              {user?.name?.split(' ').map((p) => p[0]).join('').toUpperCase() || 'U'}
+              {user?.name
+                ?.split(' ')
+                .map((p) => p[0])
+                .join('')
+                .toUpperCase() || 'U'}
             </UserAvatar>
           </UserMenuButton>
           {isUserMenuOpen && (
@@ -243,15 +255,13 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onLogout }) => {
               <UserInfo>
                 <InfoLine className="username">{user?.name}</InfoLine>
                 <InfoLine>
-                  <FaEnvelope className="icon" />
-                  {user?.email}
+                  <FaEnvelope className="icon" /> {user?.email}
                 </InfoLine>
                 <InfoLine>
-                  <FaBuilding className="icon" />
-                  {user?.companyName || '---'}
+                  <FaBuilding className="icon" /> {user?.companyName || '---'}
                 </InfoLine>
                 <InfoLine>
-                  <FaIdBadge className="icon" />
+                  <FaIdBadge className="icon" />{' '}
                   {user?.id ? user.id.slice(0, 6).toUpperCase() : '------'}
                 </InfoLine>
               </UserInfo>

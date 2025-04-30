@@ -49,7 +49,7 @@ export const IconButtonHeader = styled.button`
 export const RightSideHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.2rem; /* Dá espaço entre ChatSearch e sininho/avatar */
+  gap: 1.2rem;
   margin-right: 1.5rem;
 `;
 
@@ -158,29 +158,6 @@ export const Divider = styled.div`
 `;
 
 // =========== Dropdown de Notificações ===========
-export const NotificationItem = styled.div`
-  background-color: #fafafa;
-  border-radius: 4px;
-  padding: 0.5rem 0.6rem;
-  margin-bottom: 0.5rem;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-
-  p {
-    margin: 0.2rem 0;
-    font-size: 0.85rem;
-    color: #666;
-  }
-
-  .notiIcon {
-    margin-right: 5px;
-    font-size: 1rem;
-    color: #fa8c16;
-  }
-`;
-
 export const NotificationsContainer = styled.div`
   position: absolute;
   top: 2.8rem;
@@ -189,7 +166,8 @@ export const NotificationsContainer = styled.div`
   backdrop-filter: blur(4px);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   border-radius: 6px;
-  min-width: 320px;
+  min-width: 400px;
+  max-width: 400px;
   max-height: 500px;
   overflow-y: auto;
   padding: 0.75rem;
@@ -202,45 +180,14 @@ export const NotificationTitle = styled.div`
   font-weight: 600;
   color: #333;
   margin-bottom: 0.5rem;
-`;
-
-export const NotificationItemHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 0.2rem;
-  font-size: 0.9rem;
-  color: #333;
-  font-weight: bold;
-`;
-
-export const NotificationItemDate = styled.small`
-  display: block;
-  font-size: 0.75rem;
-  color: #999;
-  margin-top: 0.2rem;
-`;
-
-export const NotificationBadge = styled.span`
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background-color: #ff4d4f;
-  color: #fff;
-  border-radius: 50%;
-  font-size: 0.7rem;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: left;
 `;
 
 export const NotificationListItem = styled.div`
   cursor: pointer;
   display: flex;
-  align-items: flex-start;
-  gap: 0.8rem;
+  align-items: center;
+  gap: 0.6rem;
   padding: 0.6rem;
   margin-bottom: 0.6rem;
   border-radius: 6px;
@@ -255,6 +202,32 @@ export const NotificationListItem = styled.div`
 
 export const NotificationContent = styled.div`
   flex: 1;
+  text-align: left;
+
+  p {
+    margin: 0.2rem 0;
+    font-size: 0.85rem;
+    color: #666;
+    text-align: left;
+  }
+`;
+
+export const NotificationItemHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: bold;
+  text-align: left;
+`;
+
+export const NotificationItemDate = styled.small`
+  display: block;
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 0.2rem;
 `;
 
 export const NotificationProductImage = styled.img`
@@ -276,6 +249,22 @@ export const NotificationNoImage = styled.div`
   color: #666;
 `;
 
+export const NotificationBadge = styled.span`
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ff4d4f;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+// =========== Componente de Busca ===========
 export const SearchContainer = styled.div`
   display: flex;
   align-items: center;
@@ -284,7 +273,7 @@ export const SearchContainer = styled.div`
   border-radius: 20px;
   padding: 0.3rem 0.8rem;
   transition: border-color 0.2s ease;
-  gap: 0.4rem; /* espaço entre o ícone e o input */
+  gap: 0.4rem;
 
   &:hover {
     border-color: #999;
@@ -308,7 +297,7 @@ export const SearchInput = styled.input`
   outline: none;
   font-size: 0.9rem;
   color: #333;
-  width: 180px; /* Largura ajustável */
+  width: 180px;
 
   &::placeholder {
     color: #aaa;

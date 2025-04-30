@@ -1,16 +1,24 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { EventDTO } from 'types/events';
-import { findAllEvents, markEventAsRead } from 'api/events';
+import { findAllEvents, markEventAsRead, getUnreadCount } from 'api/events';
 import { QueryParamsDTO } from 'types/pagination';
 
 interface NotificationsState {
   list: EventDTO[];
+  total: number;
+  page: number;
+  size: number;
+  unreadCount: number;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: NotificationsState = {
   list: [],
+  total: 0,
+  page: 1,
+  size: 20,
+  unreadCount: 0,
   loading: false,
   error: null,
 };
@@ -27,7 +35,7 @@ export const fetchNotificationsThunk = createAsyncThunk(
   },
 );
 
-// Thunk para marcar como lido
+// marca como lida
 export const markAsReadThunk = createAsyncThunk(
   'notifications/markAsRead',
   async (eventId: string, { rejectWithValue }) => {
@@ -40,44 +48,63 @@ export const markAsReadThunk = createAsyncThunk(
   },
 );
 
+// busca só a contagem de não-lidas
+export const fetchUnreadCountThunk = createAsyncThunk(
+  'notifications/fetchCount',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { count } = await getUnreadCount();
+      return count;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || err.message);
+    }
+  },
+);
+
 const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchNotificationsThunk.pending, (state) => {
-      state.loading = true;
-      state.error = null;
+  extraReducers: (b) => {
+    b.addCase(fetchNotificationsThunk.pending, (s) => {
+      s.loading = true;
+      s.error = null;
     });
-    builder.addCase(
+    b.addCase(
       fetchNotificationsThunk.fulfilled,
       (
-        state,
-        action: PayloadAction<{
+        s,
+        a: PayloadAction<{
           data: EventDTO[];
           total: number;
           page: number;
           size: number;
         }>,
       ) => {
-        state.loading = false;
-        state.list = action.payload.data;
+        s.loading = false;
+        s.list = a.payload.data;
+        s.total = a.payload.total;
+        s.page = a.payload.page;
+        s.size = a.payload.size;
       },
     );
-    builder.addCase(fetchNotificationsThunk.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload as string;
+    b.addCase(fetchNotificationsThunk.rejected, (s, a) => {
+      s.loading = false;
+      s.error = a.payload as string;
     });
 
-    // markAsReadThunk
-    builder.addCase(markAsReadThunk.fulfilled, (state, action) => {
-      const updatedEvent = action.payload;
-      // Atualiza no array local
-      const idx = state.list.findIndex((e) => e.id === updatedEvent.id);
-      if (idx !== -1) {
-        state.list[idx] = updatedEvent; // agora isRead = true
-      }
+    b.addCase(markAsReadThunk.fulfilled, (s, a) => {
+      // atualiza no list atual
+      const idx = s.list.findIndex((e) => e.id === a.payload.id);
+      if (idx !== -1) s.list[idx] = a.payload;
     });
+
+    b.addCase(
+      fetchUnreadCountThunk.fulfilled,
+      (s, a: PayloadAction<number>) => {
+        s.unreadCount = a.payload;
+      },
+    );
   },
 });
 

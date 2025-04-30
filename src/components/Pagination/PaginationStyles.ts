@@ -27,3 +27,31 @@ export const PageButton = styled.button<{ active?: boolean }>`
     opacity: 0.5;
   }
 `;
+
+export const Nav = styled.nav`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+`;
+
+export const Btn = styled.button<{ active?: boolean }>`
+  background: ${({ active }) => (active ? '#00509E' : 'transparent')};
+  color: ${({ active }) => (active ? '#fff' : '#00509E')};
+  border: 1px solid #00509e;
+  border-radius: 3px;
+  padding: 0.2rem 0.4rem;
+  margin: 0 0.15rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  min-width: 1.8rem;
+  text-align: center;
+  transition:
+    background 0.2s,
+    color 0.2s;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+`;
