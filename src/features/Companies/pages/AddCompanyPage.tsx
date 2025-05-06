@@ -15,40 +15,45 @@ const AddCompanyPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { loading, error, currentCompany } = useAppSelector((state) => state.companies);
+  const { loading, error, currentCompany } = useAppSelector((s) => s.companies);
   const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchCompanyById(id));
-    }
+    if (id) dispatch(fetchCompanyById(id));
   }, [dispatch, id]);
 
-  const handleSubmit = async (company: CreateCompanyDTO, user: CreateUserDTO) => {
+  const handleSubmit = async (
+    company: CreateCompanyDTO,
+    user: CreateUserDTO
+  ) => {
     let resultAction;
     if (id) {
-      // Modo edição
+      // edição simples de empresa
       resultAction = await dispatch(updateCompanyThunk({ id, dto: company }));
     } else {
+      // cria empresa
       resultAction = await dispatch(createCompanyThunk({ company }));
       if (createCompanyThunk.fulfilled.match(resultAction)) {
         const createdCompany = resultAction.payload;
-        const updatedUser: CreateUserDTO = { ...user, companyId: createdCompany.id };
-        const userResult = await dispatch(createUserThunk(updatedUser));
+        // injeta o ID da empresa recém‐criada no usuário
+        const userWithCompany = {
+          ...user,
+          companyId: createdCompany.id,
+        };
+        const userResult = await dispatch(createUserThunk(userWithCompany));
         if (!createUserThunk.fulfilled.match(userResult)) {
-          console.error('Erro ao criar o usuário:', userResult);
+          console.error('Erro ao criar usuário administrador:', userResult);
         }
       }
     }
-  
-    if (
+
+    const success =
       (id && updateCompanyThunk.fulfilled.match(resultAction)) ||
-      (!id && createCompanyThunk.fulfilled.match(resultAction))
-    ) {
+      (!id && createCompanyThunk.fulfilled.match(resultAction));
+
+    if (success) {
       setShowCelebration(true);
-      setTimeout(() => {
-        navigate('/dashboard/empresas');
-      }, 3000);
+      setTimeout(() => navigate('/dashboard/empresas'), 3000);
     }
   };
 
