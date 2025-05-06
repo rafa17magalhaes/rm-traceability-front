@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import {
-  fetchAllCodesThunk,
-  changeCodeStatusThunk,
-} from 'store/slices/codesSlice';
+
+import { useAuth } from 'context/AuthContext';
+import { fetchAllCodesThunk, changeCodeStatusThunk } from 'store/slices/codesSlice';
 import { fetchActiveStatusesThunk } from 'store/slices/statusesSlice';
 import { fetchAllResourcesThunk } from 'store/slices/resourcesSlice';
 import { fetchUnreadCountThunk } from 'store/slices/notificationsSlice';
-import { ChangeCodeStatusDTO } from 'types/events';
+
 import CelebrationMessage from 'components/CelebrationMessage/CelebrationMessage';
 import CodeMovementForm from '../components/CodeMovementForm';
+
+import { ChangeCodeStatusDTO } from 'types/events';
 import { Container, Title } from '../styles/CodeMovementStyles';
 
 const CodeMovementPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAuth();
 
+  // Redux state
   const { list: codesList, loading: codesLoading, error: codesError } =
-    useAppSelector((s) => s.codes);
+    useAppSelector(s => s.codes);
   const { list: statusList, loading: statusLoading, error: statusError } =
-    useAppSelector((s) => s.statuses);
-  const { list: resourcesList } = useAppSelector((s) => s.resources);
+    useAppSelector(s => s.statuses);
+  const { list: resourcesList } = useAppSelector(s => s.resources);
 
   const isLoading = statusLoading || codesLoading;
   const globalError = statusError || codesError;
 
+  // Local state
   const [showCelebration, setShowCelebration] = useState(false);
   const [progress, setProgress] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [location, setLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const CodeMovementPage: React.FC = () => {
       return;
     }
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      pos => {
         setLocation({
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
@@ -83,36 +84,35 @@ const CodeMovementPage: React.FC = () => {
     setProgress(0);
 
     const results = await Promise.all(
-      addedCodes.map((c) =>
-        dispatch(
+      addedCodes.map(code => {
+        const dto: ChangeCodeStatusDTO = {
+          statusId: selectedStatus,
+          observation,
+          resourceId: selectedResource,
+          userId: user?.id,
+          latitude: location.latitude,
+          longitude: location.longitude,
+        };
+        return dispatch(
           changeCodeStatusThunk({
-            id: c.id,
-            dto: {
-              statusId: selectedStatus,
-              observation,
-              resourceId: selectedResource,
-              latitude: location.latitude,
-              longitude: location.longitude,
-            } as ChangeCodeStatusDTO,
+            id: code.id,
+            dto,
           })
-        ).then((r) => {
-          setProgress((p) => p + 1);
-          return r;
-        })
-      )
+        ).then(res => {
+          setProgress(p => p + 1);
+          return res;
+        });
+      })
     );
 
     setIsProcessing(false);
-    return results.every((r) => changeCodeStatusThunk.fulfilled.match(r));
+    return results.every(r => changeCodeStatusThunk.fulfilled.match(r));
   };
 
   return (
     <Container>
       {showCelebration && (
-        <CelebrationMessage
-          message="Movimentação registrada com sucesso!"
-          duration={3000}
-        />
+        <CelebrationMessage message="Movimentação registrada com sucesso!" duration={4000} />
       )}
       <Title>Movimentar Código</Title>
 

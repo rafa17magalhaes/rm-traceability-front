@@ -84,6 +84,7 @@ export const changeCodeStatusThunk = createAsyncThunk(
     params: {
       id: string;
       dto: ChangeCodeStatusDTO;
+      userId?: string;
     },
     { rejectWithValue },
   ) => {
