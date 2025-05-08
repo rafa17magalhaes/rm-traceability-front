@@ -1,0 +1,15 @@
+{
+    "icons": [
+      {
+        "src": "RM-traceability-logo.png",
+        "sizes": "64x64",
+        "type": "image/png"
+      },
+      {
+        "src": "RM-traceability-logo.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      }
+    ]
+  }
+  
